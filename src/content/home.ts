@@ -28,13 +28,11 @@ export const hero = {
   eyebrow: 'Designer Fragrance',
   tagline: ['Wear what can’t be seen, scent', 'that lingers longer than presence'],
   title: 'Perfume Hut',
-  priceLabel: 'Starting from',
   cta: { label: 'Shop Collections', href: routes.shop },
 } as const satisfies {
   eyebrow: string;
   tagline: readonly string[];
   title: string;
-  priceLabel: string;
   cta: { label: string; href: Route };
 };
 
@@ -89,34 +87,34 @@ export const tour = {
 
 /* ---------- The store floor ---------- */
 
-/** What the floor says at each stop (with Ava off, these placards do the talking). */
+const countWords = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+
+/** What the floor says at each stop (with Ava off, these captions do the talking). */
 export const storeFloor = {
   intro: {
-    eyebrow: 'The store floor',
-    title: ['Eight houses,', 'one floor.'],
-    text: 'Every house has its own cabinet. Scroll to walk the floor, or step into any cabinet.',
+    eyebrow: 'Inside Perfume Hut',
+    title: (houses: number) => `${countWords[houses] ?? houses} houses, one floor`,
+    text: 'Every house has its own cabinet. Keep scrolling to walk the floor.',
   },
-  /** Reduced motion: no walk, every cabinet on one wall. */
-  still: 'Every house has its own cabinet. Step into any of them to see its shelves.',
-  outro: {
-    eyebrow: 'That’s the floor',
-    title: ['Step into', 'any cabinet.'],
-    text: 'Or browse every bottle at once.',
-  },
+  /** Reduced motion: no walk, so every house is listed to step into. */
+  still: 'Every house has its own cabinet. Choose one to step inside.',
+  cabinet: (number: number) => `Cabinet No. ${String(number).padStart(2, '0')}`,
   fragrances: (count: number) => `${count} ${count === 1 ? 'fragrance' : 'fragrances'}`,
   from: (price: string) => `from ${price}`,
-  favourite: 'Most asked for',
-  stepInside: (house: string) => `Step inside ${house}`,
+  stepInside: 'Step inside',
+  stepInsideLabel: (house: string) => `Step inside the ${house} cabinet`,
   visitAisle: (house: string) => `Visit the ${house} aisle`,
   browseAll: { label: 'Browse everything', href: routes.shop },
   scrollHint: 'Scroll to walk the floor',
+  houses: 'The houses',
   skip: 'Skip the tour',
   room: {
     eyebrow: (number: string) => `Cabinet No. ${number}`,
     close: 'Back to the store floor',
+    shelves: 'On the shelves',
     fragrances: (count: number) => `${count} ${count === 1 ? 'fragrance' : 'fragrances'}`,
     from: (price: string) => `From ${price}`,
-    hint: 'Choose a bottle from the shelves to see it up close.',
+    hint: 'Tap a bottle on the shelves to see it up close.',
   },
 };
 

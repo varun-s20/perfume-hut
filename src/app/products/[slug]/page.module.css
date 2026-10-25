@@ -1,7 +1,61 @@
+/* ==========================================================================
+   Product page: the bottle large (photograph or 3D) held in view while the
+   buying column scrolls beside it; then the notes over time, the character,
+   the house it comes from, the details, and more from the floor.
+   ========================================================================== */
+
+.eyebrow,
+.eyebrowLight {
+  color: var(--color-brass);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.eyebrowLight {
+  color: var(--color-brass-light);
+}
+
+.sectionTitle {
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 5.2rem;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.18fr) minmax(0, 1fr);
+  gap: 5.6rem;
+  padding: 0.8rem var(--gutter) 8rem;
+}
+
+.stage {
+  position: sticky;
+  top: 1.6rem;
+  align-self: start;
+  height: calc(100svh - 8.4rem);
+  min-height: 46rem;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  padding-top: 1.6rem;
+}
+
 .breadcrumb {
-  padding: 2rem var(--gutter-wide);
   color: var(--color-subtle);
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 
 .breadcrumb ol {
@@ -18,81 +72,109 @@
 
 .breadcrumb a {
   text-decoration: underline;
+  text-decoration-color: var(--color-line);
   text-underline-offset: 0.2rem;
 }
 
-.hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-  gap: 6.4rem;
-  padding: 0 var(--gutter-wide);
-}
-
-.media {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  border-radius: 0.6rem;
-  background: var(--color-cream);
-}
-
-.image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.info {
-  position: sticky;
-  top: 2.4rem;
-  align-self: start;
+.house {
   display: flex;
-  flex-direction: column;
-  padding-top: 2rem;
-}
-
-.brand {
-  align-self: flex-start;
-  color: var(--color-subtle);
-  font-size: 1.05rem;
-  font-weight: 560;
-  letter-spacing: 0.12em;
-  text-decoration: underline;
-  text-decoration-color: var(--color-line);
-  text-underline-offset: 0.3rem;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 3.2rem;
+  color: var(--color-brass);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
 }
 
-.name {
-  margin-top: 1rem;
+.house a {
   color: var(--color-ink);
-  font-family: var(--font-serif);
-  font-size: 6.4rem;
-  font-weight: 400;
-  letter-spacing: -0.035em;
-  line-height: 1;
+  text-decoration: underline;
+  text-decoration-color: rgb(184 149 90 / 0.6);
+  text-underline-offset: 0.35rem;
 }
 
-.meta {
-  margin-top: 1.2rem;
-  color: var(--color-muted);
-  font-size: 1.15rem;
+.dot {
+  width: 0.3rem;
+  height: 0.3rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.name {
+  margin-top: 1.4rem;
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 7.6rem;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+.concentration {
+  margin-top: 1rem;
+  color: #6b4a33;
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-style: italic;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.8rem;
+}
+
+.chips li {
+  display: inline-flex;
+  align-items: center;
+  height: 2.6rem;
+  padding: 0 1.2rem;
+  border: 1px solid var(--color-line);
+  border-radius: 99rem;
+  color: var(--color-ink);
+  font-size: 0.95rem;
+  font-weight: 580;
 }
 
 .description {
-  margin: 2rem 0 2.8rem;
+  margin-top: 2.2rem;
   color: var(--color-muted);
   font-size: 1.35rem;
   line-height: 1.6;
 }
 
+.glance {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.6rem;
+  margin: 2.6rem 0 2.8rem;
+  padding: 1.8rem 0;
+  border-block: 1px solid var(--color-line);
+}
+
+.glance dt {
+  color: var(--color-subtle);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.glance dd {
+  margin-top: 0.5rem;
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  line-height: 1.3;
+}
+
 .assurances {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  margin-top: 2.4rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--color-line);
+  display: grid;
+  gap: 1rem;
+  margin-top: 2.6rem;
   color: var(--color-muted);
   font-size: 1.05rem;
 }
@@ -100,83 +182,478 @@
 .assurances li {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 1rem;
 }
 
-.assurances li::before {
+.assuranceIcon {
+  width: 1.7rem;
+  height: 1.7rem;
+  color: var(--color-brass);
+}
+
+.advisor {
+  margin-top: 2.4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-line);
+  color: var(--color-muted);
+  font-size: 1.1rem;
+}
+
+.advisor a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--color-ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+.advisorArrow {
+  width: 1rem;
+  height: 0.85rem;
+  transition: transform 0.3s var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .advisor a:hover .advisorArrow {
+    transform: translateX(0.3rem);
+  }
+}
+
+/* ---------- How it unfolds ---------- */
+
+.unfolds {
+  padding: 9rem var(--gutter);
+  background: var(--color-panel);
+  color: #fff;
+}
+
+.unfoldsTitle {
+  margin-top: 1.2rem;
+  font-family: var(--font-serif);
+  font-size: 6.4rem;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+/* Three moments on one line of time, brightest at the start. */
+.timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4rem;
+  margin-top: 6rem;
+}
+
+.timeline::before {
   content: '';
-  width: 0.5rem;
-  height: 0.5rem;
+  position: absolute;
+  top: 1.6rem;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--color-brass-light),
+    rgb(184 149 90 / 0.5) 60%,
+    transparent
+  );
+}
+
+.tierMark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  border: 1px solid var(--color-brass);
   border-radius: 50%;
+  background: var(--color-panel);
+}
+
+.tierIndex {
+  color: var(--color-brass-light);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.tierLabel {
+  margin-top: 2.4rem;
+  font-size: 1.4rem;
+  font-weight: 560;
+}
+
+.tierTiming {
+  margin-top: 0.3rem;
+  color: var(--color-panel-muted);
+  font-size: 1rem;
+}
+
+.tierNotes {
+  margin-top: 1.8rem;
+  font-family: var(--font-serif);
+  font-size: 2.6rem;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+/* ---------- The character ---------- */
+
+.character {
+  padding: 9rem var(--gutter);
+}
+
+.characterHead .sectionTitle {
+  margin-top: 1.2rem;
+}
+
+.traits {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.6rem;
+  margin-top: 4rem;
+}
+
+.trait {
+  display: flex;
+  flex-direction: column;
+  padding: 3.2rem;
+  border-radius: 0.6rem;
+  background: var(--color-cream);
+}
+
+.trait dt {
+  color: var(--color-subtle);
+  font-size: 0.85rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.traitValue {
+  margin-top: 1.2rem;
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 3.4rem;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.traitText {
+  margin-top: auto;
+  padding-top: 2.4rem;
+  color: var(--color-muted);
+  font-size: 1.15rem;
+  line-height: 1.55;
+}
+
+.meter {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.6rem;
+}
+
+.meter span {
+  width: 3.2rem;
+  height: 0.4rem;
+  border-radius: 99rem;
+  background: rgb(46 15 5 / 0.12);
+}
+
+.meter span[data-on] {
   background: var(--color-brass);
 }
 
-.sections {
-  display: flex;
-  flex-direction: column;
-  gap: 6.4rem;
-  padding: 8rem var(--gutter-wide) 9rem;
+/* ---------- The house ---------- */
+
+.houseBand {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  background: var(--color-cream);
 }
 
-.details p + p {
+.houseMedia {
+  position: relative;
+  min-height: min(80svh, 72rem);
+  overflow: hidden;
+}
+
+.houseImage {
+  object-fit: cover;
+}
+
+.houseBody {
+  align-self: center;
+  max-width: 60rem;
+  padding: 8rem var(--gutter) 8rem 6.4rem;
+}
+
+.houseTitle {
+  margin-top: 1.4rem;
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 7.2rem;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+.houseTagline {
+  margin-top: 1.2rem;
+  color: #6b4a33;
+  font-family: var(--font-serif);
+  font-size: 1.9rem;
+  font-style: italic;
+}
+
+.houseStory {
+  margin: 2rem 0 3.2rem;
+  color: var(--color-muted);
+  font-size: 1.3rem;
+  line-height: 1.65;
+}
+
+/* ---------- Details and more ---------- */
+
+.details {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 4rem;
+  padding: 9rem var(--gutter) 6rem;
+}
+
+.accordion p + p {
   margin-top: 1rem;
 }
 
-.details a {
+.accordion a {
   color: var(--color-ink);
   text-decoration: underline;
   text-underline-offset: 0.2rem;
 }
 
-.relatedHeading {
-  margin-bottom: 2.8rem;
-  color: var(--color-ink);
-  font-family: var(--font-serif);
-  font-size: 3.6rem;
-  font-weight: 400;
-  letter-spacing: -0.02em;
+.related {
+  padding: 4rem var(--gutter) 9rem;
 }
 
+.related .sectionTitle {
+  margin-bottom: 3.2rem;
+}
+
+/* ==========================================================================
+   Phones: the picture full-bleed at the top, then the buying column; the
+   add-to-bag bar follows you down (ProductPurchase).
+   ========================================================================== */
+
 @media (width < 960px) {
-  .breadcrumb {
-    padding: 1.6rem;
-    font-size: 1.25rem;
+  .sectionTitle {
+    font-size: 3.6rem;
+  }
+
+  .eyebrow,
+  .eyebrowLight {
+    font-size: 1.05rem;
   }
 
   .hero {
     grid-template-columns: minmax(0, 1fr);
-    gap: 2.4rem;
-    padding: 0 1.6rem;
+    gap: 0;
+    padding: 0 0 5.6rem;
+  }
+
+  .stage {
+    position: relative;
+    top: 0;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
   }
 
   .info {
-    position: static;
-    padding-top: 0;
+    padding: 2rem 1.6rem 0;
   }
 
-  .brand {
+  .breadcrumb {
     font-size: 1.2rem;
   }
 
-  .name {
-    font-size: clamp(4rem, 12vw, 5.2rem);
+  .house {
+    margin-top: 2.4rem;
+    font-size: 1.1rem;
   }
 
-  .meta,
-  .assurances {
-    font-size: 1.35rem;
+  .name {
+    margin-top: 1rem;
+    font-size: clamp(4.4rem, 13vw, 6rem);
+  }
+
+  .concentration {
+    font-size: 1.9rem;
+  }
+
+  .chips li {
+    height: 3.2rem;
+    padding: 0 1.4rem;
+    font-size: 1.2rem;
   }
 
   .description {
     font-size: 1.5rem;
   }
 
-  .sections {
-    gap: 4.8rem;
-    padding: 5.6rem 1.6rem 6rem;
+  .glance {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.2rem;
   }
 
-  .relatedHeading {
+  .glance div {
+    display: grid;
+    grid-template-columns: 10rem minmax(0, 1fr);
+    align-items: baseline;
+    gap: 1.2rem;
+  }
+
+  .glance dt {
+    font-size: 1.05rem;
+  }
+
+  .glance dd {
+    margin-top: 0;
+    font-size: 1.6rem;
+  }
+
+  .assurances {
+    font-size: 1.35rem;
+  }
+
+  .assuranceIcon {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+
+  .advisor {
+    font-size: 1.4rem;
+  }
+
+  .unfolds {
+    padding: 6.4rem 1.6rem;
+  }
+
+  .unfoldsTitle {
+    font-size: 4.2rem;
+  }
+
+  /* The line of time runs down the page instead. */
+  .timeline {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3.6rem;
+    margin-top: 4rem;
+  }
+
+  .timeline::before {
+    top: 0;
+    right: auto;
+    bottom: 0;
+    left: 1.6rem;
+    width: 1px;
+    height: auto;
+    background: linear-gradient(
+      180deg,
+      var(--color-brass-light),
+      rgb(184 149 90 / 0.4) 70%,
+      transparent
+    );
+  }
+
+  .tier {
+    position: relative;
+    padding-left: 5.2rem;
+  }
+
+  .tierMark {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .tierLabel {
+    margin-top: 0.4rem;
+    font-size: 1.6rem;
+  }
+
+  .tierTiming {
+    font-size: 1.3rem;
+  }
+
+  .tierNotes {
+    margin-top: 1rem;
+    font-size: 2.2rem;
+  }
+
+  .character {
+    padding: 6.4rem 1.6rem;
+  }
+
+  .traits {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.2rem;
+    margin-top: 2.8rem;
+  }
+
+  .trait {
+    padding: 2.4rem;
+  }
+
+  .trait dt {
+    font-size: 1.1rem;
+  }
+
+  .traitValue {
     font-size: 3rem;
+  }
+
+  .traitText {
+    padding-top: 1.4rem;
+    font-size: 1.4rem;
+  }
+
+  .houseBand {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .houseMedia {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+  }
+
+  .houseBody {
+    padding: 4rem 1.6rem 5.6rem;
+  }
+
+  .houseTitle {
+    font-size: 4.8rem;
+  }
+
+  .houseTagline {
+    font-size: 1.8rem;
+  }
+
+  .houseStory {
+    font-size: 1.5rem;
+  }
+
+  .details {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+    padding: 6.4rem 1.6rem 3.2rem;
+  }
+
+  .related {
+    padding: 3.2rem 1.6rem 8rem;
+  }
+
+  .related .sectionTitle {
+    margin-bottom: 2.4rem;
   }
 }

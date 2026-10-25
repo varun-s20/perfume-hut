@@ -15,12 +15,11 @@ import { useAvaSpeech } from './useAvaSpeech';
 
 /*
  * Ava leading the walk round the floor. Only rendered when `flags.ava` is
- * on (lib/flags.ts); while she's off, the Placard speaks for each stop.
+ * on (lib/flags.ts); while she's off, the floor's captions speak for each stop.
  */
 
 function lineFor(stop: Stop, cabinets: readonly CabinetData[]): string {
   if (stop.kind === 'intro') return ava.floor.intro.line;
-  if (stop.kind === 'outro') return ava.floor.outro.line;
   const cabinet = cabinets[stop.cabinet]!;
   const pick = cabinet.bottles.find((bottle) => bottle.bestseller) ?? cabinet.bottles[0];
   const { first, last, houses } = ava.floor;
@@ -36,7 +35,6 @@ function lineFor(stop: Stop, cabinets: readonly CabinetData[]): string {
 function poseFor(stop: Stop, moving: boolean): AvaPoseName {
   if (moving) return ava.floor.walkPose;
   if (stop.kind === 'intro') return ava.floor.intro.pose;
-  if (stop.kind === 'outro') return ava.floor.outro.pose;
   return ava.floor.housePoses[stop.cabinet % ava.floor.housePoses.length]!;
 }
 
@@ -121,7 +119,7 @@ export function AvaGuide({
               <ArrowRightIcon className={styles.primaryArrow} />
             </button>
           )}
-          {(cabinet || stop.kind === 'outro' || still) && (
+          {(cabinet || still) && (
             <Link
               href={ava.floor.browseAll.href}
               className={styles.secondary}

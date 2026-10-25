@@ -1,0 +1,39 @@
+/* A soft studio sweep behind the bottle, in the store's rose and slate. */
+.viewer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 60% 46% at 50% 44%, rgb(255 250 244 / 0.95), transparent 70%),
+    radial-gradient(ellipse 90% 60% at 50% 100%, rgb(201 158 165 / 0.35), transparent 70%),
+    linear-gradient(180deg, #f1e7e1, #e6d6d2);
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.viewer:active {
+  cursor: grabbing;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-out);
+}
+
+.viewer[data-status='ready'] .canvas {
+  opacity: 1;
+}
+
+.failed {
+  position: absolute;
+  inset: auto 0 45%;
+  color: var(--color-subtle);
+  font-size: 1.1rem;
+  text-align: center;
+}

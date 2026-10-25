@@ -1,14 +1,29 @@
+/* One line of pill · tagline · CTA, then the wordmark across the page. */
 .hero {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-areas:
+    'pill tagline cta'
+    'title title title';
   align-items: center;
-  padding: 1.6rem var(--gutter) 1.8rem;
+  column-gap: 2.4rem;
+  padding: 1.6rem var(--gutter) 0.6rem;
   background: var(--color-bg);
   text-align: center;
 }
 
+.pill {
+  grid-area: pill;
+  justify-self: start;
+}
+
+.cta {
+  grid-area: cta;
+  justify-self: end;
+}
+
 .tagline {
-  margin-top: 0.8rem;
+  grid-area: tagline;
   color: #000;
   font-family: var(--font-serif);
   font-size: 2.06rem;
@@ -18,7 +33,8 @@
 
 /* The wordmark rises out of its own line box once, as the page arrives. */
 .title {
-  margin-top: 0.4rem;
+  grid-area: title;
+  margin-top: 0.6rem;
   overflow: hidden;
   /* Room for descenders inside the mask. */
   padding-bottom: 0.04em;
@@ -38,37 +54,6 @@
   margin-right: -0.0696em;
 }
 
-.cta {
-  display: flex;
-  align-items: flex-end;
-  gap: 4.4rem;
-  margin-top: 0.9rem;
-}
-
-.price {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.priceLabel {
-  color: var(--color-subtle);
-  font-size: 1.1rem;
-  font-weight: 450;
-  letter-spacing: -0.01em;
-  line-height: 1.3rem;
-}
-
-.priceValue {
-  margin-top: 0.54rem;
-  color: #000;
-  font-size: 2.12rem;
-  font-weight: 420;
-  letter-spacing: -0.02em;
-  line-height: 2.2rem;
-  font-variant-numeric: tabular-nums;
-}
-
 /* ---------- Arrival: a short, one-time stagger ---------- */
 
 @media (prefers-reduced-motion: no-preference) {
@@ -83,7 +68,7 @@
   }
 
   .cta {
-    animation-delay: 360ms;
+    animation-delay: 160ms;
   }
 
   .titleText {
@@ -104,38 +89,30 @@
   }
 }
 
+/* Phones: pill and CTA share the top line, the tagline sits under them. */
 @media (width < 960px) {
   .hero {
-    padding-top: 1.6rem;
-    padding-bottom: 2.8rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'pill cta'
+      'tagline tagline'
+      'title title';
+    column-gap: 1.2rem;
+    padding-top: 1.2rem;
+    padding-bottom: 0.4rem;
   }
 
   .tagline {
+    justify-self: center;
     max-width: 34rem;
-    margin-top: 1.6rem;
-    padding-inline: 2.4rem;
+    margin-top: 2rem;
+    padding-inline: 1.6rem;
     font-size: 1.9rem;
     line-height: 2.5rem;
   }
 
   .title {
-    margin-top: 1.4rem;
+    margin-top: 1.2rem;
     font-size: 14.6vw;
-  }
-
-  .cta {
-    gap: 2.4rem;
-    margin-top: 2.2rem;
-  }
-
-  .priceLabel {
-    font-size: 1.3rem;
-    line-height: 1.6rem;
-  }
-
-  .priceValue {
-    margin-top: 0.2rem;
-    font-size: 2.4rem;
-    line-height: 2.6rem;
   }
 }

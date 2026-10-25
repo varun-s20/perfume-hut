@@ -17,7 +17,7 @@ export function BagButton({ className }: { className?: string }) {
       aria-haspopup="dialog"
       aria-label={count > 0 ? `Bag, ${count} ${count === 1 ? 'item' : 'items'}` : 'Bag, empty'}
     >
-      Bag
+      <span className={styles.text}>Bag</span>
       <span className={styles.iconWrap}>
         <BagIcon className={styles.icon} />
         {count > 0 && (

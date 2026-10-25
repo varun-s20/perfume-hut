@@ -56,8 +56,6 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scroll-behavior: smooth;
-  /* Only the store tour has snap points: its stops become gentle resting places. */
-  scroll-snap-type: y proximity;
 }
 
 @media (width < 960px) {
@@ -332,26 +330,6 @@ button {
 
 ::view-transition-image-pair(.aisle-morph) {
   animation-name: vt-via-blur;
-}
-
-/* Stepping into a cabinet: the case on the floor grows into the room. */
-::view-transition-group(.cabinet-morph) {
-  z-index: 20;
-  animation-duration: var(--duration-aisle);
-  animation-timing-function: var(--ease-in-out);
-}
-
-::view-transition-image-pair(.cabinet-morph) {
-  animation-name: vt-via-blur;
-}
-
-/* The room around it fades up (and away) with a touch of blur. */
-::view-transition-new(.room-in) {
-  animation: 480ms var(--ease-out) both vt-fade;
-}
-
-::view-transition-old(.room-out) {
-  animation: var(--duration-exit) var(--ease-out) both vt-fade reverse;
 }
 
 /* ==========================================================================

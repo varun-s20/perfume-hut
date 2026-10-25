@@ -2,20 +2,23 @@
   display: none;
 }
 
+/* ==========================================================================
+   The sheet: cream, dropping from the top like a blind, then its contents
+   rise in, one after another.
+   ========================================================================== */
+
 .dialog {
   width: 100%;
   max-width: none;
   height: 100dvh;
   max-height: none;
   margin: 0;
-  padding: 9rem 2.4rem 3rem;
+  padding: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   border: 0;
-  background: var(--color-bg);
+  background: var(--color-cream);
   color: var(--color-ink);
-}
-
-.dialog[open] {
-  animation: menu-in 0.35s var(--ease-out);
 }
 
 .dialog::backdrop {
@@ -27,50 +30,410 @@
   overflow: hidden;
 }
 
-.close {
-  position: absolute;
-  top: 1rem;
-  left: 1.6rem;
+@media (prefers-reduced-motion: no-preference) {
+  .dialog[open] {
+    animation: drop 0.5s var(--ease-drawer) both;
+  }
+
+  .dialog[open] .body > :not(nav),
+  .dialog[open] .primary > li {
+    animation: rise 0.55s var(--ease-out) calc(var(--i, 0) * 40ms + 140ms) both;
+  }
+
+  .dialog[data-closing] {
+    animation: leave 0.22s var(--ease-out) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog[open] {
+    animation: fade 0.2s ease both;
+  }
+}
+
+@keyframes drop {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.2rem);
+  }
+}
+
+@keyframes leave {
+  to {
+    opacity: 0;
+    transform: translateY(-0.8rem);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ---------- Top bar: the header's own layout, so the menu button becomes close in place ---------- */
+
+.bar {
+  position: sticky;
+  z-index: 1;
+  top: 0;
   display: grid;
+  grid-template-columns: 4.4rem 1fr 4.4rem;
+  align-items: center;
+  height: 5.6rem;
+  padding-inline: 1.6rem;
+  background: rgb(247 241 234 / 0.92);
+  backdrop-filter: blur(12px);
+}
+
+.barButton {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  border-radius: 50%;
+  color: var(--color-ink);
+  transition: transform var(--duration-press) var(--ease-out);
+}
+
+.barButton:active {
+  transform: scale(0.92);
+}
+
+/* Each button's icon sits where the header's does: close over the menu button, the bag over the bag. */
+.barButton:first-child {
   place-items: center start;
-  width: 4rem;
-  height: 4rem;
+}
+
+.barButton:last-child {
+  place-items: center end;
 }
 
 .closeIcon {
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 1.7rem;
+  height: 1.7rem;
 }
 
-.list {
+.bagIcon {
+  width: 2rem;
+  height: 1.8rem;
+}
+
+.badge {
+  position: absolute;
+  top: 0.4rem;
+  right: -0.8rem;
+  display: grid;
+  place-items: center;
+  min-width: 1.8rem;
+  height: 1.8rem;
+  padding: 0 0.4rem;
+  border-radius: 99rem;
+  background: var(--color-coral);
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.logo {
+  justify-self: center;
+  display: grid;
+  place-items: center;
+  min-width: 4.4rem;
+  min-height: 4.4rem;
+  font-family: var(--font-serif);
+  font-size: 2.8rem;
+  letter-spacing: -0.12em;
+  line-height: 1;
+}
+
+/* ---------- Contents ---------- */
+
+.body {
   display: flex;
   flex-direction: column;
-  gap: 2.2rem;
+  gap: 3.2rem;
+  padding: 1.2rem 1.6rem calc(3.2rem + env(safe-area-inset-bottom));
 }
 
-.link {
+.search {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 5rem;
+  padding: 0 1.8rem;
+  border: 1px solid rgb(46 15 5 / 0.12);
+  border-radius: 99rem;
+  background: #fff;
+}
+
+.search:focus-within {
+  border-color: var(--color-espresso);
+}
+
+.searchIcon {
+  width: 1.7rem;
+  height: 1.7rem;
+  color: var(--color-ink);
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: none;
+  color: var(--color-ink);
+  /* 16px or more, so iOS doesn't zoom into the field. */
+  font-size: 1.6rem;
+  outline: none;
+}
+
+.searchInput::placeholder {
+  color: var(--color-subtle);
+}
+
+.searchInput::-webkit-search-cancel-button {
+  display: none;
+}
+
+/* The main rooms: numbered, in display type, each a full-width row. */
+.primary {
+  border-top: 1px solid rgb(46 15 5 / 0.12);
+}
+
+.primaryLink {
+  display: grid;
+  grid-template-columns: 3.6rem minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: 6.4rem;
+  border-bottom: 1px solid rgb(46 15 5 / 0.12);
+  transition: transform var(--duration-press) var(--ease-out);
+}
+
+.primaryLink:active {
+  transform: scale(0.98);
+}
+
+.primaryIndex {
+  color: var(--color-brass);
+  font-size: 1.2rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.primaryLabel {
   font-family: var(--font-serif);
-  font-size: 3.4rem;
+  font-size: 2.8rem;
+  letter-spacing: -0.02em;
   line-height: 1.1;
 }
 
-@keyframes menu-in {
-  from {
-    opacity: 0;
-    transform: translateY(-1rem);
-  }
+.primaryArrow {
+  width: 1.5rem;
+  height: 1.3rem;
+  color: var(--color-subtle);
+}
+
+.groupHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.groupTitle {
+  color: var(--color-subtle);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.groupLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 4.4rem;
+  color: var(--color-ink);
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.groupArrow {
+  width: 1.2rem;
+  height: 1rem;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1.4rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 4.4rem;
+  padding: 0 1.8rem;
+  border: 1px solid rgb(46 15 5 / 0.14);
+  border-radius: 99rem;
+  background: #fff;
+  font-size: 1.4rem;
+  font-weight: 560;
+  transition: transform var(--duration-press) var(--ease-out);
+}
+
+.chip:active {
+  transform: scale(0.97);
+}
+
+/* The aisles: each house in its own arched doorway, in a row you swipe along. */
+.aisles {
+  display: flex;
+  gap: 1.2rem;
+  margin: 0.6rem -1.6rem 0;
+  padding: 0 1.6rem 0.4rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1.6rem;
+  scrollbar-width: none;
+}
+
+.aisles li {
+  flex: none;
+  scroll-snap-align: start;
+}
+
+.aisle {
+  display: grid;
+  gap: 0.3rem;
+  width: 11.2rem;
+  transition: transform var(--duration-press) var(--ease-out);
+}
+
+.aisle:active {
+  transform: scale(0.97);
+}
+
+.arch {
+  position: relative;
+  display: block;
+  height: 14.4rem;
+  margin-bottom: 0.8rem;
+  padding: 0.4rem 0.4rem 0;
+  border: 1px solid var(--color-brass);
+  border-bottom: 0;
+  border-radius: 99rem 99rem 0 0;
+}
+
+.arch::after {
+  content: '';
+  position: absolute;
+  right: -0.6rem;
+  bottom: 0;
+  left: -0.6rem;
+  height: 1px;
+  background: var(--color-brass);
+}
+
+.archImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 99rem 99rem 0 0;
+  object-fit: cover;
+}
+
+.aisleNumber {
+  color: var(--color-brass);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.aisleName {
+  font-family: var(--font-serif);
+  font-size: 1.7rem;
+  line-height: 1.15;
+}
+
+.foot {
+  display: grid;
+  gap: 1.6rem;
+}
+
+.live {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2rem;
+  padding: 1.8rem 2rem;
+  border-radius: 1.6rem;
+  background: var(--color-panel);
+  color: #fff;
+}
+
+.liveDot {
+  flex: none;
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-top: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-coral);
+  box-shadow: 0 0 0 0.4rem rgb(232 101 95 / 0.25);
+}
+
+.liveTitle {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  line-height: 1.2;
+}
+
+.liveText {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--color-panel-muted);
+  font-size: 1.3rem;
+}
+
+.help {
+  display: flex;
+  gap: 2.4rem;
+}
+
+.helpLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 4.4rem;
+  color: var(--color-muted);
+  font-size: 1.35rem;
+  text-decoration: underline;
+  text-decoration-color: rgb(46 15 5 / 0.2);
+  text-underline-offset: 0.3rem;
 }
 
 @media (width < 960px) {
   .toggle {
     display: grid;
     place-items: center start;
-    width: 4rem;
-    height: 4rem;
+    width: 4.4rem;
+    height: 4.4rem;
   }
 
   .toggleIcon {
-    width: 2rem;
-    height: 1.2rem;
+    width: 2.2rem;
+    height: 1.3rem;
   }
 }

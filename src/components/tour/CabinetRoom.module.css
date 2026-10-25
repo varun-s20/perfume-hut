@@ -1,6 +1,7 @@
 /* ==========================================================================
-   Cabinet room: the floor softens behind you and the case stands open in
-   the light, with the house's panel beside it. Light, like the boutique.
+   Cabinet room: you've walked up to the case and its doors stand open (the
+   store's canvas draws that). Over it, the house's panel on a wash of cream,
+   like the boutique's light, and the way back to the floor.
    ========================================================================== */
 
 .room {
@@ -9,16 +10,73 @@
   inset: 0;
   overflow: hidden;
   color: var(--color-ink);
+  transition: opacity 0.22s var(--ease-out);
 }
 
-/* The floor behind, blurred; a pool of light where the case stands, and floor under it. */
-.backdrop {
+.room[data-leaving] {
+  opacity: 0;
+}
+
+/* The canvas under the whole room: pointing and tapping reach the shelves through this. */
+.shelves {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse 34% 62% at 70% 42%, rgb(255 226 176 / 0.6), transparent 72%),
-    linear-gradient(0deg, rgb(214 200 182 / 0.85), transparent 22%), rgb(244 238 229 / 0.93);
-  backdrop-filter: blur(24px);
+  /* Cream on the panel's side, fading out before the case. */
+  background: linear-gradient(
+    90deg,
+    rgb(247 241 234 / 0.97) 0,
+    rgb(247 241 234 / 0.92) 30%,
+    rgb(247 241 234 / 0.5) 42%,
+    transparent 54%
+  );
+  animation: fade-in 0.7s var(--ease-out) 0.25s both;
+}
+
+.shelves[data-pointing] {
+  cursor: pointer;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* A bottle's name follows the pointer while you're on it. */
+.tag {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  display: grid;
+  gap: 0.2rem;
+  margin: -6.4rem 0 0 1.6rem;
+  padding: 0.9rem 1.2rem;
+  border: 1px solid rgb(184 149 90 / 0.55);
+  border-radius: 0.6rem;
+  background: rgb(255 253 248 / 0.94);
+  box-shadow: 0 1.6rem 3rem -1.6rem rgb(30 20 20 / 0.5);
+  pointer-events: none;
+  white-space: nowrap;
+  animation: tag-in 0.2s var(--ease-out) both;
+}
+
+@keyframes tag-in {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+
+.tagName {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  line-height: 1.1;
+}
+
+.tagMeta {
+  color: var(--color-subtle);
+  font-size: 0.95rem;
 }
 
 .close {
@@ -31,16 +89,17 @@
   gap: 0.8rem;
   height: 3.6rem;
   padding: 0 1.6rem 0 1.2rem;
-  border: 1px solid rgb(46 15 5 / 0.2);
+  border: 1px solid rgb(255 255 255 / 0.4);
   border-radius: 99rem;
-  background: rgb(255 255 255 / 0.7);
+  background: rgb(255 253 248 / 0.88);
   color: var(--color-ink);
   font-size: 1rem;
   font-weight: 560;
   letter-spacing: 0.04em;
+  backdrop-filter: blur(8px);
+  animation: fade-in 0.5s var(--ease-out) 0.4s both;
   transition:
     transform var(--duration-press) var(--ease-out),
-    border-color 0.2s ease,
     background-color 0.2s ease;
 }
 
@@ -55,52 +114,8 @@
 
 @media (hover: hover) and (pointer: fine) {
   .close:hover {
-    border-color: var(--color-espresso);
     background: #fff;
   }
-}
-
-/* ---------- The open case, in 3D ---------- */
-
-/* The case is measured in this box: as large as fits, keeping its proportions. */
-.stage {
-  --u: min(calc(100cqh / 88), calc(100cqw / 44));
-  position: absolute;
-  z-index: 2;
-  top: 12vh;
-  right: 10vw;
-  bottom: 6vh;
-  width: min(40vw, 60vh);
-  container-type: size;
-  perspective: 190vh;
-  /* Seen from a little to the left, where you stand reading the panel. */
-  perspective-origin: 10% 40%;
-  /* The case's bottles take the pointer themselves (see CabinetBox). */
-  pointer-events: none;
-}
-
-.tilt {
-  display: grid;
-  place-items: center;
-  height: 100%;
-  transform-style: preserve-3d;
-}
-
-/* The case's shadow on the floor. */
-.shadow {
-  position: absolute;
-  bottom: -2%;
-  left: 50%;
-  width: calc(64 * var(--u));
-  height: calc(9 * var(--u));
-  translate: -50% 0;
-  border-radius: 50%;
-  background: radial-gradient(
-    ellipse 50% 50%,
-    rgb(70 40 20 / 0.38),
-    rgb(70 40 20 / 0.12) 55%,
-    transparent 75%
-  );
 }
 
 /* ---------- The house panel ---------- */
@@ -109,17 +124,19 @@
   position: absolute;
   z-index: 3;
   top: 50%;
-  left: 8vw;
-  width: min(42rem, 36vw);
+  left: 7vw;
+  width: min(42rem, 34vw);
+  max-height: calc(100svh - 8rem);
+  overflow-y: auto;
   translate: 0 -50%;
-  animation: panel-in 700ms var(--ease-out) 450ms both;
+  scrollbar-width: none;
+  animation: panel-in 0.7s var(--ease-out) 0.5s both;
 }
 
 @keyframes panel-in {
   from {
     opacity: 0;
     transform: translateY(1.2rem);
-    filter: blur(4px);
   }
 }
 
@@ -149,36 +166,68 @@
 }
 
 .story {
-  margin-top: 1.6rem;
+  margin-top: 1.4rem;
   color: var(--color-muted);
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   line-height: 1.6;
 }
 
-.facts {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.2rem;
+/* What's on the shelves, as a list you can choose from (and that points at the bottle). */
+.shelf {
   margin-top: 2rem;
-  padding: 1.6rem 0;
-  border-block: 1px solid rgb(184 149 90 / 0.45);
+  padding-top: 1.4rem;
+  border-top: 1px solid rgb(184 149 90 / 0.45);
 }
 
-.facts dt {
+.shelfHeading {
+  display: flex;
+  justify-content: space-between;
   color: var(--color-subtle);
   font-size: 0.8rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
-.facts dd {
-  margin-top: 0.3rem;
+.bottles {
+  margin-top: 0.6rem;
+}
+
+.bottle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 1rem;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid rgb(46 15 5 / 0.08);
+}
+
+.bottleName {
   font-family: var(--font-serif);
-  font-size: 1.7rem;
+  font-size: 1.5rem;
+  line-height: 1.15;
+}
+
+.bottleMeta {
+  margin-left: 0.6rem;
+  color: var(--color-subtle);
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+}
+
+.bottlePrice {
+  font-size: 1.05rem;
+  font-weight: 560;
+  font-variant-numeric: tabular-nums;
+}
+
+.bottleArrow {
+  width: 1rem;
+  height: 0.85rem;
+  transition: transform 0.3s var(--ease-out);
 }
 
 .hint {
-  margin-top: 1.6rem;
+  margin-top: 1.4rem;
   color: var(--color-subtle);
   font-size: 1rem;
 }
@@ -231,87 +280,102 @@
     background: var(--color-espresso-hover);
   }
 
-  .primary:hover .arrow {
+  .primary:hover .arrow,
+  .bottle:hover .bottleArrow {
     transform: translateX(0.3rem);
   }
 }
 
-/* With Ava on, she stands at the left and the case keeps the right. */
-.room[data-ava] .stage {
-  right: 5vw;
-  perspective-origin: 0% 40%;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .panel {
-    animation: panel-in 1ms both;
+  .panel,
+  .shelves,
+  .close {
+    animation-duration: 1ms;
+    animation-delay: 0ms;
   }
 }
 
 /* ==========================================================================
-   Phones: the case above, the panel below it.
+   Phones: the case in the top half, the panel as a sheet beneath it.
    ========================================================================== */
 
 @media (width < 960px) {
+  .shelves {
+    background: none;
+  }
+
   .close {
     top: 1.2rem;
     right: 1.2rem;
-    height: 3.8rem;
-    font-size: 1.1rem;
+    height: 4.4rem;
+    font-size: 1.2rem;
   }
 
-  .stage {
-    top: 6.4rem;
-    right: 1.6rem;
-    bottom: auto;
-    left: 1.6rem;
-    width: auto;
-    height: 50svh;
-    perspective-origin: 50% 30%;
-  }
-
-  .room[data-ava] .stage {
-    right: 1.6rem;
-    perspective-origin: 50% 30%;
+  .tag {
+    display: none;
   }
 
   .panel {
-    top: calc(6.4rem + 50svh + 2.4rem);
+    top: auto;
     right: 0;
     bottom: 0;
     left: 0;
     width: auto;
-    padding: 0 1.6rem 2.4rem;
-    overflow-y: auto;
+    max-height: 48svh;
+    padding: 2.4rem 1.6rem calc(2.4rem + env(safe-area-inset-bottom));
+    border-radius: 2rem 2rem 0 0;
+    background: var(--color-cream);
+    box-shadow: 0 -2rem 4rem -2rem rgb(10 16 24 / 0.5);
     translate: none;
+    animation-name: sheet-in;
+  }
+
+  @keyframes sheet-in {
+    from {
+      transform: translateY(100%);
+    }
   }
 
   .eyebrow {
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
 
   .title {
     margin-top: 0.6rem;
-    font-size: 3.6rem;
+    font-size: 4rem;
   }
 
   .tagline {
     margin-top: 0.6rem;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
 
   .story {
     margin-top: 1rem;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
   }
 
-  .facts {
-    margin-top: 1.4rem;
-    padding: 1.2rem 0;
+  .shelfHeading {
+    font-size: 1.05rem;
   }
 
-  .facts dt {
-    font-size: 0.95rem;
+  .bottle {
+    min-height: 5.2rem;
+    padding: 1rem 0;
+  }
+
+  .bottleName {
+    font-size: 1.8rem;
+  }
+
+  .bottleMeta {
+    display: block;
+    margin: 0.2rem 0 0;
+    font-size: 1.2rem;
+  }
+
+  .bottlePrice {
+    font-size: 1.4rem;
   }
 
   .hint {
@@ -319,11 +383,12 @@
   }
 
   .primary {
-    height: 3.8rem;
-    font-size: 1.2rem;
+    height: 4.6rem;
+    padding: 0 2rem;
+    font-size: 1.4rem;
   }
 
   .secondary {
-    font-size: 1.15rem;
+    font-size: 1.35rem;
   }
 }

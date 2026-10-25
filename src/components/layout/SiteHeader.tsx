@@ -1,10 +1,19 @@
 import Link from 'next/link';
 import { BagButton } from '@/components/cart/BagButton';
-import { SearchIcon } from '@/components/icons';
-import { brandHref, routes, shopHref } from '@/content/routes';
-import { getBrands } from '@/lib/catalog';
+import { brandHref, productHref, routes, shopHref } from '@/content/routes';
+import {
+  getAisleNumber,
+  getBrandName,
+  getBrands,
+  getProducts,
+  getStartingPrice,
+} from '@/lib/catalog';
 import { cx } from '@/lib/cx';
-import { MobileMenu } from './MobileMenu';
+import { formatMoney } from '@/lib/money';
+import { searchText } from '@/lib/search';
+import { HeaderSearch, type SearchEntry } from './HeaderSearch';
+import { HeaderShell } from './HeaderShell';
+import { type MenuHouse, MobileMenu } from './MobileMenu';
 import styles from './SiteHeader.module.css';
 import { ShopMenu } from './ShopMenu';
 
@@ -15,34 +24,52 @@ const collections = [
   { label: 'Unisex', href: shopHref({ for: 'unisex' }) },
 ];
 
+const searchSuggestions = ['Vanilla', 'Rose', 'Fresh', 'Dior', 'Chanel', 'For him'];
+
 export async function SiteHeader() {
-  const brands = (await getBrands()).map((brand) => ({
+  const [allBrands, products] = await Promise.all([getBrands(), getProducts()]);
+  const brands = allBrands.map((brand) => ({
     label: brand.name,
     href: brandHref(brand.slug),
   }));
 
-  const mobileLinks = [
-    { label: 'Shop all', href: routes.shop },
-    { label: 'Brands', href: routes.brands },
-    { label: 'Search', href: routes.search },
-    { label: 'About', href: routes.about },
-    { label: 'Contact', href: routes.contact },
-    { label: 'FAQ', href: routes.faq },
-  ];
+  // The whole shelf is small enough to search in the browser as you type.
+  const searchEntries: SearchEntry[] = products.map((product) => {
+    const brand = getBrandName(product.brandSlug);
+    return {
+      slug: product.slug,
+      href: productHref(product.slug),
+      brand,
+      name: product.name,
+      concentration: product.concentration,
+      price: formatMoney(getStartingPrice(product)),
+      image: product.image,
+      text: searchText(product, brand),
+    };
+  });
+
+  // The phone menu shows every aisle in its own arched doorway.
+  const houses: MenuHouse[] = allBrands.map((brand) => ({
+    slug: brand.slug,
+    name: brand.name,
+    href: brandHref(brand.slug),
+    aisle: getAisleNumber(brand.slug),
+    image: brand.image,
+    imagePosition: brand.imagePosition,
+  }));
+
+  const search = <HeaderSearch entries={searchEntries} suggestions={searchSuggestions} />;
 
   return (
-    <header className={styles.header}>
-      <MobileMenu links={mobileLinks} />
+    <HeaderShell className={styles.header}>
+      <MobileMenu houses={houses} />
 
       <nav className={styles.primary} aria-label="Primary">
         <ShopMenu triggerClassName={styles.link} collections={collections} brands={brands} />
         <Link href={routes.brands} className={styles.link}>
           Brands
         </Link>
-        <Link href={routes.search} className={styles.link}>
-          Search
-          <SearchIcon className={styles.searchIcon} />
-        </Link>
+        {search}
       </nav>
 
       <Link href={routes.home} className={styles.logo} aria-label="Perfume Hut home">
@@ -56,8 +83,10 @@ export async function SiteHeader() {
         <Link href={routes.contact} className={cx(styles.link, styles.desktopOnly)}>
           Contact
         </Link>
+        {/* On phones the primary nav folds into the menu, so search sits by the bag. */}
+        <div className={styles.mobileOnly}>{search}</div>
         <BagButton />
       </nav>
-    </header>
+    </HeaderShell>
   );
 }

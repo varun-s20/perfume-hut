@@ -64,13 +64,21 @@
 
 @media (width < 960px) {
   .button {
+    justify-content: flex-end;
     gap: 0.6rem;
+    min-width: 4.4rem;
+    min-height: 4.4rem;
     font-size: 1.25rem;
   }
 
+  /* Phones: the icon alone (the button's label still says "Bag"). */
+  .text {
+    display: none;
+  }
+
   .icon {
-    width: 1.4rem;
-    height: 1.3rem;
+    width: 2rem;
+    height: 1.8rem;
   }
 
   .badge {

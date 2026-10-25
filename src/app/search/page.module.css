@@ -92,6 +92,10 @@
   }
 
   .suggestions a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 4.4rem;
+    padding: 0 1.6rem;
     font-size: 1.3rem;
   }
 

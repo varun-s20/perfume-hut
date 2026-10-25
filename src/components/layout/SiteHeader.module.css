@@ -39,9 +39,8 @@
   }
 }
 
-.searchIcon {
-  width: 0.95rem;
-  height: 0.95rem;
+.mobileOnly {
+  display: none;
 }
 
 .logo {
@@ -54,10 +53,33 @@
   margin-right: -0.12em;
 }
 
+/*
+ * Phones: the header sticks, frosts over the page once you scroll, slips away
+ * as you scroll down to read and returns the moment you scroll up (HeaderShell
+ * sets the state). The logo sits dead centre between two equal sides.
+ */
 @media (width < 960px) {
   .header {
-    grid-template-columns: 4rem 1fr auto;
+    position: sticky;
+    top: 0;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    height: 5.6rem;
     padding-inline: 1.6rem;
+    transition:
+      transform 0.3s var(--ease-out),
+      background-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .header[data-scrolled='true'] {
+    background: rgb(255 255 255 / 0.86);
+    box-shadow: 0 1px 0 rgb(46 15 5 / 0.08);
+    backdrop-filter: blur(14px) saturate(1.2);
+  }
+
+  .header[data-hidden='true'] {
+    transform: translateY(-100%);
+    transition-duration: 0.25s;
   }
 
   .primary,
@@ -66,7 +88,11 @@
   }
 
   .secondary {
-    gap: 0;
+    gap: 0.4rem;
+  }
+
+  .mobileOnly {
+    display: contents;
   }
 
   .link {
@@ -75,7 +101,11 @@
   }
 
   .logo {
+    display: grid;
+    place-items: center;
     justify-self: center;
+    min-width: 4.4rem;
+    min-height: 4.4rem;
     font-size: 2.8rem;
   }
 }

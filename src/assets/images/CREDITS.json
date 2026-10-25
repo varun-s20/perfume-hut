@@ -3,6 +3,36 @@
   "license": "https://unsplash.com/license",
   "images": [
     {
+      "file": "about/bottle-sunlight.jpg",
+      "unsplashPhotoId": "photo-1588405748880-12d1d2a59f75",
+      "photographer": "Emily Wang",
+      "url": "https://unsplash.com/photos/gold-perfume-bottle-on-white-textile-a5917t2ea8I"
+    },
+    {
+      "file": "about/counter-heritage.jpg",
+      "unsplashPhotoId": "photo-1775210727581-1fda6b9f1170",
+      "photographer": "T (@tanyabarrow)",
+      "url": "https://unsplash.com/photos/bottles-of-perfume-displayed-on-a-wooden-counter-and-shelves-OPK7OK02kLs"
+    },
+    {
+      "file": "about/counter-marble.jpg",
+      "unsplashPhotoId": "photo-1791197538852-163e5599f1f4",
+      "photographer": "Rodrigo Rodrigues | WOLF Λ R T",
+      "url": "https://unsplash.com/photos/quartz-crystals-and-perfume-bottles-vDYjiaMQtgw"
+    },
+    {
+      "file": "about/discovery-vials.jpg",
+      "unsplashPhotoId": "photo-1784924239523-c725839b1de7",
+      "photographer": "Kamilla Isalieva",
+      "url": "https://unsplash.com/photos/various-perfume-bottles-and-sample-applicators-on-display-CknT32iXZrU"
+    },
+    {
+      "file": "about/wrapping-twine.jpg",
+      "unsplashPhotoId": "photo-1639363885726-da571ecfc5f5",
+      "photographer": "Alexey Demidov",
+      "url": "https://unsplash.com/photos/a-person-tying-a-piece-of-paper-with-a-string-PvwMMD5k6Rs"
+    },
+    {
       "file": "brands/armani.jpg",
       "unsplashPhotoId": "photo-1708979165880-dd0ff61fa748"
     },
@@ -35,6 +65,12 @@
       "unsplashPhotoId": "photo-1723391962154-8a2b6299bc09"
     },
     {
+      "file": "contact/wax-seal.jpg",
+      "unsplashPhotoId": "photo-1774891937502-1e81281854eb",
+      "photographer": "Raymond Petrik",
+      "url": "https://unsplash.com/photos/hands-sealing-envelope-with-wax-stamp-XKpTiXd1SWc"
+    },
+    {
       "file": "editorial/blouse.jpg",
       "unsplashPhotoId": "photo-1727264879316-71bc73756122"
     },
@@ -47,16 +83,8 @@
       "unsplashPhotoId": "photo-1589782051446-a24efcec7ffc"
     },
     {
-      "file": "editorial/lab.jpg",
-      "unsplashPhotoId": "photo-1716034348692-ddc6498732f7"
-    },
-    {
       "file": "editorial/neck.jpg",
       "unsplashPhotoId": "photo-1609175235148-2fe181db7f36"
-    },
-    {
-      "file": "editorial/perfumery.jpg",
-      "unsplashPhotoId": "photo-1545840716-c82e9eec6930"
     },
     {
       "file": "editorial/portrait-bottle.jpg",
@@ -211,33 +239,12 @@
       "unsplashPhotoId": "photo-1723391962166-6d9bb8a3d3e7"
     },
     {
-      "file": "store/cage.jpg",
-      "unsplashPhotoId": "photo-1646641085047-b76f8884a3c0"
-    },
-    {
-      "file": "store/chandelier.webp",
-      "unsplashPhotoId": "photo-1627306411131-358d6d0fd2cb",
-      "note": "Cut out from the photograph"
-    },
-    {
       "file": "store/concierge.jpg",
       "unsplashPhotoId": "photo-1604904612715-47bf9d9bc670"
     },
     {
-      "file": "store/hall.jpg",
-      "unsplashPhotoId": "photo-1782834294783-dff56aa2a540"
-    },
-    {
       "file": "store/marble-floor.jpg",
       "unsplashPhotoId": "photo-1558346648-9757f2fa4474"
-    },
-    {
-      "file": "store/marble-wall.jpg",
-      "unsplashPhotoId": "photo-1566041510394-cf7c8fe21800"
-    },
-    {
-      "file": "store/organ.jpg",
-      "unsplashPhotoId": "photo-1533414765079-4bb015a31395"
     },
     {
       "file": "store/parfumerie.jpg",
@@ -245,7 +252,6 @@
     }
   ],
   "derivatives": {
-    "bottles/*.webp": "Each bottle cut out of the matching products/*.jpg photograph (BiRefNet), then straightened",
     "ava/mouth-*.webp": "Mouth frames warped from the matching ava/*.webp pose for lip movement"
   },
   "ava": {
@@ -256,5 +262,47 @@
       30781739, 30781743, 30781745, 30781746, 30781748, 30781749, 30781750, 30781751
     ],
     "note": "One photo shoot; each pose cut out (BiRefNet) and aligned on a shared canvas, with mouth frames warped from the same photograph."
+  },
+  "videos": {
+    "source": "Pexels",
+    "license": "https://www.pexels.com/license/",
+    "note": "PLACEHOLDER customer films (see src/content/stories.ts). Trimmed, re-encoded to 720x1280 H.264 without sound; each poster is a frame of its film.",
+    "files": [
+      {
+        "file": "public/videos/stories/neck-spray.mp4",
+        "poster": "stories/neck-spray.jpg",
+        "pexelsVideoId": "12322732",
+        "videographer": "RDNE Stock project",
+        "url": "https://www.pexels.com/video/a-man-spraying-a-cosmetic-product-on-his-neck-and-face-12322732/"
+      },
+      {
+        "file": "public/videos/stories/first-spray.mp4",
+        "poster": "stories/first-spray.jpg",
+        "pexelsVideoId": "5473621",
+        "videographer": "Polina Tankilevitch",
+        "url": "https://www.pexels.com/video/elegant-mature-woman-spraying-perfume-on-neck-5473621/"
+      },
+      {
+        "file": "public/videos/stories/wrist.mp4",
+        "poster": "stories/wrist.jpg",
+        "pexelsVideoId": "6793137",
+        "videographer": "Yaroslav Shuraev",
+        "url": "https://www.pexels.com/video/woman-bedroom-spraying-fragrance-6793137/"
+      },
+      {
+        "file": "public/videos/stories/review.mp4",
+        "poster": "stories/review.jpg",
+        "pexelsVideoId": "8136210",
+        "videographer": "ANTONI SHKRABA production",
+        "url": "https://www.pexels.com/video/a-man-talking-to-the-camera-8136210/"
+      },
+      {
+        "file": "public/videos/stories/smile.mp4",
+        "poster": "stories/smile.jpg",
+        "pexelsVideoId": "8724240",
+        "videographer": "Tima Miroshnichenko",
+        "url": "https://www.pexels.com/video/beautiful-woman-looking-at-camera-8724240/"
+      }
+    ]
   }
 }

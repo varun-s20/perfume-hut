@@ -1,53 +1,64 @@
 'use client';
 
-import { motion, useMotionTemplate, useSpring } from 'motion/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
+  type MouseEvent,
   type PointerEvent,
   useEffect,
   useEffectEvent,
   useId,
   useRef,
   useState,
-  ViewTransition,
 } from 'react';
 import { createPortal } from 'react-dom';
 import { ArrowRightIcon, CloseIcon } from '@/components/icons';
-import { ava, storeFloor } from '@/content/home';
+import { storeFloor } from '@/content/home';
 import { brandHref } from '@/content/routes';
 import { flags } from '@/lib/flags';
-import { usePrefersReducedMotion } from '@/lib/use-prefers-reduced-motion';
 import { AvaConversation } from './AvaConversation';
-import { CabinetBox } from './CabinetBox';
-import type { CabinetData } from './cabinet-types';
+import type { CabinetData, ShelfBottle } from './cabinet-types';
 import styles from './CabinetRoom.module.css';
+import type { Hit } from './store3d/StoreScene';
 
 type CabinetRoomProps = {
   cabinet: CabinetData;
+  /** What's on the store's canvas under a point on screen. */
+  pick: (clientX: number, clientY: number) => Hit | null;
+  onHover: (hit: Hit | null) => void;
+  /** A bottle to turn to you on the shelves (a list hover, or Ava's pick). */
+  onHighlight: (slug: string | null) => void;
   onClose: () => void;
 };
 
-/** How far the case turns to follow the pointer (degrees). */
-const TILT = { x: 5, y: 9 };
-/** A little weight, and a quick settle. */
-const TILT_SPRING = { stiffness: 140, damping: 22, mass: 0.6 };
+/** How long the panel takes to leave before the doors close behind it. */
+const LEAVE_MS = 220;
 
 /**
- * Inside a house's section: the case from the floor grows to fill the room,
- * its glass doors swing open onto the bottles, and it turns gently with the
- * pointer so you can see into it. Beside it, the house's panel (or Ava, when
- * she's switched on).
+ * Inside a house's cabinet: the camera has walked up to the case and its
+ * doors stand open (the store draws that); this is everything over it. The
+ * house's panel beside the case, a name tag on the bottle you point at, and
+ * the way back to the floor. The page behind goes inert; Esc closes.
  */
-export function CabinetRoom({ cabinet, onClose }: CabinetRoomProps) {
+export function CabinetRoom({ cabinet, pick, onHover, onHighlight, onClose }: CabinetRoomProps) {
   const titleId = useId();
   const closeRef = useRef<HTMLButtonElement>(null);
-  const [pickSlug, setPickSlug] = useState<string>();
-  const reduced = usePrefersReducedMotion();
+  const router = useRouter();
+  const [leaving, setLeaving] = useState(false);
+  const [tag, setTag] = useState<{ bottle: ShelfBottle; x: number; y: number } | null>(null);
+  const bottles = new Map(cabinet.bottles.map((bottle) => [bottle.slug, bottle]));
 
-  const close = useEffectEvent(onClose);
+  const leave = () => {
+    if (leaving) return;
+    setLeaving(true);
+    onHover(null);
+    onHighlight(null);
+    window.setTimeout(onClose, LEAVE_MS);
+  };
+  const leaveOnEscape = useEffectEvent(leave);
 
   // Modal behaviour: the page behind goes inert and still, Esc closes, and
-  // focus returns to the cabinet that opened the room.
+  // focus returns to whatever opened the cabinet.
   useEffect(() => {
     const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const page = document.querySelector('.page');
@@ -59,7 +70,7 @@ export function CabinetRoom({ cabinet, onClose }: CabinetRoomProps) {
     closeRef.current?.focus({ preventScroll: true });
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') close();
+      if (event.key === 'Escape') leaveOnEscape();
     };
     window.addEventListener('keydown', onKeyDown);
 
@@ -71,70 +82,89 @@ export function CabinetRoom({ cabinet, onClose }: CabinetRoomProps) {
     };
   }, []);
 
-  // The case follows a mouse, on a spring; touch and reduced motion leave it be.
-  const tiltX = useSpring(0, TILT_SPRING);
-  const tiltY = useSpring(0, TILT_SPRING);
-  const tilt = useMotionTemplate`rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
-  const follow = (event: PointerEvent) => {
-    if (event.pointerType !== 'mouse' || reduced) return;
-    const x = event.clientX / window.innerWidth - 0.5;
-    const y = event.clientY / window.innerHeight - 0.5;
-    tiltY.set(x * 2 * TILT.y);
-    tiltX.set(-y * 2 * TILT.x);
+  const bottleAt = (point: { clientX: number; clientY: number }) => {
+    const hit = pick(point.clientX, point.clientY);
+    return hit?.kind === 'bottle' ? bottles.get(hit.slug) : undefined;
   };
-  const settle = () => {
-    tiltX.set(0);
-    tiltY.set(0);
+
+  // Pointing at the shelves: the bottle turns to you and its name follows the pointer.
+  const onPointerMove = (event: PointerEvent) => {
+    if (event.pointerType !== 'mouse') return;
+    const bottle = bottleAt(event);
+    onHover(bottle ? { kind: 'bottle', slug: bottle.slug } : null);
+    setTag(bottle ? { bottle, x: event.clientX, y: event.clientY } : null);
+  };
+
+  const onClick = (event: MouseEvent) => {
+    const bottle = bottleAt(event);
+    if (bottle) router.push(bottle.href);
+    else leave();
   };
 
   return createPortal(
-    <ViewTransition enter="room-in" exit="room-out" default="none">
+    <div
+      className={styles.room}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={titleId}
+      data-ava={flags.ava || undefined}
+      data-leaving={leaving || undefined}
+    >
       <div
-        className={styles.room}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={titleId}
-        data-ava={flags.ava || undefined}
-        onPointerMove={follow}
-        onPointerLeave={settle}
-      >
-        <div className={styles.backdrop} onClick={onClose} aria-hidden="true" />
+        className={styles.shelves}
+        data-pointing={Boolean(tag) || undefined}
+        onPointerMove={onPointerMove}
+        onPointerLeave={() => {
+          onHover(null);
+          setTag(null);
+        }}
+        onClick={onClick}
+        aria-hidden="true"
+      />
 
-        <button ref={closeRef} type="button" className={styles.close} onClick={onClose}>
-          <CloseIcon className={styles.closeIcon} />
-          {storeFloor.room.close}
-        </button>
+      {tag && (
+        <span
+          className={styles.tag}
+          style={{ translate: `${tag.x}px ${tag.y}px` }}
+          aria-hidden="true"
+        >
+          <span className={styles.tagName}>{tag.bottle.name}</span>
+          <span className={styles.tagMeta}>
+            {tag.bottle.concentration} · {tag.bottle.price}
+          </span>
+        </span>
+      )}
 
-        <div className={styles.stage}>
-          <span className={styles.shadow} aria-hidden="true" />
-          <motion.div className={styles.tilt} style={{ transform: tilt }}>
-            <CabinetBox
-              cabinet={cabinet}
-              variant="room"
-              pickSlug={pickSlug}
-              pickLabel={ava.room.pickLabel}
-            />
-          </motion.div>
-        </div>
+      <button ref={closeRef} type="button" className={styles.close} onClick={leave}>
+        <CloseIcon className={styles.closeIcon} />
+        {storeFloor.room.close}
+      </button>
 
-        {flags.ava ? (
-          <>
-            <h2 id={titleId} className="visually-hidden">
-              The {cabinet.name} cabinet
-            </h2>
-            <AvaConversation cabinet={cabinet} onPick={setPickSlug} />
-          </>
-        ) : (
-          <HousePanel cabinet={cabinet} titleId={titleId} />
-        )}
-      </div>
-    </ViewTransition>,
+      {flags.ava ? (
+        <>
+          <h2 id={titleId} className="visually-hidden">
+            The {cabinet.name} cabinet
+          </h2>
+          <AvaConversation cabinet={cabinet} onPick={(slug) => onHighlight(slug ?? null)} />
+        </>
+      ) : (
+        <HousePanel cabinet={cabinet} titleId={titleId} onHighlight={onHighlight} />
+      )}
+    </div>,
     document.body,
   );
 }
 
-/** The house's card beside its open case: who they are, and where to go next. */
-function HousePanel({ cabinet, titleId }: { cabinet: CabinetData; titleId: string }) {
+/** The house's panel beside its open case: who they are, what's on the shelves, where next. */
+function HousePanel({
+  cabinet,
+  titleId,
+  onHighlight,
+}: {
+  cabinet: CabinetData;
+  titleId: string;
+  onHighlight: (slug: string | null) => void;
+}) {
   const { room, browseAll } = storeFloor;
   return (
     <section className={styles.panel} aria-labelledby={titleId}>
@@ -144,16 +174,36 @@ function HousePanel({ cabinet, titleId }: { cabinet: CabinetData; titleId: strin
       </h2>
       <p className={styles.tagline}>{cabinet.tagline}</p>
       <p className={styles.story}>{cabinet.story}</p>
-      <dl className={styles.facts}>
-        <div>
-          <dt>On the shelves</dt>
-          <dd>{room.fragrances(cabinet.bottles.length)}</dd>
-        </div>
-        <div>
-          <dt>Prices</dt>
-          <dd>{room.from(cabinet.fromPrice)}</dd>
-        </div>
-      </dl>
+
+      <div className={styles.shelf}>
+        <p className={styles.shelfHeading}>
+          {room.shelves}
+          <span>{room.fragrances(cabinet.bottles.length)}</span>
+        </p>
+        <ul className={styles.bottles}>
+          {cabinet.bottles.map((bottle) => (
+            <li key={bottle.slug}>
+              <Link
+                href={bottle.href}
+                transitionTypes={['nav-forward']}
+                className={styles.bottle}
+                onPointerEnter={() => onHighlight(bottle.slug)}
+                onPointerLeave={() => onHighlight(null)}
+                onFocus={() => onHighlight(bottle.slug)}
+                onBlur={() => onHighlight(null)}
+              >
+                <span className={styles.bottleName}>
+                  {bottle.name}
+                  <span className={styles.bottleMeta}>{bottle.concentration}</span>
+                </span>
+                <span className={styles.bottlePrice}>{bottle.price}</span>
+                <ArrowRightIcon className={styles.bottleArrow} />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+
       <p className={styles.hint}>{room.hint}</p>
       <div className={styles.actions}>
         <Link

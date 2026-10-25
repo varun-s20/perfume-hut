@@ -11,18 +11,12 @@
 }
 
 .anchor,
-.stopAnchor,
 .end {
   position: absolute;
   top: calc(var(--at) * 1svh);
   left: 0;
   width: 1px;
   height: 1px;
-}
-
-/* Each stop is a gentle resting point: scrolling settles there. */
-.stopAnchor {
-  scroll-snap-align: start;
 }
 
 .end {
@@ -45,6 +39,23 @@
   position: absolute;
   inset: 0;
   background: radial-gradient(ellipse 50% 40% at 50% 50%, rgb(18 8 0 / 0.55), transparent 75%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Warm daylight on glass: brightest where you're looking. */
+.glare {
+  position: absolute;
+  z-index: 7;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 70% 60% at 50% 48%,
+      #fffaf2,
+      rgb(250 240 228 / 0.92) 60%,
+      rgb(236 226 214 / 0.88)
+    ),
+    #f7f1ea;
   opacity: 0;
   pointer-events: none;
 }
@@ -107,6 +118,23 @@
 @media (width < 960px) {
   .welcomeName {
     font-size: clamp(4.4rem, 14vw, 7rem);
+  }
+
+  /* Warm daylight on glass: brightest where you're looking. */
+  .glare {
+    position: absolute;
+    z-index: 7;
+    inset: 0;
+    background:
+      radial-gradient(
+        ellipse 70% 60% at 50% 48%,
+        #fffaf2,
+        rgb(250 240 228 / 0.92) 60%,
+        rgb(236 226 214 / 0.88)
+      ),
+      #f7f1ea;
+    opacity: 0;
+    pointer-events: none;
   }
 
   .welcome {

@@ -1,0 +1,81 @@
+/* Customer films on the espresso panel, like a small screening room. */
+.section {
+  padding: 10rem var(--gutter) 9rem;
+  background: var(--color-panel);
+  color: #fff;
+}
+
+.head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 36rem);
+  align-items: end;
+  gap: 4rem;
+}
+
+.heading {
+  margin-top: 2rem;
+  color: var(--color-cream);
+  font-family: var(--font-serif);
+  font-size: 7.2rem;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+.lede {
+  color: var(--color-panel-muted);
+  font-size: 1.3rem;
+  line-height: 1.6;
+}
+
+.share {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 1.6rem;
+  color: var(--color-cream);
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgb(226 201 154 / 0.6);
+  text-underline-offset: 0.35rem;
+}
+
+.shareArrow {
+  width: 1rem;
+  height: 0.85rem;
+  transition: transform 0.3s var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .share:hover .shareArrow {
+    transform: translateX(0.3rem);
+  }
+}
+
+@media (width < 960px) {
+  .section {
+    padding: 6.4rem 0 5.6rem;
+  }
+
+  .head {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.6rem;
+    padding-inline: 1.6rem;
+  }
+
+  .heading {
+    margin-top: 1.6rem;
+    font-size: 5.2rem;
+  }
+
+  .lede {
+    font-size: 1.5rem;
+  }
+
+  .share {
+    min-height: 4.4rem;
+    margin-top: 0.4rem;
+    font-size: 1.4rem;
+  }
+}

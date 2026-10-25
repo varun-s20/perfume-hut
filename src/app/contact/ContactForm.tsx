@@ -2,8 +2,10 @@
 
 import { type ReactNode, useActionState } from 'react';
 import { type ContactField, sendContactMessage } from '@/app/actions';
+import { ChevronDownIcon } from '@/components/icons';
 import { buttonClassName, ButtonIcon } from '@/components/ui/ButtonLink';
 import { contactTopics } from '@/content/contact';
+import { cx } from '@/lib/cx';
 import type { FormState } from '@/lib/validation';
 import styles from './page.module.css';
 
@@ -15,7 +17,7 @@ export function ContactForm() {
 
   if (state.status === 'success') {
     return (
-      <div className={styles.success} role="status">
+      <div className={cx(styles.card, styles.success)} role="status">
         <p className={styles.successTitle}>Message received.</p>
         <p>{state.message}</p>
       </div>
@@ -26,7 +28,7 @@ export function ContactForm() {
     errors[field] ? `contact-${field}-error` : undefined;
 
   return (
-    <form action={formAction} className={styles.form} noValidate>
+    <form action={formAction} className={cx(styles.card, styles.form)} noValidate>
       {state.status === 'error' && state.message && (
         <p className={styles.formError} role="alert">
           {state.message}
@@ -39,6 +41,7 @@ export function ContactForm() {
             id="contact-name"
             name="name"
             autoComplete="name"
+            autoCapitalize="words"
             required
             maxLength={120}
             aria-invalid={errors.name ? true : undefined}
@@ -51,6 +54,8 @@ export function ContactForm() {
             name="email"
             type="email"
             autoComplete="email"
+            autoCapitalize="none"
+            spellCheck={false}
             required
             aria-invalid={errors.email ? true : undefined}
             aria-describedby={describedBy('email')}
@@ -59,23 +64,26 @@ export function ContactForm() {
       </div>
 
       <Field label="Topic" error={errors.topic} id="contact-topic" errorId={describedBy('topic')}>
-        <select
-          id="contact-topic"
-          name="topic"
-          required
-          defaultValue=""
-          aria-invalid={errors.topic ? true : undefined}
-          aria-describedby={describedBy('topic')}
-        >
-          <option value="" disabled>
-            Choose a topic
-          </option>
-          {contactTopics.map((topic) => (
-            <option key={topic} value={topic}>
-              {topic}
+        <span className={styles.select}>
+          <select
+            id="contact-topic"
+            name="topic"
+            required
+            defaultValue=""
+            aria-invalid={errors.topic ? true : undefined}
+            aria-describedby={describedBy('topic')}
+          >
+            <option value="" disabled>
+              Choose a topic
             </option>
-          ))}
-        </select>
+            {contactTopics.map((topic) => (
+              <option key={topic} value={topic}>
+                {topic}
+              </option>
+            ))}
+          </select>
+          <ChevronDownIcon className={styles.chevron} />
+        </span>
       </Field>
 
       <Field
@@ -98,7 +106,7 @@ export function ContactForm() {
 
       <button
         type="submit"
-        className={buttonClassName({ size: 'large' })}
+        className={cx(buttonClassName({ size: 'large' }), styles.submit)}
         disabled={pending}
         aria-busy={pending}
       >

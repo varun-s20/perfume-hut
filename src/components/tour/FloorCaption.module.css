@@ -1,0 +1,391 @@
+/*
+ * The floor's words at the foot of the stage, set like the welcome over the
+ * shopfront: cream Marcellus over a soft slate shade, no card.
+ */
+
+.caption {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  column-gap: 4rem;
+  padding: 0 var(--gutter) 3.6rem;
+  color: var(--color-cream);
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease-out);
+}
+
+.caption[data-visible='false'] {
+  opacity: 0;
+  transition-duration: 0.25s;
+}
+
+.scrim {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(
+    0deg,
+    rgb(16 24 34 / 0.84),
+    rgb(16 24 34 / 0.55) 22%,
+    rgb(16 24 34 / 0.16) 42%,
+    transparent 56%
+  );
+}
+
+.words {
+  max-width: 64rem;
+}
+
+.eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.9rem;
+  color: var(--color-brass-light);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.dot {
+  width: 0.3rem;
+  height: 0.3rem;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.7;
+}
+
+/* The house's name rises out of its own line, like the wordmark at the top of the page. */
+.title {
+  margin-top: 1rem;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+  font-family: var(--font-serif);
+  font-size: 8.4rem;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+/* Long house names (Yves Saint Laurent) step down so they never run into the case. */
+.title[data-long] {
+  font-size: 6.4rem;
+}
+
+.titleText {
+  display: block;
+}
+
+.text {
+  max-width: 44rem;
+  margin-top: 1rem;
+  color: rgb(247 241 234 / 0.86);
+  font-family: var(--font-serif);
+  font-size: 1.7rem;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 2rem;
+  margin-top: 2.2rem;
+}
+
+.primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  height: 3.6rem;
+  padding: 0 0.4rem 0 1.6rem;
+  border-radius: 99rem;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-size: 1.08rem;
+  font-weight: 600;
+  pointer-events: auto;
+  transition:
+    background-color 0.2s ease,
+    transform var(--duration-press) var(--ease-out);
+}
+
+.primary:active {
+  transform: scale(0.97);
+}
+
+.primaryIcon {
+  display: grid;
+  place-items: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  background: var(--color-coral);
+  color: #fff;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.primaryIcon svg {
+  width: 1.05rem;
+  height: 0.9rem;
+}
+
+.secondary {
+  color: var(--color-cream);
+  font-size: 1.05rem;
+  font-weight: 560;
+  text-decoration: underline;
+  text-decoration-color: rgb(226 201 154 / 0.7);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.35rem;
+  pointer-events: auto;
+}
+
+.hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-top: 2rem;
+  color: var(--color-brass-light);
+  font-size: 0.9rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.hintLine {
+  width: 5rem;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-brass-light), transparent);
+  transform-origin: left;
+  animation: hint 1.8s var(--ease-in-out) infinite;
+}
+
+@keyframes hint {
+  0% {
+    transform: scaleX(0);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+
+/* ---------- The run of houses ---------- */
+
+.index ol {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.house {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 2.6rem;
+  color: var(--color-cream);
+  font-size: 0.92rem;
+  font-weight: 560;
+  letter-spacing: 0.14em;
+  text-align: left;
+  text-transform: uppercase;
+  opacity: 0.5;
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
+}
+
+.house::before {
+  content: '';
+  width: 0;
+  height: 1px;
+  background: var(--color-brass-light);
+  transition: width 0.45s var(--ease-out);
+}
+
+.house[data-active] {
+  opacity: 1;
+}
+
+.house[data-active]::before {
+  width: 2.4rem;
+}
+
+.houseNumber {
+  color: var(--color-brass-light);
+  font-variant-numeric: tabular-nums;
+}
+
+.progress {
+  display: none;
+}
+
+.caption[data-visible='false'] :is(.primary, .secondary, .house) {
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .primary:hover {
+    background: #fff;
+  }
+
+  .primary:hover .primaryIcon {
+    transform: translateX(0.2rem);
+  }
+
+  .house:hover {
+    opacity: 0.85;
+  }
+}
+
+/* ---------- Arrival: each house rises in as you reach it ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .eyebrow,
+  .text,
+  .actions,
+  .hint {
+    animation: arrive 0.7s var(--ease-out) calc(var(--i, 0) * 70ms + 140ms) both;
+  }
+
+  .titleText {
+    animation: rise 0.9s var(--ease-out) 60ms both;
+  }
+}
+
+@keyframes arrive {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(105%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hintLine {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   Phones: the words take the foot of the screen, with a slim run of the
+   houses above them in place of the list.
+   ========================================================================== */
+
+@media (width < 960px) {
+  .caption {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 1.6rem calc(2.4rem + env(safe-area-inset-bottom));
+  }
+
+  .scrim {
+    background: linear-gradient(
+      0deg,
+      rgb(16 24 34 / 0.88),
+      rgb(16 24 34 / 0.6) 26%,
+      rgb(16 24 34 / 0.18) 46%,
+      transparent 60%
+    );
+  }
+
+  .eyebrow {
+    gap: 0.4rem 0.8rem;
+    font-size: 1.05rem;
+    letter-spacing: 0.18em;
+  }
+
+  .title {
+    font-size: clamp(4.4rem, 13vw, 6.4rem);
+  }
+
+  .title[data-long] {
+    font-size: clamp(3.8rem, 10.5vw, 5.2rem);
+  }
+
+  .text {
+    font-size: 1.7rem;
+  }
+
+  .actions {
+    gap: 1.2rem 2rem;
+    margin-top: 1.8rem;
+  }
+
+  .primary {
+    height: 4.6rem;
+    padding-left: 2rem;
+    font-size: 1.45rem;
+  }
+
+  .primaryIcon {
+    width: 3.6rem;
+    height: 3.6rem;
+  }
+
+  .primaryIcon svg {
+    width: 1.4rem;
+    height: 1.2rem;
+  }
+
+  .secondary {
+    font-size: 1.4rem;
+  }
+
+  .hint {
+    font-size: 1.1rem;
+  }
+
+  .index {
+    display: none;
+  }
+
+  .progress {
+    display: flex;
+    order: -1;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .progress li {
+    flex: 1;
+    height: 2px;
+    border-radius: 1px;
+    background: rgb(247 241 234 / 0.25);
+    transition: background-color 0.4s ease;
+  }
+
+  .progress li[data-done] {
+    background: var(--color-brass-light);
+  }
+
+  /* Without the walk, the houses are the way in: a grid of them under the words. */
+  .caption[data-still] .index {
+    display: block;
+    margin-top: 2rem;
+  }
+
+  .caption[data-still] .index ol {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.4rem 1.6rem;
+  }
+
+  .house {
+    min-height: 4.4rem;
+    font-size: 1.2rem;
+    opacity: 0.85;
+  }
+}

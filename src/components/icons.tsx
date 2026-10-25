@@ -139,3 +139,54 @@ export function CloseIcon(props: IconProps) {
     </svg>
   );
 }
+
+/** A wax seal: sealed, authentic. */
+export function SealIcon(props: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.3}
+      {...base}
+      {...props}
+    >
+      <circle cx="12" cy="10" r="6.2" />
+      <path d="m9.4 10 1.8 1.8 3.6-3.6M8.6 15.4 7.4 21l4.6-2.4 4.6 2.4-1.2-5.6" />
+    </svg>
+  );
+}
+
+/** A parcel: packed by hand, tracked. */
+export function ParcelIcon(props: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.3}
+      {...base}
+      {...props}
+    >
+      <path d="M3.5 7.5 12 3l8.5 4.5v9L12 21l-8.5-4.5z" />
+      <path d="M3.5 7.5 12 12l8.5-4.5M12 12v9M7.8 5.3l8.4 4.5" />
+    </svg>
+  );
+}
+
+/** An arrow coming back round: easy returns. */
+export function ReturnIcon(props: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.3}
+      {...base}
+      {...props}
+    >
+      <path d="M8.5 5.5 4.5 9.5l4 4" />
+      <path d="M4.5 9.5h10a5 5 0 0 1 0 10h-6" />
+    </svg>
+  );
+}
