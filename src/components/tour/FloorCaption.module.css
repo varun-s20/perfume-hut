@@ -353,14 +353,80 @@
   }
 
   .index {
+    display: block;
+    order: -1;
+    margin-bottom: 1.6rem;
+    pointer-events: auto;
+  }
+
+  .index ol {
+    display: flex;
+    gap: 0.8rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding-bottom: 0.4rem;
+    margin: 0 -1.6rem;
+    padding-inline: 1.6rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .index ol::-webkit-scrollbar {
     display: none;
+  }
+
+  .index li {
+    flex: none;
+    scroll-snap-align: start;
+  }
+
+  .house {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    height: 3.6rem;
+    padding: 0 1.3rem;
+    border: 1px solid rgb(247 241 234 / 0.22);
+    border-radius: 99rem;
+    background: rgb(16 24 34 / 0.7);
+    color: var(--color-cream);
+    font-size: 1.2rem;
+    font-weight: 560;
+    white-space: nowrap;
+    backdrop-filter: blur(8px);
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      transform var(--duration-press) var(--ease-out);
+  }
+
+  .house:active {
+    transform: scale(0.96);
+  }
+
+  .house[data-active] {
+    border-color: var(--color-brass-light);
+    background: var(--color-cream);
+    color: var(--color-ink);
+    font-weight: 650;
+  }
+
+  .houseNumber {
+    font-size: 1rem;
+    opacity: 0.7;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .house[data-active] .houseNumber {
+    color: var(--color-espresso);
+    opacity: 0.85;
   }
 
   .progress {
     display: flex;
-    order: -1;
+    order: -2;
     gap: 0.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.2rem;
   }
 
   .progress li {
@@ -379,11 +445,15 @@
   .caption[data-still] .index {
     display: block;
     margin-top: 2rem;
+    order: 0;
   }
 
   .caption[data-still] .index ol {
+    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.4rem 1.6rem;
+    margin: 0;
+    padding: 0;
   }
 
   .house {

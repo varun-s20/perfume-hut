@@ -318,43 +318,68 @@
 @media (width < 960px) {
   .entrance {
     --arch-x: 50cqw;
-    --arch-w: 76cqw;
-    --arch-top: 5cqh;
-    --arch-bottom: 35cqh;
+    --arch-w: 68cqw;
+    --arch-top: 3cqh;
+    --arch-bottom: 43cqh;
   }
 
   .label {
-    display: none;
+    position: absolute;
+    top: 1cqh;
+    left: 8cqw;
+    right: 8cqw;
+    width: auto;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .labelEyebrow {
+    font-size: 0.85rem;
+    letter-spacing: 0.16em;
+  }
+
+  .labelText {
+    font-size: 1.15rem;
+    text-align: right;
+    line-height: 1.2;
   }
 
   .frame {
-    width: 38cqw;
+    width: 40cqw;
   }
 
   .first {
-    top: 69cqh;
-    left: 8cqw;
+    top: 58cqh;
+    left: 6cqw;
   }
 
   .second {
-    top: 71cqh;
-    right: 8cqw;
+    top: 60cqh;
+    right: 6cqw;
     left: auto;
   }
 
   .moulding {
-    padding: 0.8rem;
-    border-width: 0.4rem;
+    padding: 0.6rem;
+    border-width: 0.35rem;
   }
 
   .caption {
-    gap: 0.2rem;
-    margin-top: 1rem;
+    display: grid;
+    gap: 0.15rem;
+    margin-top: 0.6rem;
   }
 
-  .index,
-  .shop {
-    display: none;
+  .index {
+    display: block;
+    color: var(--color-subtle);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
   }
 
   .brand {
@@ -362,21 +387,44 @@
   }
 
   .name {
-    font-size: 1.6rem;
+    font-size: 1.35rem;
+    line-height: 1.15;
   }
 
   .concentration {
-    display: block;
-    margin: 0.2rem 0 0;
-    font-size: 1.1rem;
+    display: inline;
+    margin-left: 0.4rem;
+    font-size: 1rem;
+  }
+
+  .shop {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.3rem;
+    color: #000;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .shopArrow {
+    width: 0.85rem;
+    height: 0.75rem;
   }
 
   .cue {
-    bottom: calc(var(--arch-bottom) + 2.4cqh);
-    font-size: 1.05rem;
+    bottom: calc(var(--arch-bottom) + 1.8cqh);
+    font-size: 1rem;
+    gap: 0.6rem;
+  }
+
+  .cueLine {
+    height: 2.8rem;
   }
 
   .skip {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 }
