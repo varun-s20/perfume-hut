@@ -15,7 +15,7 @@ export const shop = {
     brands: 'House',
     prices: 'Price',
     strengths: 'Strength',
-    families: 'Scent family',
+    families: 'Scent',
   },
   all: 'Everyone',
   sort: 'Sort',

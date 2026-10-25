@@ -11,6 +11,7 @@ import {
   audiences,
   families,
   familyLabels,
+  type Family,
 } from '@/lib/catalog-types';
 import { cx } from '@/lib/cx';
 import {
@@ -31,7 +32,6 @@ import { Dropdown } from './Dropdown';
 import { FilterSheet } from './FilterSheet';
 import { type ShopHouse, shopUrl } from './links';
 import styles from './ShopControls.module.css';
-import { Swatch } from './Swatch';
 
 type ShopControlsProps = {
   filters: ShopFilters;
@@ -83,10 +83,11 @@ export function ShopControls({
   }, []);
 
   const houseName = new Map(houses.map((house) => [house.slug, house.name]));
-  const chips = [
+  const chips: { label: string; href: Route; family?: Family }[] = [
     ...filters.families.map((value) => ({
       label: familyLabels[value],
       href: shopUrl({ ...filters, families: filters.families.filter((v) => v !== value) }),
+      family: value,
     })),
     ...(filters.audience
       ? [
@@ -112,58 +113,33 @@ export function ShopControls({
 
   return (
     <>
-      {/* ---------- Shop by scent ---------- */}
-      <section className={styles.families} aria-labelledby="shop-families">
-        <div className={styles.familiesHead}>
-          <h2 id="shop-families" className={styles.familiesTitle}>
-            {shop.families.title}
-          </h2>
-          <p className={styles.familiesHint}>{shop.families.hint}</p>
-        </div>
-        <ul className={styles.familyRow}>
-          {families.map((family, index) => {
-            const on = filters.families.includes(family);
-            const count = counts.families[family] ?? 0;
-            const content = (
-              <>
-                <Swatch family={family} active={on} className={styles.familySwatch} />
-                <span className={styles.familyName}>{familyLabels[family]}</span>
-                <span className={styles.familyMeta}>
-                  {familySwatches[family].notes}
-                  <span className={styles.familyCount}>{count}</span>
-                </span>
-              </>
-            );
-            return (
-              <li key={family} style={{ '--i': index } as CSSProperties}>
-                {count === 0 && !on ? (
-                  <span className={styles.family} aria-disabled="true">
-                    {content}
-                  </span>
-                ) : (
-                  <Link
-                    href={shopUrl({
-                      ...filters,
-                      families: toggled(filters.families, family, families),
-                    })}
-                    {...linkProps}
-                    className={styles.family}
-                    aria-current={on ? 'true' : undefined}
-                  >
-                    {content}
-                  </Link>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      </section>
-
       {/* ---------- The toolbar ---------- */}
       <div ref={toolbarRef} className={styles.toolbar}>
         <AudienceSwitch filters={filters} />
 
         <div className={styles.dropdowns}>
+          <Dropdown
+            label={shop.groups.families}
+            summary={filters.families.length ? String(filters.families.length) : undefined}
+            active={filters.families.length > 0}
+          >
+            <ul className={styles.familyOptionList}>
+              {families.map((family) => (
+                <li key={family}>
+                  <FamilyOptionLink
+                    href={shopUrl({
+                      ...filters,
+                      families: toggled(filters.families, family, families),
+                    })}
+                    active={filters.families.includes(family)}
+                    family={family}
+                    count={counts.families[family] ?? 0}
+                  />
+                </li>
+              ))}
+            </ul>
+          </Dropdown>
+
           <Dropdown
             label={shop.groups.brands}
             summary={filters.brands.length ? String(filters.brands.length) : undefined}
@@ -271,6 +247,18 @@ export function ShopControls({
                 className={styles.chip}
                 aria-label={shop.remove(chip.label)}
               >
+                {chip.family && (
+                  <span
+                    className={styles.chipPip}
+                    style={
+                      {
+                        '--from': familySwatches[chip.family].colours[0],
+                        '--to': familySwatches[chip.family].colours[1],
+                      } as CSSProperties
+                    }
+                    aria-hidden="true"
+                  />
+                )}
                 {chip.label}
                 <CloseIcon className={styles.chipIcon} />
               </Link>
@@ -385,6 +373,55 @@ function OptionLink({
       href={href}
       {...linkProps}
       className={styles.option}
+      aria-current={active ? 'true' : undefined}
+    >
+      {content}
+    </Link>
+  );
+}
+
+/** A scent family option in the Scent dropdown, with an arched swatch pip and fragrance notes. */
+function FamilyOptionLink({
+  href,
+  active,
+  family,
+  count,
+}: {
+  href: Route;
+  active: boolean;
+  family: Family;
+  count: number;
+}) {
+  const [from, to] = familySwatches[family].colours;
+  const content = (
+    <>
+      <span className={styles.box} aria-hidden="true">
+        <CheckIcon />
+      </span>
+      <span
+        className={styles.familySwatchPip}
+        style={{ '--from': from, '--to': to } as CSSProperties}
+        aria-hidden="true"
+      />
+      <span className={styles.familyText}>
+        <span className={styles.familyTitle}>{familyLabels[family]}</span>
+        <span className={styles.familyNotes}>{familySwatches[family].notes}</span>
+      </span>
+      <span className={styles.optionCount}>{count}</span>
+    </>
+  );
+  if (count === 0 && !active) {
+    return (
+      <span className={styles.familyOption} aria-disabled="true">
+        {content}
+      </span>
+    );
+  }
+  return (
+    <Link
+      href={href}
+      {...linkProps}
+      className={styles.familyOption}
       aria-current={active ? 'true' : undefined}
     >
       {content}
