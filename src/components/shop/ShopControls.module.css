@@ -1,0 +1,602 @@
+/* ==========================================================================
+   Shop by scent: the six families as swatches of colour, in arched doorways.
+   ========================================================================== */
+
+.families {
+  margin-top: 0.8rem;
+}
+
+.familiesHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.familiesTitle {
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 2.4rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.familiesHint {
+  color: var(--color-subtle);
+  font-size: 1rem;
+}
+
+.familyRow {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1.6rem;
+  margin-top: 2rem;
+}
+
+.family {
+  display: grid;
+  gap: 0.3rem;
+  transition: transform var(--duration-press) var(--ease-out);
+}
+
+.family:active {
+  transform: scale(0.98);
+}
+
+.family[aria-disabled] {
+  opacity: 0.35;
+}
+
+.familySwatch {
+  height: 9rem;
+  margin-bottom: 1.4rem;
+  transition: transform 0.45s var(--ease-out);
+}
+
+.familyName {
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 1.7rem;
+  line-height: 1.1;
+}
+
+.familyMeta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  color: var(--color-subtle);
+  font-size: 0.95rem;
+}
+
+.familyCount {
+  color: var(--color-ink);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   The toolbar: who it's for, house, price, strength, then the count and sort.
+   It sticks above the grid as you scroll.
+   ========================================================================== */
+
+.toolbar {
+  position: sticky;
+  z-index: 20;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin: 3.6rem calc(-1 * var(--gutter)) 0;
+  padding: 1.2rem var(--gutter);
+  border-block: 1px solid var(--color-line);
+  background: rgb(255 255 255 / 0.92);
+  backdrop-filter: blur(12px);
+}
+
+/* One choice, with an indicator that glides between them (an interruptible transition). */
+.audience {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--count), minmax(0, 1fr));
+  width: 42rem;
+  padding: 0.35rem;
+  border-radius: 99rem;
+  background: var(--color-cream);
+}
+
+.audienceIndicator {
+  position: absolute;
+  top: 0.35rem;
+  bottom: 0.35rem;
+  left: 0.35rem;
+  width: calc((100% - 0.7rem) / var(--count));
+  border-radius: 99rem;
+  background: var(--color-espresso);
+  transform: translateX(calc(var(--index) * 100%));
+  transition: transform 0.32s var(--ease-out);
+}
+
+.audienceOption {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 2.9rem;
+  border-radius: 99rem;
+  color: var(--color-ink);
+  font-size: 1rem;
+  font-weight: 560;
+  white-space: nowrap;
+  transition:
+    color 0.2s ease,
+    transform var(--duration-press) var(--ease-out);
+}
+
+.audienceOption:active {
+  transform: scale(0.97);
+}
+
+.audienceOption[aria-current] {
+  color: #fff;
+}
+
+.dropdowns {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.count {
+  margin-left: auto;
+  color: var(--color-subtle);
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ---------- Options inside the dropdowns ---------- */
+
+.optionList {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.optionList[data-columns='2'] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  min-width: 38rem;
+}
+
+.option {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  min-height: 4rem;
+  padding: 0 1rem;
+  border-radius: 0.9rem;
+  color: var(--color-ink);
+  font-size: 1rem;
+  white-space: nowrap;
+  transition: background-color 0.15s ease;
+}
+
+.option[aria-disabled] {
+  opacity: 0.35;
+}
+
+.box {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid rgb(46 15 5 / 0.25);
+  border-radius: 0.5rem;
+  color: transparent;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.box svg {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.option[aria-current] .box {
+  border-color: var(--color-espresso);
+  background: var(--color-espresso);
+  color: #fff;
+}
+
+.radio {
+  width: 1.8rem;
+  height: 1.8rem;
+  border: 1px solid rgb(46 15 5 / 0.25);
+  border-radius: 50%;
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.option[aria-current] .radio,
+.sortOption[aria-current] .radio {
+  border-color: var(--color-espresso);
+  box-shadow: inset 0 0 0 0.5rem var(--color-espresso);
+}
+
+.optionLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.option[aria-current] .optionLabel {
+  font-weight: 600;
+}
+
+.optionCount {
+  color: var(--color-subtle);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- What's on ---------- */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.6rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  height: 3.2rem;
+  padding: 0 1.1rem 0 1.4rem;
+  border-radius: 99rem;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-size: 0.95rem;
+  font-weight: 560;
+  transition:
+    background-color 0.15s ease,
+    transform var(--duration-press) var(--ease-out);
+}
+
+.chip:active {
+  transform: scale(0.96);
+}
+
+.chipIcon {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+.clear {
+  margin-left: 0.6rem;
+  color: var(--color-ink);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+.results {
+  margin-top: 3.2rem;
+}
+
+/* The phone's floating pill and its sort sheet. */
+.pill,
+.sheet {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .family:hover .familySwatch {
+    transform: translateY(-0.4rem);
+  }
+
+  .option:not([aria-disabled]):hover {
+    background: var(--color-cream);
+  }
+
+  .chip:hover {
+    background: #efe5da;
+  }
+}
+
+/* ==========================================================================
+   Phones: families in a row you swipe; who it's for across the full width;
+   everything else in a sheet, from a pill that floats within thumb's reach.
+   ========================================================================== */
+
+@media (width < 960px) {
+  .families {
+    margin-top: 0;
+  }
+
+  .familiesTitle {
+    font-size: 2.2rem;
+  }
+
+  .familiesHint {
+    font-size: 1.2rem;
+  }
+
+  .familyRow {
+    display: flex;
+    gap: 1.2rem;
+    margin: 1.6rem -1.6rem 0;
+    padding: 0 1.6rem 0.4rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1.6rem;
+    scrollbar-width: none;
+  }
+
+  .familyRow li {
+    flex: none;
+    width: 10.4rem;
+    scroll-snap-align: start;
+  }
+
+  .familySwatch {
+    height: 11.6rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .familyName {
+    font-size: 1.7rem;
+  }
+
+  .familyMeta {
+    display: grid;
+    gap: 0.2rem;
+    font-size: 1.15rem;
+    line-height: 1.3;
+  }
+
+  .familyCount {
+    font-size: 1.2rem;
+  }
+
+  .toolbar {
+    position: static;
+    /* Room for the phone header when you're brought back up here. */
+    scroll-margin-top: 7.2rem;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    margin: 2.8rem 0 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    backdrop-filter: none;
+  }
+
+  .audience {
+    width: 100%;
+  }
+
+  .audienceOption {
+    height: 4rem;
+    font-size: 1.3rem;
+  }
+
+  .dropdowns,
+  .sort {
+    display: none;
+  }
+
+  .count {
+    margin-left: 0;
+    font-size: 1.35rem;
+  }
+
+  .chips {
+    gap: 0.8rem;
+  }
+
+  .chip {
+    height: 4rem;
+    padding: 0 1.4rem 0 1.6rem;
+    font-size: 1.3rem;
+  }
+
+  .chipIcon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .clear {
+    display: inline-flex;
+    align-items: center;
+    min-height: 4.4rem;
+    font-size: 1.3rem;
+  }
+
+  .results {
+    margin-top: 2.4rem;
+  }
+
+  /* Filter · Sort, floating over the grid while you browse it. */
+  .pill {
+    position: fixed;
+    z-index: 35;
+    right: 0;
+    bottom: calc(1.6rem + env(safe-area-inset-bottom));
+    left: 0;
+    display: flex;
+    align-items: center;
+    width: max-content;
+    height: 5.2rem;
+    /* Centred with margins: a translate here would be dropped beside the transform. */
+    margin-inline: auto;
+    padding: 0 0.4rem;
+    border-radius: 99rem;
+    background: var(--color-espresso);
+    box-shadow: 0 1.6rem 3.2rem -1.2rem rgb(46 15 5 / 0.55);
+    color: #fff;
+    opacity: 0;
+    transform: translateY(calc(100% + 3.2rem));
+    pointer-events: none;
+    transition:
+      transform 0.3s var(--ease-out),
+      opacity 0.2s ease;
+  }
+
+  .pill[data-shown] {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    transition:
+      transform 0.45s var(--ease-out),
+      opacity 0.3s ease;
+  }
+
+  .pillButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    height: 4.4rem;
+    padding: 0 1.8rem;
+    border-radius: 99rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    transition: transform var(--duration-press) var(--ease-out);
+  }
+
+  .pillButton:active {
+    transform: scale(0.95);
+  }
+
+  .pillIcon {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+
+  .pillCount {
+    display: grid;
+    place-items: center;
+    min-width: 2.2rem;
+    height: 2.2rem;
+    padding: 0 0.6rem;
+    border-radius: 99rem;
+    background: var(--color-coral);
+    font-size: 1.15rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pillRule {
+    width: 1px;
+    height: 2.2rem;
+    background: rgb(255 255 255 / 0.25);
+  }
+
+  /* ---------- Sort sheet ---------- */
+
+  .sheet {
+    display: block;
+    width: 100%;
+    max-width: none;
+    margin: auto 0 0;
+    padding: 0 1.6rem calc(1.6rem + env(safe-area-inset-bottom));
+    border: 0;
+    border-radius: 2rem 2rem 0 0;
+    background: #fff;
+    color: var(--color-ink);
+  }
+
+  .sheet:not([open]) {
+    display: none;
+  }
+
+  .sheet::backdrop {
+    background: rgb(18 8 0 / 0.45);
+  }
+
+  .sheet[open] {
+    animation: sheet-in 0.45s var(--ease-drawer) both;
+  }
+
+  :global(html):has(.sheet[open]) {
+    overflow: hidden;
+  }
+
+  .sheetHead {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2.2rem 0 1.2rem;
+  }
+
+  .handle {
+    position: absolute;
+    top: 0.8rem;
+    left: 50%;
+    width: 4rem;
+    height: 0.4rem;
+    translate: -50% 0;
+    border-radius: 99rem;
+    background: var(--color-line);
+  }
+
+  .sheetTitle {
+    font-family: var(--font-serif);
+    font-size: 2.6rem;
+    font-weight: 400;
+  }
+
+  .sheetClose {
+    display: grid;
+    place-items: center;
+    width: 4.4rem;
+    height: 4.4rem;
+    margin-right: -1rem;
+  }
+
+  .sheetClose svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .sortList {
+    border-top: 1px solid var(--color-line);
+  }
+
+  .sortOption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 5.6rem;
+    border-bottom: 1px solid var(--color-line);
+    font-size: 1.6rem;
+  }
+
+  .sortOption[aria-current] {
+    font-weight: 600;
+  }
+
+  .radio {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audienceIndicator {
+    transition-property: opacity;
+  }
+
+  .sheet[open] {
+    animation: none;
+  }
+}

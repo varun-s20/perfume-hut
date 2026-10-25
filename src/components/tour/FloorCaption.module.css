@@ -11,10 +11,12 @@
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
   column-gap: 4rem;
-  padding: 0 var(--gutter) 3.6rem;
+  padding: 0 var(--gutter) calc(3.6rem + var(--toolbar, 0px));
   color: var(--color-cream);
   pointer-events: none;
-  transition: opacity 0.5s var(--ease-out);
+  transition:
+    opacity 0.5s var(--ease-out),
+    padding-bottom 0.3s var(--ease-out);
 }
 
 .caption[data-visible='false'] {
@@ -288,8 +290,9 @@
   .caption {
     display: flex;
     flex-direction: column;
+    align-items: stretch;
     justify-content: flex-end;
-    padding: 0 1.6rem calc(2.4rem + env(safe-area-inset-bottom));
+    padding: 0 1.6rem calc(2.4rem + env(safe-area-inset-bottom) + var(--toolbar, 0px));
   }
 
   .scrim {

@@ -1,0 +1,370 @@
+/*
+ * A sheet that rises from the bottom of a phone: the header stays put, the
+ * groups scroll, and the button at the foot says what you'll see.
+ */
+
+.sheet {
+  width: 100%;
+  max-width: none;
+  height: 88dvh;
+  max-height: none;
+  margin: auto 0 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 2rem 2rem 0 0;
+  background: #fff;
+  color: var(--color-ink);
+}
+
+.sheet::backdrop {
+  background: rgb(18 8 0 / 0.45);
+}
+
+:global(html):has(.sheet[open]) {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sheet[open] {
+    animation: sheet-in 0.5s var(--ease-drawer) both;
+  }
+
+  .sheet[data-closing] {
+    animation: sheet-out 0.24s var(--ease-out) both;
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes sheet-out {
+  to {
+    transform: translateY(100%);
+  }
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.head {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2.4rem 1.6rem 1.2rem;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.handle {
+  position: absolute;
+  top: 0.8rem;
+  left: 50%;
+  width: 4rem;
+  height: 0.4rem;
+  translate: -50% 0;
+  border-radius: 99rem;
+  background: var(--color-line);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--font-serif);
+  font-size: 2.6rem;
+  font-weight: 400;
+}
+
+.titleCount {
+  display: grid;
+  place-items: center;
+  min-width: 2.4rem;
+  height: 2.4rem;
+  padding: 0 0.7rem;
+  border-radius: 99rem;
+  background: var(--color-espresso);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 1.2rem;
+  font-weight: 650;
+}
+
+.close {
+  display: grid;
+  place-items: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  margin-right: -1rem;
+}
+
+.close svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.body {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 1.6rem 2.4rem;
+}
+
+.group {
+  padding: 2.4rem 0;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.group:last-child {
+  border-bottom: 0;
+}
+
+.groupTitle {
+  margin-bottom: 1.4rem;
+  color: var(--color-subtle);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ---------- Who it's for ---------- */
+
+.segments {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--count), minmax(0, 1fr));
+  padding: 0.4rem;
+  border-radius: 99rem;
+  background: var(--color-cream);
+}
+
+.indicator {
+  position: absolute;
+  top: 0.4rem;
+  bottom: 0.4rem;
+  left: 0.4rem;
+  width: calc((100% - 0.8rem) / var(--count));
+  border-radius: 99rem;
+  background: var(--color-espresso);
+  transform: translateX(calc(var(--index) * 100%));
+  transition: transform 0.32s var(--ease-out);
+}
+
+.segment {
+  position: relative;
+  height: 4.2rem;
+  border-radius: 99rem;
+  font-size: 1.35rem;
+  font-weight: 560;
+  transition: color 0.2s ease;
+}
+
+.segment[aria-pressed='true'] {
+  color: #fff;
+}
+
+/* ---------- Families ---------- */
+
+.families {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem 1.2rem;
+}
+
+.family {
+  display: grid;
+  width: 100%;
+  gap: 0.2rem;
+  text-align: left;
+  transition: transform var(--duration-press) var(--ease-out);
+}
+
+.family:active {
+  transform: scale(0.97);
+}
+
+.family:disabled {
+  opacity: 0.35;
+}
+
+.swatch {
+  height: 9.6rem;
+  margin-bottom: 1rem;
+}
+
+.familyName {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+}
+
+.familyCount {
+  color: var(--color-subtle);
+  font-size: 1.2rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Houses ---------- */
+
+.checks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem 1.2rem;
+}
+
+.check {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  min-height: 4.8rem;
+  text-align: left;
+}
+
+.check:disabled {
+  opacity: 0.35;
+}
+
+.box {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 1px solid rgb(46 15 5 / 0.25);
+  border-radius: 0.6rem;
+  color: transparent;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.box svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.check[aria-pressed='true'] .box {
+  border-color: var(--color-espresso);
+  background: var(--color-espresso);
+  color: #fff;
+}
+
+.checkLabel {
+  overflow: hidden;
+  font-size: 1.45rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.checkCount {
+  color: var(--color-subtle);
+  font-size: 1.2rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Price and strength ---------- */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  height: 4.4rem;
+  padding: 0 1.6rem;
+  border: 1px solid var(--color-line);
+  border-radius: 99rem;
+  font-size: 1.4rem;
+  font-weight: 560;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    transform var(--duration-press) var(--ease-out);
+}
+
+.chip:active {
+  transform: scale(0.97);
+}
+
+.chip:disabled {
+  opacity: 0.35;
+}
+
+.chip[aria-pressed='true'] {
+  border-color: var(--color-espresso);
+  background: var(--color-espresso);
+  color: #fff;
+}
+
+.chipCount {
+  opacity: 0.6;
+  font-size: 1.2rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- The foot: clear, and show what you've chosen ---------- */
+
+.foot {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.2rem 1.6rem calc(1.2rem + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--color-line);
+  background: #fff;
+}
+
+.reset {
+  height: 4.8rem;
+  padding: 0 1.4rem;
+  color: var(--color-ink);
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+.reset:disabled {
+  opacity: 0.35;
+}
+
+.apply {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  height: 5rem;
+  border-radius: 99rem;
+  background: var(--color-espresso);
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  transition: transform var(--duration-press) var(--ease-out);
+}
+
+.apply:active {
+  transform: scale(0.98);
+}
+
+.apply[aria-disabled] {
+  opacity: 0.45;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicator {
+    transition-property: opacity;
+  }
+}

@@ -1,0 +1,82 @@
+/* An arched doorway in a brass casing, filled with the family's colour. */
+.arch {
+  position: relative;
+  display: block;
+  padding: 0.35rem 0.35rem 0;
+  border: 1px solid rgb(184 149 90 / 0.55);
+  border-bottom: 0;
+  border-radius: 99rem 99rem 0 0;
+  transition: border-color 0.25s ease;
+}
+
+/* The floor line the doorway stands on. */
+.arch::after {
+  content: '';
+  position: absolute;
+  right: -0.5rem;
+  bottom: 0;
+  left: -0.5rem;
+  height: 1px;
+  background: rgb(184 149 90 / 0.55);
+  transition: background-color 0.25s ease;
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  border-radius: 99rem 99rem 0 0;
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 18%, rgb(255 255 255 / 0.7), transparent 70%),
+    linear-gradient(180deg, var(--from), var(--to));
+  transition: transform 0.5s var(--ease-out);
+}
+
+.tick {
+  position: absolute;
+  top: 0.9rem;
+  right: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  margin-inline: auto;
+  border-radius: 50%;
+  background: var(--color-espresso);
+  color: #fff;
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 0.2s ease,
+    transform 0.3s var(--ease-out);
+}
+
+.tick svg {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.arch[data-active] {
+  border-color: var(--color-espresso);
+}
+
+.arch[data-active]::after {
+  background: var(--color-espresso);
+}
+
+.arch[data-active] .tick {
+  opacity: 1;
+  transform: none;
+}
+
+@media (width < 960px) {
+  .tick {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+
+  .tick svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}

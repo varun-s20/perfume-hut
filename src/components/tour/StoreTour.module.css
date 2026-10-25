@@ -2,11 +2,17 @@
    Track & stage
    The track supplies scroll distance (the tour's length plus one screen);
    the stage stays pinned while it plays.
+
+   Phone browsers hide their address bar as you scroll down, and the screen
+   grows. The stage is the screen's height with the bar hidden (lvh), so it
+   always covers it; a stage the height of the smaller screen (svh) left a
+   blank strip at the bottom until the bar came back. The walk itself is
+   measured in svh, so the track is that, plus one full stage to pin over.
    ========================================================================== */
 
 .track {
   position: relative;
-  height: calc((var(--tour-length) + 100) * 1svh);
+  height: calc(var(--tour-length) * 1svh + 100lvh);
   background: var(--color-bg);
 }
 
@@ -26,10 +32,16 @@
 .stage {
   position: sticky;
   top: 0;
-  height: 100svh;
+  height: 100lvh;
   overflow: hidden;
   isolation: isolate;
   color: var(--color-cream);
+  /*
+   * How much of the stage the browser's bar is covering right now (none once
+   * it has slid away, and none on desktop). Anything that must stay in reach
+   * at the foot of the stage sits this much higher.
+   */
+  --toolbar: calc(100lvh - 100dvh);
   /* The entrance and the gallery lay themselves out in this box's units (cqw/cqh). */
   container-type: size;
 }

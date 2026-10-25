@@ -1,43 +1,28 @@
-import type { Metadata, Route } from 'next';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ProductGrid } from '@/components/product/ProductGrid';
 import { JsonLd } from '@/components/seo/JsonLd';
+import { shopUrl } from '@/components/shop/links';
+import { ShopControls } from '@/components/shop/ShopControls';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { PageTransition } from '@/components/ui/PageTransition';
 import { routes } from '@/content/routes';
+import { shop } from '@/content/shop';
 import { getBrands, getProducts } from '@/lib/catalog';
-import {
-  type Audience,
-  audienceLabels,
-  audiences,
-  type Family,
-  families,
-  familyLabels,
-} from '@/lib/catalog-types';
-import { cx } from '@/lib/cx';
-import {
-  filterProducts,
-  parseShopFilters,
-  type ShopFilters,
-  sortLabels,
-  sortOptions,
-  toShopQuery,
-} from '@/lib/shop';
+import { facetsOf, filterProducts, noFilters, parseShopFilters, strengths } from '@/lib/shop';
 import { buildItemListJsonLd } from '@/lib/structured-data';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
   title: 'Shop all fragrances',
   description:
-    'Browse every authentic designer fragrance at Perfume Hut. Filter by house, fragrance family or who it’s for.',
+    'Browse every authentic designer fragrance at Perfume Hut. Filter by scent family, who it’s for, house, price or strength.',
   alternates: { canonical: '/shop' },
 };
 
 type ShopPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
-
-const hrefFor = (filters: ShopFilters) => `${routes.shop}${toShopQuery(filters)}` as Route;
 
 export default async function ShopPage({ searchParams }: ShopPageProps) {
   const [params, brands, products] = await Promise.all([searchParams, getBrands(), getProducts()]);
@@ -46,115 +31,45 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
     brands.map((brand) => brand.slug),
   );
   const results = filterProducts(products, filters);
+  const items = products.map(facetsOf);
   const brandNames = new Map(brands.map((brand) => [brand.slug, brand.name]));
-  const isFiltered = Boolean(filters.brand || filters.family || filters.audience);
-
-  // Toggle a single filter while keeping the others (and the sort).
-  const toggle = <K extends 'brand' | 'family' | 'audience'>(key: K, value: ShopFilters[K]) =>
-    hrefFor({ ...filters, [key]: filters[key] === value ? undefined : value });
-
-  const groups = [
-    {
-      title: 'For',
-      options: audiences.map((value: Audience) => ({
-        label: audienceLabels[value],
-        href: toggle('audience', value),
-        active: filters.audience === value,
-      })),
-    },
-    {
-      title: 'Family',
-      options: families.map((value: Family) => ({
-        label: familyLabels[value],
-        href: toggle('family', value),
-        active: filters.family === value,
-      })),
-    },
-    {
-      title: 'House',
-      options: brands.map((brand) => ({
-        label: brand.name,
-        href: toggle('brand', brand.slug),
-        active: filters.brand === brand.slug,
-      })),
-    },
-  ];
+  // Only the strengths there's something in (no pure parfums yet, for instance).
+  const inStock = strengths.filter((strength) => items.some((item) => item.strength === strength));
 
   return (
     <PageTransition>
       <JsonLd data={buildItemListJsonLd('All fragrances', results, brandNames)} />
-      <PageHeader
-        eyebrow="The shop floor"
-        title={['All fragrances']}
-        intro="Every bottle on our shelves, sealed and authentic. Narrow it down by who it’s for, the fragrance family you love, or the house."
-      />
+      <PageHeader eyebrow={shop.eyebrow} title={[shop.title]} intro={shop.intro} />
 
-      <div className={styles.layout}>
-        <aside className={styles.filters} aria-label="Filters">
-          {groups.map((group) => (
-            <div key={group.title} className={styles.group}>
-              <h2 className={styles.groupTitle}>{group.title}</h2>
-              <ul className={styles.options}>
-                {group.options.map((option) => (
-                  <li key={option.label}>
-                    <Link
-                      href={option.href}
-                      scroll={false}
-                      transitionTypes={['filter']}
-                      aria-current={option.active ? 'true' : undefined}
-                      className={cx(styles.option, option.active && styles.optionActive)}
-                    >
-                      {option.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-          {isFiltered && (
-            <Link
-              href={hrefFor({ sort: filters.sort })}
-              scroll={false}
-              transitionTypes={['filter']}
-              className={styles.clear}
-            >
-              Clear filters
-            </Link>
-          )}
-        </aside>
-
-        <section className={styles.results} aria-labelledby="results-heading">
-          <div className={styles.toolbar}>
-            <h2 id="results-heading" className={styles.count} aria-live="polite">
-              {results.length} {results.length === 1 ? 'fragrance' : 'fragrances'}
-            </h2>
-            <nav className={styles.sort} aria-label="Sort">
-              {sortOptions.map((option) => (
-                <Link
-                  key={option}
-                  href={hrefFor({ ...filters, sort: option })}
-                  scroll={false}
-                  transitionTypes={['filter']}
-                  aria-current={filters.sort === option ? 'true' : undefined}
-                  className={cx(styles.sortLink, filters.sort === option && styles.sortActive)}
-                >
-                  {sortLabels[option]}
-                </Link>
-              ))}
-            </nav>
-          </div>
-
+      <div className={styles.shop}>
+        <ShopControls
+          filters={filters}
+          items={items}
+          houses={brands.map((brand) => ({ slug: brand.slug, name: brand.name }))}
+          strengths={inStock}
+          resultCount={results.length}
+        >
           {results.length > 0 ? (
-            <ProductGrid products={results} eagerCount={4} columns={3} />
+            <ProductGrid products={results} eagerCount={4} />
           ) : (
             <div className={styles.empty}>
-              <p>Nothing on the shelf matches that combination yet.</p>
-              <Link href={routes.shop} className={styles.clear}>
-                See everything
-              </Link>
+              <p className={styles.emptyTitle}>{shop.empty.title}</p>
+              <p className={styles.emptyText}>{shop.empty.text}</p>
+              <div className={styles.emptyActions}>
+                <Link
+                  href={shopUrl({ ...noFilters, sort: filters.sort })}
+                  scroll={false}
+                  className={styles.emptyReset}
+                >
+                  {shop.empty.reset}
+                </Link>
+                <Link href={routes.contact} className={styles.emptyAdvisor}>
+                  {shop.empty.advisor}
+                </Link>
+              </div>
             </div>
           )}
-        </section>
+        </ShopControls>
       </div>
     </PageTransition>
   );

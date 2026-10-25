@@ -52,7 +52,7 @@ npm run dev                  # http://localhost:3000
 | Route                                             | Rendering | Notes                                                    |
 | ------------------------------------------------- | --------- | -------------------------------------------------------- |
 | `/`                                               | Static    | Virtual tour, marquee, why-us, notes, bestsellers, films |
-| `/shop`                                           | Dynamic   | Filters (for / family / house) and sort via URL params   |
+| `/shop`                                           | Dynamic   | Scent, who, house, price and strength filters in the URL |
 | `/brands`                                         | Static    | Store directory ("the aisles")                           |
 | `/brands/[slug]`                                  | SSG       | An aisle: hero, story, shelf, previous/next aisle        |
 | `/products/[slug]`                                | SSG       | Size selector, add to bag, notes pyramid, related        |
@@ -170,6 +170,16 @@ How the pieces fit:
   tap right for next and left for back, hold to pause, swipe sideways to move and down to
   close, Esc to close. Their words run beneath as subtitles, with the bottle ready to add to
   the bag in one tap.
+- **Shop filters** (`components/shop`, `lib/shop.ts`): built round how people choose fragrance.
+  Scent comes first: the six families as swatches of colour in arched doorways, each with a
+  few notes. Then who it's for (a gliding switch), house, price band and strength. Houses,
+  families, prices and strengths take several picks each (`?family=floral,fresh&brand=dior`).
+  Every option shows how many bottles it would leave you with, and options that would leave
+  none are dimmed. On wide screens the toolbar sticks above the grid with dropdowns that stay
+  open while you tick, and each pick is a link, so the grid updates in place. On phones the
+  families stay in a row you swipe, and a Filter · Sort pill floats over the grid. The sheet
+  stages your picks and its button says exactly how many fragrances you'll see. What's on
+  shows as removable chips.
 - **Header search** (`HeaderSearch`): the icon grows into a field in place (a clip-path
   transition from the icon's own circle), and results drop down as you type, searched in the
   browser with the same matching as the results page (`lib/search.ts`). Enter opens the full

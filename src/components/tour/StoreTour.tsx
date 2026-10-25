@@ -78,9 +78,11 @@ export function StoreTour({
   // The houses' list walks you to a cabinet: scroll to where the walk reaches it.
   const jumpTo = (cabinet: number) => {
     const track = trackRef.current;
+    const anchor = track?.querySelector<HTMLElement>('#aisles');
     const target = plan.stops.find((s) => s.kind === 'cabinet' && s.cabinet === cabinet);
-    if (!track || !target) return;
-    const svh = track.offsetHeight / (plan.length + 100);
+    if (!track || !anchor || !target) return;
+    // The walk is measured in svh; the "aisles" anchor sits at a known svh, so it gives the unit.
+    const svh = anchor.offsetTop / plan.stops[0]!.at;
     const top = track.getBoundingClientRect().top + window.scrollY;
     window.scrollTo({ top: top + target.at * svh, behavior: 'smooth' });
   };
