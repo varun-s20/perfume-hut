@@ -1,0 +1,115 @@
+.hero {
+  position: relative;
+  height: min(78svh, 64rem);
+  margin: 0 var(--gutter-media);
+  overflow: hidden;
+  background: var(--color-panel);
+  color: #fff;
+}
+
+.image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 4rem;
+  background: linear-gradient(180deg, rgb(18 8 0 / 0.25), transparent 35%, rgb(18 8 0 / 0.75));
+}
+
+.breadcrumb {
+  position: absolute;
+  top: 3rem;
+  left: 4rem;
+  color: rgb(255 255 255 / 0.85);
+  font-size: 1.05rem;
+}
+
+.breadcrumb a {
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+
+.aisle {
+  color: var(--color-brass-light);
+  font-size: 1.05rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin-top: 0.8rem;
+  font-family: var(--font-serif);
+  font-size: 11rem;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  animation: title-in 900ms var(--ease-out) 200ms both;
+}
+
+.tagline {
+  margin-top: 1.2rem;
+  max-width: 50rem;
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  line-height: 1.25;
+  animation: title-in 900ms var(--ease-out) 320ms both;
+}
+
+/* One-off entrance as you arrive in the aisle; blur masks the rise. */
+@keyframes title-in {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(1.6rem);
+  }
+}
+
+@keyframes title-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .title,
+  .tagline {
+    animation-name: title-fade;
+  }
+}
+
+@media (width < 960px) {
+  .hero {
+    height: 62svh;
+  }
+
+  .overlay {
+    padding: 2.4rem 1.6rem;
+  }
+
+  .breadcrumb {
+    top: 1.6rem;
+    left: 1.6rem;
+    font-size: 1.3rem;
+  }
+
+  .aisle {
+    font-size: 1.15rem;
+  }
+
+  .title {
+    font-size: clamp(4.4rem, 15vw, 8rem);
+  }
+
+  .tagline {
+    font-size: 1.9rem;
+  }
+}

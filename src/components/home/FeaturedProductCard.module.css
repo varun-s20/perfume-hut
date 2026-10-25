@@ -1,0 +1,136 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.position {
+  font-size: 1.36rem;
+  font-weight: 560;
+  letter-spacing: -0.01em;
+  line-height: 1.4rem;
+}
+
+.arrow {
+  width: 1.25rem;
+  height: 1.05rem;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.media {
+  display: block;
+  margin-top: 2.19rem;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 32.7rem;
+  object-fit: cover;
+  transition: transform 1.2s var(--ease-out);
+}
+
+.featured .image {
+  height: 46.3rem;
+}
+
+.info {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.name {
+  color: #000;
+  font-size: 1.22rem;
+  font-weight: 560;
+  letter-spacing: -0.015em;
+  line-height: 1.8rem;
+}
+
+/* The whole card is clickable via the title link. */
+.nameLink::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.concentration {
+  display: block;
+  padding-left: 3.2rem;
+  color: var(--color-muted);
+  font-weight: 460;
+}
+
+.price {
+  color: #000;
+  font-size: 1.26rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover .image {
+    transform: scale(1.035);
+  }
+
+  .card:hover .arrow {
+    transform: translateX(0.3rem);
+  }
+}
+
+@media (width < 960px) {
+  .position {
+    font-size: 1.5rem;
+    line-height: 1.8rem;
+  }
+
+  .arrow {
+    width: 1.5rem;
+    height: 1.25rem;
+  }
+
+  .media {
+    margin-top: 1.2rem;
+  }
+
+  .image {
+    height: auto;
+    aspect-ratio: 210 / 327;
+  }
+
+  .featured .image {
+    height: auto;
+    aspect-ratio: 443 / 463;
+  }
+
+  .info {
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 1.2rem;
+  }
+
+  .name {
+    font-size: 1.4rem;
+    line-height: 2rem;
+  }
+
+  .concentration {
+    padding-left: 0;
+  }
+
+  .price {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+}

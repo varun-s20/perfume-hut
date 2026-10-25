@@ -1,0 +1,41 @@
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 2rem;
+}
+
+.row dd {
+  font-variant-numeric: tabular-nums;
+}
+
+.note,
+.status {
+  color: var(--color-subtle);
+  font-size: 1rem;
+}
+
+.status a {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+@media (width < 960px) {
+  .row {
+    font-size: 2.2rem;
+  }
+
+  .note,
+  .status {
+    font-size: 1.3rem;
+  }
+}

@@ -1,0 +1,141 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.6rem var(--gutter) 1.8rem;
+  background: var(--color-bg);
+  text-align: center;
+}
+
+.tagline {
+  margin-top: 0.8rem;
+  color: #000;
+  font-family: var(--font-serif);
+  font-size: 2.06rem;
+  letter-spacing: -0.034em;
+  line-height: 2.4rem;
+}
+
+/* The wordmark rises out of its own line box once, as the page arrives. */
+.title {
+  margin-top: 0.4rem;
+  overflow: hidden;
+  /* Room for descenders inside the mask. */
+  padding-bottom: 0.04em;
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 15.45rem;
+  font-weight: 400;
+  letter-spacing: -0.0696em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.titleText {
+  display: block;
+  /* Cancels the trailing tracking so the wordmark stays optically centred. */
+  margin-right: -0.0696em;
+}
+
+.cta {
+  display: flex;
+  align-items: flex-end;
+  gap: 4.4rem;
+  margin-top: 0.9rem;
+}
+
+.price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.priceLabel {
+  color: var(--color-subtle);
+  font-size: 1.1rem;
+  font-weight: 450;
+  letter-spacing: -0.01em;
+  line-height: 1.3rem;
+}
+
+.priceValue {
+  margin-top: 0.54rem;
+  color: #000;
+  font-size: 2.12rem;
+  font-weight: 420;
+  letter-spacing: -0.02em;
+  line-height: 2.2rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Arrival: a short, one-time stagger ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .pill,
+  .tagline,
+  .cta {
+    animation: arrive 800ms var(--ease-out) both;
+  }
+
+  .tagline {
+    animation-delay: 80ms;
+  }
+
+  .cta {
+    animation-delay: 360ms;
+  }
+
+  .titleText {
+    animation: rise 1100ms var(--ease-out) 140ms both;
+  }
+}
+
+@keyframes arrive {
+  from {
+    opacity: 0;
+    transform: translateY(0.8rem);
+  }
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(102%);
+  }
+}
+
+@media (width < 960px) {
+  .hero {
+    padding-top: 1.6rem;
+    padding-bottom: 2.8rem;
+  }
+
+  .tagline {
+    max-width: 34rem;
+    margin-top: 1.6rem;
+    padding-inline: 2.4rem;
+    font-size: 1.9rem;
+    line-height: 2.5rem;
+  }
+
+  .title {
+    margin-top: 1.4rem;
+    font-size: 14.6vw;
+  }
+
+  .cta {
+    gap: 2.4rem;
+    margin-top: 2.2rem;
+  }
+
+  .priceLabel {
+    font-size: 1.3rem;
+    line-height: 1.6rem;
+  }
+
+  .priceValue {
+    margin-top: 0.2rem;
+    font-size: 2.4rem;
+    line-height: 2.6rem;
+  }
+}

@@ -1,0 +1,191 @@
+/*
+ * Enter is slower than exit: the system is presenting something on open, but
+ * closing should feel instant.
+ */
+.drawer {
+  position: fixed;
+  inset: 0 0 0 auto;
+  width: min(44rem, 100vw);
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  translate: 100% 0;
+  transition:
+    translate 280ms var(--ease-drawer),
+    overlay 280ms allow-discrete,
+    display 280ms allow-discrete;
+}
+
+.drawer[open] {
+  translate: 0 0;
+  transition-duration: 460ms;
+}
+
+@starting-style {
+  .drawer[open] {
+    translate: 100% 0;
+  }
+}
+
+.drawer::backdrop {
+  background: rgb(18 8 0 / 0);
+  transition:
+    background-color 280ms ease,
+    overlay 280ms allow-discrete,
+    display 280ms allow-discrete;
+}
+
+.drawer[open]::backdrop {
+  background: rgb(18 8 0 / 0.42);
+}
+
+@starting-style {
+  .drawer[open]::backdrop {
+    background: rgb(18 8 0 / 0);
+  }
+}
+
+:global(html):has(.drawer[open]) {
+  overflow: hidden;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2.4rem 2.8rem 1.6rem;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.title {
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 2.4rem;
+  font-weight: 400;
+}
+
+.count {
+  color: var(--color-subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+.close {
+  display: grid;
+  place-items: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  transition:
+    background-color 0.2s ease,
+    transform var(--duration-press) var(--ease-out);
+}
+
+.close:active {
+  transform: scale(0.94);
+}
+
+.close svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .close:hover {
+    background: var(--color-cream);
+  }
+}
+
+.scroll {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 2.8rem;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 2rem 2.8rem 2.8rem;
+  border-top: 1px solid var(--color-line);
+  background: var(--color-cream);
+}
+
+.viewBag,
+.emptyLink {
+  align-self: center;
+  color: var(--color-ink);
+  font-size: 1.05rem;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+
+.empty {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6rem;
+  padding: 2.8rem;
+  color: var(--color-subtle);
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer,
+  .drawer[open] {
+    translate: 0 0;
+    opacity: 0;
+    transition:
+      opacity 200ms ease,
+      overlay 200ms allow-discrete,
+      display 200ms allow-discrete;
+  }
+
+  .drawer[open] {
+    opacity: 1;
+  }
+
+  @starting-style {
+    .drawer[open] {
+      opacity: 0;
+    }
+  }
+}
+
+@media (width < 960px) {
+  .header,
+  .footer {
+    padding-inline: 1.6rem;
+  }
+
+  .scroll {
+    padding-inline: 1.6rem;
+  }
+
+  .title {
+    font-size: 2.6rem;
+  }
+
+  .viewBag,
+  .emptyLink {
+    font-size: 1.35rem;
+  }
+
+  .empty {
+    font-size: 1.45rem;
+  }
+}

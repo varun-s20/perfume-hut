@@ -1,0 +1,329 @@
+/* ==========================================================================
+   Cabinet room: the floor softens behind you and the case stands open in
+   the light, with the house's panel beside it. Light, like the boutique.
+   ========================================================================== */
+
+.room {
+  position: fixed;
+  z-index: 60;
+  inset: 0;
+  overflow: hidden;
+  color: var(--color-ink);
+}
+
+/* The floor behind, blurred; a pool of light where the case stands, and floor under it. */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 34% 62% at 70% 42%, rgb(255 226 176 / 0.6), transparent 72%),
+    linear-gradient(0deg, rgb(214 200 182 / 0.85), transparent 22%), rgb(244 238 229 / 0.93);
+  backdrop-filter: blur(24px);
+}
+
+.close {
+  position: absolute;
+  z-index: 4;
+  top: 2.4rem;
+  right: 2.4rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  height: 3.6rem;
+  padding: 0 1.6rem 0 1.2rem;
+  border: 1px solid rgb(46 15 5 / 0.2);
+  border-radius: 99rem;
+  background: rgb(255 255 255 / 0.7);
+  color: var(--color-ink);
+  font-size: 1rem;
+  font-weight: 560;
+  letter-spacing: 0.04em;
+  transition:
+    transform var(--duration-press) var(--ease-out),
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.close:active {
+  transform: scale(0.97);
+}
+
+.closeIcon {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .close:hover {
+    border-color: var(--color-espresso);
+    background: #fff;
+  }
+}
+
+/* ---------- The open case, in 3D ---------- */
+
+/* The case is measured in this box: as large as fits, keeping its proportions. */
+.stage {
+  --u: min(calc(100cqh / 88), calc(100cqw / 44));
+  position: absolute;
+  z-index: 2;
+  top: 12vh;
+  right: 10vw;
+  bottom: 6vh;
+  width: min(40vw, 60vh);
+  container-type: size;
+  perspective: 190vh;
+  /* Seen from a little to the left, where you stand reading the panel. */
+  perspective-origin: 10% 40%;
+  /* The case's bottles take the pointer themselves (see CabinetBox). */
+  pointer-events: none;
+}
+
+.tilt {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+/* The case's shadow on the floor. */
+.shadow {
+  position: absolute;
+  bottom: -2%;
+  left: 50%;
+  width: calc(64 * var(--u));
+  height: calc(9 * var(--u));
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse 50% 50%,
+    rgb(70 40 20 / 0.38),
+    rgb(70 40 20 / 0.12) 55%,
+    transparent 75%
+  );
+}
+
+/* ---------- The house panel ---------- */
+
+.panel {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 8vw;
+  width: min(42rem, 36vw);
+  translate: 0 -50%;
+  animation: panel-in 700ms var(--ease-out) 450ms both;
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.2rem);
+    filter: blur(4px);
+  }
+}
+
+.eyebrow {
+  color: var(--color-brass);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin-top: 1.2rem;
+  font-family: var(--font-serif);
+  font-size: 5.6rem;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+
+.tagline {
+  margin-top: 1rem;
+  color: #6b4a33;
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-style: italic;
+}
+
+.story {
+  margin-top: 1.6rem;
+  color: var(--color-muted);
+  font-size: 1.15rem;
+  line-height: 1.6;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin-top: 2rem;
+  padding: 1.6rem 0;
+  border-block: 1px solid rgb(184 149 90 / 0.45);
+}
+
+.facts dt {
+  color: var(--color-subtle);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.facts dd {
+  margin-top: 0.3rem;
+  font-family: var(--font-serif);
+  font-size: 1.7rem;
+}
+
+.hint {
+  margin-top: 1.6rem;
+  color: var(--color-subtle);
+  font-size: 1rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem 1.6rem;
+  margin-top: 1.6rem;
+}
+
+.primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  height: 3.4rem;
+  padding: 0 1.5rem;
+  border-radius: 99rem;
+  background: var(--color-espresso);
+  color: #fff;
+  font-size: 1.02rem;
+  font-weight: 560;
+  transition:
+    background-color 0.2s ease,
+    transform var(--duration-press) var(--ease-out);
+}
+
+.primary:active {
+  transform: scale(0.97);
+}
+
+.arrow {
+  width: 1rem;
+  height: 0.85rem;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.secondary {
+  color: var(--color-ink);
+  font-size: 1rem;
+  font-weight: 560;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .primary:hover {
+    background: var(--color-espresso-hover);
+  }
+
+  .primary:hover .arrow {
+    transform: translateX(0.3rem);
+  }
+}
+
+/* With Ava on, she stands at the left and the case keeps the right. */
+.room[data-ava] .stage {
+  right: 5vw;
+  perspective-origin: 0% 40%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    animation: panel-in 1ms both;
+  }
+}
+
+/* ==========================================================================
+   Phones: the case above, the panel below it.
+   ========================================================================== */
+
+@media (width < 960px) {
+  .close {
+    top: 1.2rem;
+    right: 1.2rem;
+    height: 3.8rem;
+    font-size: 1.1rem;
+  }
+
+  .stage {
+    top: 6.4rem;
+    right: 1.6rem;
+    bottom: auto;
+    left: 1.6rem;
+    width: auto;
+    height: 50svh;
+    perspective-origin: 50% 30%;
+  }
+
+  .room[data-ava] .stage {
+    right: 1.6rem;
+    perspective-origin: 50% 30%;
+  }
+
+  .panel {
+    top: calc(6.4rem + 50svh + 2.4rem);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    padding: 0 1.6rem 2.4rem;
+    overflow-y: auto;
+    translate: none;
+  }
+
+  .eyebrow {
+    font-size: 0.95rem;
+  }
+
+  .title {
+    margin-top: 0.6rem;
+    font-size: 3.6rem;
+  }
+
+  .tagline {
+    margin-top: 0.6rem;
+    font-size: 1.5rem;
+  }
+
+  .story {
+    margin-top: 1rem;
+    font-size: 1.3rem;
+  }
+
+  .facts {
+    margin-top: 1.4rem;
+    padding: 1.2rem 0;
+  }
+
+  .facts dt {
+    font-size: 0.95rem;
+  }
+
+  .hint {
+    display: none;
+  }
+
+  .primary {
+    height: 3.8rem;
+    font-size: 1.2rem;
+  }
+
+  .secondary {
+    font-size: 1.15rem;
+  }
+}

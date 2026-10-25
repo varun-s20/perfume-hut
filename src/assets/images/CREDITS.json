@@ -1,0 +1,260 @@
+{
+  "source": "Unsplash",
+  "license": "https://unsplash.com/license",
+  "images": [
+    {
+      "file": "brands/armani.jpg",
+      "unsplashPhotoId": "photo-1708979165880-dd0ff61fa748"
+    },
+    {
+      "file": "brands/calvin-klein.jpg",
+      "unsplashPhotoId": "photo-1614003151344-c3a493e9fb0c"
+    },
+    {
+      "file": "brands/chanel.jpg",
+      "unsplashPhotoId": "photo-1769981287706-0a300ee2fe69"
+    },
+    {
+      "file": "brands/dior.jpg",
+      "unsplashPhotoId": "photo-1760860992203-85ca32536788"
+    },
+    {
+      "file": "brands/gucci.jpg",
+      "unsplashPhotoId": "photo-1624613533305-28d421d70875"
+    },
+    {
+      "file": "brands/prada.jpg",
+      "unsplashPhotoId": "photo-1651853082689-706323a31427"
+    },
+    {
+      "file": "brands/versace.jpg",
+      "unsplashPhotoId": "photo-1595389294696-ae969ff733a8"
+    },
+    {
+      "file": "brands/ysl.jpg",
+      "unsplashPhotoId": "photo-1723391962154-8a2b6299bc09"
+    },
+    {
+      "file": "editorial/blouse.jpg",
+      "unsplashPhotoId": "photo-1727264879316-71bc73756122"
+    },
+    {
+      "file": "editorial/coco-tray.jpg",
+      "unsplashPhotoId": "photo-1595535373192-fc8935bacd89"
+    },
+    {
+      "file": "editorial/hand-bottle.jpg",
+      "unsplashPhotoId": "photo-1589782051446-a24efcec7ffc"
+    },
+    {
+      "file": "editorial/lab.jpg",
+      "unsplashPhotoId": "photo-1716034348692-ddc6498732f7"
+    },
+    {
+      "file": "editorial/neck.jpg",
+      "unsplashPhotoId": "photo-1609175235148-2fe181db7f36"
+    },
+    {
+      "file": "editorial/perfumery.jpg",
+      "unsplashPhotoId": "photo-1545840716-c82e9eec6930"
+    },
+    {
+      "file": "editorial/portrait-bottle.jpg",
+      "unsplashPhotoId": "photo-1600086586698-368d69f00d6e"
+    },
+    {
+      "file": "editorial/story-sauvage.jpg",
+      "unsplashPhotoId": "photo-1767187861728-942f561b7103"
+    },
+    {
+      "file": "editorial/story-smoke.jpg",
+      "unsplashPhotoId": "photo-1771762013405-ad64577dfc55"
+    },
+    {
+      "file": "editorial/story-spray.jpg",
+      "unsplashPhotoId": "photo-1705602626956-711790dbb456"
+    },
+    {
+      "file": "editorial/velvet.jpg",
+      "unsplashPhotoId": "photo-1774682060997-f8959850a7d4"
+    },
+    {
+      "file": "editorial/wrist.jpg",
+      "unsplashPhotoId": "photo-1662748716967-88fea581d239"
+    },
+    {
+      "file": "hero/acqua-di-gio.jpg",
+      "unsplashPhotoId": "photo-1759794108389-132d8bb4e87a"
+    },
+    {
+      "file": "hero/ysl-libre.jpg",
+      "unsplashPhotoId": "photo-1723391962154-8a2b6299bc09"
+    },
+    {
+      "file": "notes/amber.jpg",
+      "unsplashPhotoId": "photo-1535683577427-740aaac4ec25"
+    },
+    {
+      "file": "notes/citrus.jpg",
+      "unsplashPhotoId": "photo-1761371675479-8a25df2d0b98"
+    },
+    {
+      "file": "notes/floral.jpg",
+      "unsplashPhotoId": "photo-1581430544920-80cf5096fd15"
+    },
+    {
+      "file": "products/armani-acqua-di-gio-edp.jpg",
+      "unsplashPhotoId": "photo-1759794108389-132d8bb4e87a"
+    },
+    {
+      "file": "products/armani-acqua-di-gio.jpg",
+      "unsplashPhotoId": "photo-1706924179763-7f2744656823"
+    },
+    {
+      "file": "products/armani-stronger-with-you.jpg",
+      "unsplashPhotoId": "photo-1611242956059-53e4c29e6b22"
+    },
+    {
+      "file": "products/chanel-bleu.jpg",
+      "unsplashPhotoId": "photo-1523293182086-7651a899d37f"
+    },
+    {
+      "file": "products/chanel-chance-eau-tendre.jpg",
+      "unsplashPhotoId": "photo-1588177925144-2fd3e4e7ce57"
+    },
+    {
+      "file": "products/chanel-coco-mademoiselle.jpg",
+      "unsplashPhotoId": "photo-1708733145706-82da0d0596e9"
+    },
+    {
+      "file": "products/chanel-gabrielle.jpg",
+      "unsplashPhotoId": "photo-1690790427878-ecf29d8b686b"
+    },
+    {
+      "file": "products/chanel-no5.jpg",
+      "unsplashPhotoId": "photo-1610113233329-1c73b6f7fe98"
+    },
+    {
+      "file": "products/ck-all.jpg",
+      "unsplashPhotoId": "photo-1650371690246-981c88d1d620"
+    },
+    {
+      "file": "products/ck-eternity.jpg",
+      "unsplashPhotoId": "photo-1632495112970-30ce8340c2be"
+    },
+    {
+      "file": "products/ck-one.jpg",
+      "unsplashPhotoId": "photo-1620848616916-3efaf499adcb"
+    },
+    {
+      "file": "products/dior-blooming-bouquet.jpg",
+      "unsplashPhotoId": "photo-1678984633768-c4fd5a01732a"
+    },
+    {
+      "file": "products/dior-miss-dior.jpg",
+      "unsplashPhotoId": "photo-1617943539287-d6fe110ac7ad"
+    },
+    {
+      "file": "products/dior-sauvage.jpg",
+      "unsplashPhotoId": "photo-1747916148863-7164d8920b57"
+    },
+    {
+      "file": "products/gucci-bloom.jpg",
+      "unsplashPhotoId": "photo-1652262147172-142284cf5a6f"
+    },
+    {
+      "file": "products/gucci-guilty-pour-femme.jpg",
+      "unsplashPhotoId": "photo-1619007556336-4d99b008471e"
+    },
+    {
+      "file": "products/gucci-memoire.jpg",
+      "unsplashPhotoId": "photo-1687198192320-333497e0cdad"
+    },
+    {
+      "file": "products/prada-candy.jpg",
+      "unsplashPhotoId": "photo-1630573133526-8d090e0269af"
+    },
+    {
+      "file": "products/prada-lhomme.jpg",
+      "unsplashPhotoId": "photo-1775639698865-8621fbccb000"
+    },
+    {
+      "file": "products/prada-luna-rossa-black.jpg",
+      "unsplashPhotoId": "photo-1775639698859-5de0e8b3e4f6"
+    },
+    {
+      "file": "products/versace-crystal-noir.jpg",
+      "unsplashPhotoId": "photo-1659167530799-982cfce69360"
+    },
+    {
+      "file": "products/versace-dylan-blue.jpg",
+      "unsplashPhotoId": "photo-1674469295525-11f85ed5a3ac"
+    },
+    {
+      "file": "products/versace-eros-edp.jpg",
+      "unsplashPhotoId": "photo-1624798956425-ef88fc12b540"
+    },
+    {
+      "file": "products/versace-eros-edt.jpg",
+      "unsplashPhotoId": "photo-1716978499366-d5a84bf1fe70"
+    },
+    {
+      "file": "products/ysl-black-opium.jpg",
+      "unsplashPhotoId": "photo-1659167746260-f6e4beaa2de7"
+    },
+    {
+      "file": "products/ysl-la-nuit.jpg",
+      "unsplashPhotoId": "photo-1682002801925-93e2e6d73274"
+    },
+    {
+      "file": "products/ysl-libre.jpg",
+      "unsplashPhotoId": "photo-1723391962166-6d9bb8a3d3e7"
+    },
+    {
+      "file": "store/cage.jpg",
+      "unsplashPhotoId": "photo-1646641085047-b76f8884a3c0"
+    },
+    {
+      "file": "store/chandelier.webp",
+      "unsplashPhotoId": "photo-1627306411131-358d6d0fd2cb",
+      "note": "Cut out from the photograph"
+    },
+    {
+      "file": "store/concierge.jpg",
+      "unsplashPhotoId": "photo-1604904612715-47bf9d9bc670"
+    },
+    {
+      "file": "store/hall.jpg",
+      "unsplashPhotoId": "photo-1782834294783-dff56aa2a540"
+    },
+    {
+      "file": "store/marble-floor.jpg",
+      "unsplashPhotoId": "photo-1558346648-9757f2fa4474"
+    },
+    {
+      "file": "store/marble-wall.jpg",
+      "unsplashPhotoId": "photo-1566041510394-cf7c8fe21800"
+    },
+    {
+      "file": "store/organ.jpg",
+      "unsplashPhotoId": "photo-1533414765079-4bb015a31395"
+    },
+    {
+      "file": "store/parfumerie.jpg",
+      "unsplashPhotoId": "photo-1780277526212-3f1195df785c"
+    }
+  ],
+  "derivatives": {
+    "bottles/*.webp": "Each bottle cut out of the matching products/*.jpg photograph (BiRefNet), then straightened",
+    "ava/mouth-*.webp": "Mouth frames warped from the matching ava/*.webp pose for lip movement"
+  },
+  "ava": {
+    "files": "ava/*.webp",
+    "source": "Pexels",
+    "license": "https://www.pexels.com/license/",
+    "pexelsPhotoIds": [
+      30781739, 30781743, 30781745, 30781746, 30781748, 30781749, 30781750, 30781751
+    ],
+    "note": "One photo shoot; each pose cut out (BiRefNet) and aligned on a shared canvas, with mouth frames warped from the same photograph."
+  }
+}

@@ -1,0 +1,25 @@
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-inline: var(--gutter);
+  text-align: center;
+}
+
+.heading {
+  margin-top: 0.6rem;
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 4.9rem;
+  font-weight: 400;
+  letter-spacing: -0.0255em;
+  line-height: 5.3rem;
+}
+
+@media (width < 960px) {
+  .heading {
+    margin-top: 1rem;
+    font-size: clamp(3rem, 8.6vw, 4.6rem);
+    line-height: 1.1;
+  }
+}

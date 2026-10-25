@@ -1,0 +1,382 @@
+/* ==========================================================================
+   Entrance
+   A gallery wall: two framed photographs and an arched doorway looking onto
+   the shopfront. All geometry is in container units of the stage (cqw/cqh),
+   so the arch, its casing and the clip on the photo line up at any size.
+   ========================================================================== */
+
+.entrance {
+  /* The doorway sits to the right of the gallery wall. */
+  --arch-x: 76cqw;
+  --arch-w: 30cqw;
+  --arch-top: 5cqh;
+  --arch-bottom: 4cqh;
+  --arch-left: calc(var(--arch-x) - var(--arch-w) / 2);
+  --arch-right: calc(100cqw - var(--arch-x) - var(--arch-w) / 2);
+  /* The point you walk towards in the shopfront photo (see `focus` in the content). */
+  --scene-origin: calc(var(--focus-x) * 1%) calc(var(--focus-y) * 1%);
+  position: absolute;
+  inset: 0;
+}
+
+.wall {
+  position: absolute;
+  inset: 0;
+  background: var(--color-bg);
+}
+
+/* ---------- The doorway ---------- */
+
+/*
+ * The shopfront fills the stage and the clip shapes it into the arch. `--open`
+ * (0 → 1, driven by scroll) widens the clip until it is the whole frame.
+ */
+.portal {
+  --open: 0;
+  --shut: calc(1 - var(--open));
+  position: absolute;
+  inset: 0;
+  background: #000;
+  clip-path: inset(
+    calc(var(--shut) * var(--arch-top)) calc(var(--shut) * var(--arch-right))
+      calc(var(--shut) * var(--arch-bottom)) calc(var(--shut) * var(--arch-left)) round
+      calc(var(--shut) * var(--arch-w) / 2) calc(var(--shut) * var(--arch-w) / 2) 0 0
+  );
+}
+
+/*
+ * While the arch is narrow the photo slides across so its focus (the window
+ * you'll walk through) sits in the arch; it glides back to centre as the arch
+ * opens. The scroll-driven scale walks the camera towards that window.
+ */
+.scene {
+  position: absolute;
+  inset: 0;
+  translate: calc(var(--shut) * (var(--arch-x) - 50cqw)) 0;
+  transform-origin: var(--scene-origin);
+}
+
+.sceneImage {
+  object-fit: cover;
+  object-position: var(--scene-origin);
+}
+
+/* A little shade at the foot of the arch so the scroll cue reads over the photo. */
+.portal::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgb(18 8 0 / 0.6), transparent 34%);
+  opacity: var(--shut);
+  pointer-events: none;
+}
+
+/* A brass casing around the arch, standing on a threshold line. */
+.casing {
+  position: absolute;
+  top: calc(var(--arch-top) - 1.2rem);
+  right: calc(var(--arch-right) - 1.2rem);
+  bottom: var(--arch-bottom);
+  left: calc(var(--arch-left) - 1.2rem);
+  border: 1px solid var(--color-brass);
+  border-bottom: 0;
+  border-radius: calc(var(--arch-w) / 2 + 1.2rem) calc(var(--arch-w) / 2 + 1.2rem) 0 0;
+  pointer-events: none;
+}
+
+.casing::after {
+  content: '';
+  position: absolute;
+  right: -2.4rem;
+  bottom: 0;
+  left: -2.4rem;
+  height: 1px;
+  background: var(--color-brass);
+}
+
+/* ---------- Framed photographs ---------- */
+
+.gallery,
+.frames {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Wall text, as in a gallery: a short line beside the work. */
+.label {
+  position: absolute;
+  top: 8cqh;
+  left: 31cqw;
+  display: grid;
+  gap: 1.2rem;
+  width: 27cqw;
+}
+
+.labelEyebrow {
+  color: var(--color-subtle);
+  font-size: 0.9rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.labelText {
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 1.95rem;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+}
+
+.frame {
+  position: absolute;
+  width: 19cqw;
+  pointer-events: auto;
+}
+
+.first {
+  top: 8cqh;
+  left: 6cqw;
+}
+
+.second {
+  top: 29cqh;
+  left: 31cqw;
+}
+
+.frameLink {
+  display: block;
+  transition: transform var(--duration-press) var(--ease-out);
+}
+
+.frameLink:active {
+  transform: scale(0.98);
+}
+
+/* Espresso moulding with a brass fillet, a cream mat, then the photograph. */
+.moulding {
+  display: block;
+  padding: 1.3rem;
+  border: 0.45rem solid var(--color-espresso);
+  background: var(--color-cream);
+  box-shadow:
+    inset 0 0 0 1px rgb(184 149 90 / 0.6),
+    0 2.8rem 4.4rem -2.6rem rgb(46 15 5 / 0.55);
+  transition:
+    transform 0.5s var(--ease-out),
+    box-shadow 0.5s var(--ease-out);
+}
+
+.photo {
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  /* A hairline bevel where the mat meets the print. */
+  box-shadow: 0 0 0 1px rgb(46 15 5 / 0.18);
+}
+
+.photoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s var(--ease-out);
+}
+
+.caption {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 1.6rem;
+  text-align: left;
+}
+
+.index {
+  color: var(--color-subtle);
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.brand {
+  color: #000;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.name {
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.concentration {
+  margin-left: 0.7rem;
+  color: var(--color-subtle);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+.shop {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+  color: #000;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.shopArrow {
+  width: 0.95rem;
+  height: 0.8rem;
+  transition: transform 0.3s var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .frameLink:hover .moulding {
+    transform: translateY(-0.5rem);
+    box-shadow:
+      inset 0 0 0 1px rgb(184 149 90 / 0.6),
+      0 3.6rem 5rem -2.6rem rgb(46 15 5 / 0.6);
+  }
+
+  .frameLink:hover .photoImage {
+    transform: scale(1.04);
+  }
+
+  .frameLink:hover .shopArrow {
+    transform: translateX(0.3rem);
+  }
+}
+
+/* ---------- Scroll cue ---------- */
+
+.cue {
+  position: absolute;
+  z-index: 1;
+  bottom: calc(var(--arch-bottom) + 3cqh);
+  left: var(--arch-x);
+  translate: -50% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: var(--color-cream);
+  font-size: 0.95rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow: 0 0.1rem 1.2rem rgb(18 8 0 / 0.7);
+}
+
+.cueLine {
+  width: 1px;
+  height: 4rem;
+  background: linear-gradient(var(--color-brass-light), transparent);
+  transform-origin: top;
+  animation: cue 1.8s var(--ease-in-out) infinite;
+}
+
+@keyframes cue {
+  0% {
+    transform: scaleY(0);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 0;
+  }
+}
+
+.skip {
+  margin-top: 0.4rem;
+  color: var(--color-brass-light);
+  font-size: 0.88rem;
+  letter-spacing: 0.14em;
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cueLine {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   Mobile: the arch takes the top, the photographs hang side by side below.
+   ========================================================================== */
+
+@media (width < 960px) {
+  .entrance {
+    --arch-x: 50cqw;
+    --arch-w: 76cqw;
+    --arch-top: 5cqh;
+    --arch-bottom: 35cqh;
+  }
+
+  .label {
+    display: none;
+  }
+
+  .frame {
+    width: 38cqw;
+  }
+
+  .first {
+    top: 69cqh;
+    left: 8cqw;
+  }
+
+  .second {
+    top: 71cqh;
+    right: 8cqw;
+    left: auto;
+  }
+
+  .moulding {
+    padding: 0.8rem;
+    border-width: 0.4rem;
+  }
+
+  .caption {
+    gap: 0.2rem;
+    margin-top: 1rem;
+  }
+
+  .index,
+  .shop {
+    display: none;
+  }
+
+  .brand {
+    font-size: 0.95rem;
+  }
+
+  .name {
+    font-size: 1.6rem;
+  }
+
+  .concentration {
+    display: block;
+    margin: 0.2rem 0 0;
+    font-size: 1.1rem;
+  }
+
+  .cue {
+    bottom: calc(var(--arch-bottom) + 2.4cqh);
+    font-size: 1.05rem;
+  }
+
+  .skip {
+    font-size: 1rem;
+  }
+}

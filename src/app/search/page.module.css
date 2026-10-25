@@ -1,0 +1,105 @@
+.form {
+  display: flex;
+  align-items: center;
+  width: min(100%, 64rem);
+  margin-top: 2.8rem;
+  border-bottom: 1px solid var(--color-ink);
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  padding: 1rem 0;
+  border: 0;
+  background: none;
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 2.8rem;
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--color-subtle);
+  opacity: 0.7;
+}
+
+.submit {
+  display: grid;
+  place-items: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  transition: transform var(--duration-press) var(--ease-out);
+}
+
+.submit:active {
+  transform: scale(0.92);
+}
+
+.submitIcon {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.6rem;
+}
+
+.suggestions a {
+  display: inline-block;
+  padding: 0.5rem 1.2rem;
+  border: 1px solid var(--color-line);
+  border-radius: 99rem;
+  color: var(--color-muted);
+  font-size: 1rem;
+  transition:
+    border-color 0.2s ease,
+    transform var(--duration-press) var(--ease-out);
+}
+
+.suggestions a:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .suggestions a:hover {
+    border-color: var(--color-ink);
+    color: var(--color-ink);
+  }
+}
+
+.results {
+  padding: 0 var(--gutter-wide) 9rem;
+}
+
+.count {
+  margin-bottom: 2.8rem;
+  color: var(--color-muted);
+  font-size: 1.3rem;
+}
+
+.count a {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+@media (width < 960px) {
+  .input {
+    font-size: 2.2rem;
+  }
+
+  .suggestions a {
+    font-size: 1.3rem;
+  }
+
+  .results {
+    padding: 0 1.6rem 6rem;
+  }
+
+  .count {
+    font-size: 1.45rem;
+  }
+}

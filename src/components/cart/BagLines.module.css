@@ -1,0 +1,148 @@
+.lines {
+  display: flex;
+  flex-direction: column;
+}
+
+.line {
+  display: grid;
+  grid-template-columns: 7.2rem 1fr auto;
+  gap: 1.4rem;
+  padding: 1.6rem 0;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.roomy .line {
+  grid-template-columns: 11rem 1fr auto;
+  gap: 2.4rem;
+  padding: 2.4rem 0;
+}
+
+.thumb {
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 0.6rem;
+  background: var(--color-cream);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.brand {
+  color: var(--color-subtle);
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.name {
+  margin-top: 0.2rem;
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  line-height: 1.2;
+}
+
+.meta {
+  margin-top: 0.3rem;
+  color: var(--color-subtle);
+  font-size: 1rem;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+.stepper {
+  display: inline-grid;
+  grid-template-columns: 2.6rem 2.4rem 2.6rem;
+  align-items: center;
+  height: 2.6rem;
+  border: 1px solid var(--color-line);
+  border-radius: 99rem;
+  text-align: center;
+}
+
+.stepper button {
+  height: 100%;
+  font-size: 1.3rem;
+  transition: transform var(--duration-press) var(--ease-out);
+}
+
+.stepper button:active {
+  transform: scale(0.9);
+}
+
+.stepper output {
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.remove {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-subtle);
+  font-size: 0.98rem;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+.removeIcon {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+.total {
+  font-size: 1.2rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (width < 960px) {
+  .line,
+  .roomy .line {
+    grid-template-columns: 8.4rem 1fr auto;
+    gap: 1.4rem;
+    padding: 1.8rem 0;
+  }
+
+  .brand {
+    font-size: 1.1rem;
+  }
+
+  .name {
+    font-size: 1.8rem;
+  }
+
+  .meta,
+  .remove {
+    font-size: 1.25rem;
+  }
+
+  .stepper {
+    grid-template-columns: 3.4rem 3rem 3.4rem;
+    height: 3.6rem;
+  }
+
+  .stepper output {
+    font-size: 1.35rem;
+  }
+
+  .total {
+    font-size: 1.4rem;
+  }
+}

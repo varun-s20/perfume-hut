@@ -1,0 +1,244 @@
+/* A placard on the guide's side of the screen, vertically centred. */
+.placard {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  left: 5cqw;
+  width: min(36rem, 28cqw);
+  translate: 0 -50%;
+  pointer-events: none;
+}
+
+.right {
+  right: 5cqw;
+  left: auto;
+}
+
+/* Frosted glass with a brass hairline, like a gallery card. */
+.card {
+  padding: 2.8rem 2.8rem 2.6rem;
+  border: 1px solid rgb(184 149 90 / 0.55);
+  border-radius: 0.4rem;
+  background: linear-gradient(160deg, rgb(255 253 248 / 0.9), rgb(247 239 228 / 0.82));
+  box-shadow:
+    inset 0 0 0 0.4rem rgb(255 255 255 / 0.35),
+    0 3rem 6rem -2.4rem rgb(70 40 20 / 0.45);
+  color: var(--color-ink);
+  backdrop-filter: blur(14px) saturate(1.1);
+  opacity: 0;
+  translate: 0 1.2rem;
+  filter: blur(4px);
+  transition:
+    opacity 0.45s var(--ease-out),
+    translate 0.6s var(--ease-out),
+    filter 0.45s var(--ease-out);
+}
+
+.placard[data-visible='true'] {
+  pointer-events: auto;
+}
+
+.placard[data-visible='true'] .card {
+  opacity: 1;
+  translate: 0 0;
+  filter: none;
+}
+
+/* Leaving is quicker than arriving. */
+.placard:not([data-visible='true']) .card {
+  transition-duration: 0.2s;
+}
+
+.eyebrow {
+  color: var(--color-brass);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin-top: 1rem;
+  font-family: var(--font-serif);
+  font-size: 3.6rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.text {
+  margin-top: 1.2rem;
+  color: var(--color-muted);
+  font-size: 1.15rem;
+  line-height: 1.55;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin-top: 1.8rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid rgb(184 149 90 / 0.4);
+}
+
+.facts dt {
+  color: var(--color-subtle);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.facts dd {
+  margin-top: 0.3rem;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem 1.4rem;
+  margin-top: 2rem;
+}
+
+.primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  height: 3.4rem;
+  padding: 0 1.5rem;
+  border-radius: 99rem;
+  background: var(--color-espresso);
+  color: #fff;
+  font-size: 1.02rem;
+  font-weight: 560;
+  transition:
+    background-color 0.2s ease,
+    transform var(--duration-press) var(--ease-out);
+}
+
+.primary:active {
+  transform: scale(0.97);
+}
+
+.arrow {
+  width: 1rem;
+  height: 0.85rem;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.secondary {
+  color: var(--color-ink);
+  font-size: 1rem;
+  font-weight: 560;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .primary:hover {
+    background: var(--color-espresso-hover);
+  }
+
+  .primary:hover .arrow {
+    transform: translateX(0.3rem);
+  }
+}
+
+.hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--color-subtle);
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.hintLine {
+  width: 4rem;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-brass), transparent);
+  transform-origin: left;
+  animation: hint 1.8s var(--ease-in-out) infinite;
+}
+
+@keyframes hint {
+  0% {
+    transform: scaleX(0);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    translate: 0 0;
+    filter: none;
+  }
+
+  .hintLine {
+    animation: none;
+  }
+}
+
+/* Phones: the placard sits under the cabinet. */
+@media (width < 960px) {
+  .placard,
+  .right {
+    top: auto;
+    right: 1.6rem;
+    bottom: 1.6rem;
+    left: 1.6rem;
+    width: auto;
+    translate: none;
+  }
+
+  .card {
+    padding: 1.8rem 2rem;
+  }
+
+  .title {
+    font-size: 2.8rem;
+  }
+
+  .text {
+    margin-top: 0.8rem;
+    font-size: 1.35rem;
+  }
+
+  .facts {
+    margin-top: 1.2rem;
+    padding-top: 1.2rem;
+  }
+
+  .facts dt {
+    font-size: 0.95rem;
+  }
+
+  .facts dd {
+    font-size: 1.6rem;
+  }
+
+  .actions {
+    margin-top: 1.4rem;
+  }
+
+  .primary {
+    height: 3.8rem;
+    font-size: 1.2rem;
+  }
+
+  .secondary,
+  .hint {
+    font-size: 1.15rem;
+  }
+}

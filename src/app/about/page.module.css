@@ -1,0 +1,173 @@
+.hero {
+  height: min(70svh, 60rem);
+  margin: 0 var(--gutter-media);
+  overflow: hidden;
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 40%;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 6.4rem var(--gutter);
+}
+
+.fact {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.8rem;
+  padding: 0 2.4rem;
+  border-left: 1px solid var(--color-line);
+}
+
+.fact dd {
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 6.4rem;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.fact dt {
+  color: var(--color-subtle);
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.chapters {
+  display: flex;
+  flex-direction: column;
+  gap: 8rem;
+  padding: 2.4rem var(--gutter) 9rem;
+}
+
+.chapter {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 6.4rem;
+}
+
+.flipped .chapterMedia {
+  order: 2;
+}
+
+.chapterMedia {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 0.6rem;
+}
+
+.chapterImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.chapterIndex {
+  color: var(--color-coral);
+  font-size: 1.2rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.chapterTitle {
+  margin-top: 1.2rem;
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+}
+
+.chapterText {
+  max-width: 46rem;
+  margin-top: 1.6rem;
+  color: var(--color-muted);
+  font-size: 1.4rem;
+  line-height: 1.65;
+}
+
+.closing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.8rem;
+  padding: 8rem var(--gutter) 2rem;
+  border-top: 1px solid var(--color-line);
+  text-align: center;
+}
+
+.closingTitle {
+  max-width: 70rem;
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 4.8rem;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.closingActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.2rem;
+}
+
+@media (width < 960px) {
+  .hero {
+    height: 48svh;
+  }
+
+  .facts {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.4rem;
+    padding: 4rem 1.6rem;
+  }
+
+  .fact {
+    padding: 0 0 0 1.6rem;
+  }
+
+  .fact dd {
+    font-size: 4.8rem;
+  }
+
+  .fact dt {
+    font-size: 1.2rem;
+  }
+
+  .chapters {
+    gap: 5.6rem;
+    padding: 1.6rem 1.6rem 6rem;
+  }
+
+  .chapter {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.4rem;
+  }
+
+  .flipped .chapterMedia {
+    order: 0;
+  }
+
+  .chapterTitle {
+    font-size: 3rem;
+  }
+
+  .chapterText {
+    font-size: 1.5rem;
+  }
+
+  .closingTitle {
+    font-size: 3.2rem;
+  }
+}

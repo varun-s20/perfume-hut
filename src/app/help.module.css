@@ -1,0 +1,72 @@
+/* Shared by the FAQ and Shipping & returns pages. */
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 5.6rem;
+  max-width: 90rem;
+  padding: 0 var(--gutter-wide) 9rem;
+}
+
+.group {
+  display: grid;
+  grid-template-columns: 22rem minmax(0, 1fr);
+  gap: 4rem;
+}
+
+.groupTitle {
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 2.6rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.policy {
+  display: grid;
+  grid-template-columns: 4rem 22rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: 2.4rem;
+  padding-top: 2.4rem;
+  border-top: 1px solid var(--color-line);
+}
+
+.policyIndex {
+  color: var(--color-coral);
+  font-size: 1.2rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.policyBody {
+  color: var(--color-muted);
+  font-size: 1.35rem;
+  line-height: 1.65;
+}
+
+@media (width < 960px) {
+  .body {
+    gap: 4rem;
+    padding: 0 1.6rem 6rem;
+  }
+
+  .group {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.6rem;
+  }
+
+  .policy {
+    grid-template-columns: 3.4rem minmax(0, 1fr);
+    gap: 0.8rem 1.2rem;
+  }
+
+  .policyBody {
+    grid-column: 2;
+    font-size: 1.5rem;
+  }
+
+  .groupTitle {
+    font-size: 2.4rem;
+  }
+}

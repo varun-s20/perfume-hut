@@ -1,0 +1,200 @@
+.layout {
+  display: grid;
+  grid-template-columns: 20rem minmax(0, 1fr);
+  gap: 4rem;
+  padding: 0 var(--gutter-wide) 8rem;
+}
+
+.filters {
+  position: sticky;
+  top: 2.4rem;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 2.8rem;
+}
+
+.groupTitle {
+  margin-bottom: 1rem;
+  color: var(--color-subtle);
+  font-size: 0.95rem;
+  font-weight: 560;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.option {
+  position: relative;
+  display: inline-block;
+  padding: 0.35rem 0 0.35rem 1.6rem;
+  color: var(--color-muted);
+  font-size: 1.15rem;
+  transition: color 0.2s ease;
+}
+
+/* A dot that grows in for the active filter. */
+.option::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin-top: -0.3rem;
+  border: 1px solid var(--color-line);
+  border-radius: 50%;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.25s var(--ease-out);
+}
+
+.optionActive {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.optionActive::before {
+  border-color: var(--color-coral);
+  background: var(--color-coral);
+  transform: scale(1.2);
+}
+
+.clear {
+  align-self: flex-start;
+  color: var(--color-ink);
+  font-size: 1.05rem;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.2rem 2rem;
+  margin-bottom: 2.8rem;
+  padding-bottom: 1.6rem;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.count {
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-weight: 400;
+}
+
+.sort {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.sortLink {
+  padding: 0.5rem 1.2rem;
+  border: 1px solid var(--color-line);
+  border-radius: 99rem;
+  color: var(--color-muted);
+  font-size: 1rem;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform var(--duration-press) var(--ease-out);
+}
+
+.sortLink:active {
+  transform: scale(0.97);
+}
+
+.sortActive {
+  border-color: var(--color-espresso);
+  background: var(--color-espresso);
+  color: #fff;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.2rem;
+  padding: 4rem 0;
+  color: var(--color-muted);
+  font-size: 1.3rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .option:hover {
+    color: var(--color-ink);
+  }
+
+  .sortLink:not(.sortActive):hover {
+    border-color: var(--color-ink);
+    color: var(--color-ink);
+  }
+}
+
+@media (width < 960px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.4rem;
+    padding: 0 1.6rem 6rem;
+  }
+
+  .filters {
+    position: static;
+    gap: 1.6rem;
+  }
+
+  /* Filters become horizontally scrolling chip rows. */
+  .options {
+    flex-direction: row;
+    gap: 0.6rem;
+    margin-inline: -1.6rem;
+    padding-inline: 1.6rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .groupTitle {
+    font-size: 1.1rem;
+  }
+
+  .option {
+    padding: 0.8rem 1.4rem;
+    border: 1px solid var(--color-line);
+    border-radius: 99rem;
+    font-size: 1.35rem;
+    white-space: nowrap;
+  }
+
+  .option::before {
+    display: none;
+  }
+
+  .optionActive {
+    border-color: var(--color-espresso);
+    background: var(--color-espresso);
+    color: #fff;
+  }
+
+  .clear {
+    font-size: 1.35rem;
+  }
+
+  .count {
+    font-size: 2.2rem;
+  }
+
+  .sortLink {
+    font-size: 1.25rem;
+  }
+}

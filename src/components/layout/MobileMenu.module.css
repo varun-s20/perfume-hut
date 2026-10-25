@@ -1,0 +1,76 @@
+.toggle {
+  display: none;
+}
+
+.dialog {
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 9rem 2.4rem 3rem;
+  border: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+}
+
+.dialog[open] {
+  animation: menu-in 0.35s var(--ease-out);
+}
+
+.dialog::backdrop {
+  background: transparent;
+}
+
+/* Lock page scroll while the menu is open. */
+:global(html):has(.dialog[open]) {
+  overflow: hidden;
+}
+
+.close {
+  position: absolute;
+  top: 1rem;
+  left: 1.6rem;
+  display: grid;
+  place-items: center start;
+  width: 4rem;
+  height: 4rem;
+}
+
+.closeIcon {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 2.2rem;
+}
+
+.link {
+  font-family: var(--font-serif);
+  font-size: 3.4rem;
+  line-height: 1.1;
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+}
+
+@media (width < 960px) {
+  .toggle {
+    display: grid;
+    place-items: center start;
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .toggleIcon {
+    width: 2rem;
+    height: 1.2rem;
+  }
+}

@@ -1,0 +1,126 @@
+/* Ava beside the open case, and her subtitles (only while `flags.ava` is on). */
+
+.ava {
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: -4vw;
+  width: min(92vh, 58vw);
+  animation: ava-in 900ms var(--ease-out) 200ms both;
+}
+
+.ava > figure {
+  width: 100%;
+  filter: drop-shadow(0 2rem 3rem rgb(70 40 20 / 0.25));
+}
+
+@keyframes ava-in {
+  from {
+    opacity: 0;
+    transform: translateY(3%) scale(0.98);
+  }
+}
+
+/* Under Ava, like film subtitles; replies rise above them when she's done. */
+.subtitles {
+  position: absolute;
+  z-index: 3;
+  bottom: 5vh;
+  left: 3vw;
+  width: 46vw;
+  animation: subtitles-in 500ms var(--ease-out) 500ms both;
+}
+
+@keyframes subtitles-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.reply,
+.primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  height: 3.2rem;
+  padding: 0 1.4rem;
+  border-radius: 99rem;
+  font-size: 1rem;
+  font-weight: 560;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform var(--duration-press) var(--ease-out);
+}
+
+.reply {
+  border: 1px solid rgb(46 15 5 / 0.22);
+  background: rgb(255 255 255 / 0.9);
+  color: var(--color-ink);
+  backdrop-filter: blur(6px);
+}
+
+.primary {
+  background: var(--color-espresso);
+  color: #fff;
+}
+
+.replyArrow {
+  width: 1rem;
+  height: 0.85rem;
+}
+
+.textLink {
+  padding: 0.4rem 0.8rem;
+  border-radius: 99rem;
+  background: rgb(255 255 255 / 0.75);
+  color: var(--color-ink);
+  font-size: 1rem;
+  font-weight: 560;
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+.reply:active,
+.primary:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .reply:hover {
+    border-color: var(--color-espresso);
+    background: #fff;
+  }
+
+  .primary:hover {
+    background: var(--color-espresso-hover);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ava,
+  .subtitles {
+    animation-duration: 1ms;
+    animation-delay: 0ms;
+  }
+}
+
+@media (width < 960px) {
+  .ava {
+    left: -10vw;
+    width: 44svh;
+  }
+
+  .subtitles {
+    right: 1.6rem;
+    bottom: 2svh;
+    left: 1.6rem;
+    width: auto;
+  }
+
+  .reply,
+  .primary {
+    height: 3.8rem;
+    font-size: 1.2rem;
+  }
+}

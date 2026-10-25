@@ -1,0 +1,269 @@
+.notes {
+  margin-top: 8.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: 40rem 30.2rem;
+  margin-top: 4.41rem;
+  padding-inline: var(--gutter-media);
+}
+
+/* ---------- Dark panel: stories + phases ---------- */
+
+.panel {
+  grid-row: 1 / 3;
+  overflow: hidden;
+  padding-top: 4.2rem;
+  background: var(--color-panel);
+  color: #fff;
+}
+
+.stories {
+  display: flex;
+  justify-content: center;
+  gap: 1.1rem;
+  height: 34.3rem;
+}
+
+.phases {
+  margin-top: 6.54rem;
+  padding: 0 3.2rem 0 3.3rem;
+}
+
+.phases > li + li {
+  margin-top: 1.727rem;
+}
+
+.phaseRow {
+  display: flex;
+  align-items: center;
+  height: 1.4rem;
+}
+
+.phaseIndex {
+  width: 2.4rem;
+  font-size: 1.24rem;
+  font-weight: 440;
+}
+
+.phaseTitle {
+  font-size: 1.24rem;
+  font-weight: 480;
+  letter-spacing: -0.01em;
+}
+
+.phaseArrow {
+  width: 1.35rem;
+  height: 1.15rem;
+  margin-left: auto;
+  transform: translateY(-0.15rem);
+  transition: transform 0.3s var(--ease-out);
+}
+
+.phaseDescription {
+  margin-top: 0.74rem;
+  padding-left: 2.4rem;
+  color: var(--color-panel-muted);
+  font-size: 1.08rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.4rem;
+}
+
+@media (hover: hover) {
+  .phases > li:hover .phaseArrow {
+    transform: translate(0.3rem, -0.15rem);
+  }
+
+  .bottleLink:hover .bottleShape {
+    transform: translateY(-0.6rem);
+  }
+}
+
+/* ---------- Bottles ---------- */
+
+.bottlesPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 3.41rem;
+  background:
+    radial-gradient(ellipse 13rem 11rem at 50% 58%, rgb(0 0 0 / 0.055), transparent 70%), #fefefe;
+  text-align: center;
+}
+
+.lede {
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 1.64rem;
+  letter-spacing: -0.028em;
+  line-height: 1.95rem;
+}
+
+.bottles {
+  display: flex;
+  align-items: center;
+  gap: 5.45rem;
+  height: 17.1rem;
+  margin-top: 4.14rem;
+}
+
+.bottleLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  color: var(--color-ink);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: transform var(--duration-press) var(--ease-out);
+}
+
+.bottleLink:active {
+  transform: scale(0.97);
+}
+
+.bottleShape {
+  /* The shadow lives on the wrapper: a filter on the masked image would be clipped. */
+  filter: drop-shadow(0 0.9rem 1.4rem rgb(40 20 10 / 0.2));
+  transition: transform 0.6s var(--ease-out);
+}
+
+.bottle {
+  height: auto;
+  aspect-ratio: 78 / 166;
+  object-fit: cover;
+  /* Bottle silhouette mask over the ingredient photograph. */
+  mask: url('/bottle-mask.svg') center / 100% 100% no-repeat;
+}
+
+.bottleAmber {
+  width: 7.825rem;
+}
+
+.bottlePeach {
+  width: 8.4rem;
+}
+
+.bottleGreen {
+  width: 7.85rem;
+}
+
+.caption {
+  margin-top: 4.45rem;
+  color: var(--color-text);
+  font-size: 1.13rem;
+  letter-spacing: -0.02em;
+  line-height: 1.6rem;
+}
+
+/* ---------- Photo ---------- */
+
+.photo {
+  overflow: hidden;
+}
+
+.photoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (width < 960px) {
+  .notes {
+    margin-top: 7.2rem;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    margin-top: 3.2rem;
+    padding-inline: 0;
+  }
+
+  .panel {
+    grid-row: auto;
+    padding: 3.2rem 0 4rem;
+  }
+
+  .stories {
+    gap: 1.2rem;
+    height: 46rem;
+  }
+
+  .phases {
+    margin-top: 4.4rem;
+    padding-inline: 1.6rem;
+  }
+
+  .phases > li + li {
+    margin-top: 2.6rem;
+  }
+
+  .phaseRow {
+    height: 2rem;
+  }
+
+  .phaseIndex {
+    width: 3.4rem;
+    font-size: 1.5rem;
+  }
+
+  .phaseTitle {
+    font-size: 1.6rem;
+  }
+
+  .phaseArrow {
+    width: 1.5rem;
+    height: 1.25rem;
+  }
+
+  .phaseDescription {
+    margin-top: 0.6rem;
+    padding-left: 3.4rem;
+    font-size: 1.35rem;
+    line-height: 2rem;
+  }
+
+  .bottlesPanel {
+    padding: 4.8rem 1.6rem 5.2rem;
+  }
+
+  .lede {
+    font-size: 2.3rem;
+    line-height: 2.8rem;
+  }
+
+  .bottles {
+    gap: clamp(1.6rem, 7vw, 5rem);
+    height: auto;
+    margin-top: 4rem;
+  }
+
+  .bottleAmber {
+    width: clamp(7.8rem, 24vw, 11rem);
+  }
+
+  .bottlePeach {
+    width: clamp(8.4rem, 25.8vw, 11.8rem);
+  }
+
+  .bottleGreen {
+    width: clamp(7.85rem, 24.1vw, 11rem);
+  }
+
+  .caption {
+    max-width: 28rem;
+    margin-top: 4rem;
+    font-size: 1.4rem;
+    line-height: 2.1rem;
+  }
+
+  .photo {
+    aspect-ratio: 4 / 3;
+  }
+}

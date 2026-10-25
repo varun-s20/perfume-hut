@@ -1,0 +1,80 @@
+/* Every pose shares a square canvas with her head in the same place. */
+.figure {
+  position: relative;
+  aspect-ratio: 1;
+}
+
+.body {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 100%;
+  transition: scale 420ms var(--ease-out);
+}
+
+.figure[data-mirrored='true'] .body {
+  scale: -1 1;
+}
+
+.pose {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  /* A short dissolve between gestures; blur hides the hands crossing over. */
+  filter: blur(3px);
+  transition:
+    opacity 280ms var(--ease-out),
+    filter 280ms var(--ease-out);
+}
+
+.pose[data-active='true'] {
+  opacity: 1;
+  filter: none;
+}
+
+.image {
+  object-fit: contain;
+}
+
+.mouth {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: 100% 400%;
+  background-position: 0 calc(var(--frame) * 100% / 3);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* People move a little while they talk… */
+  .figure[data-speaking='true'] .body {
+    animation: sway 2.8s var(--ease-in-out) infinite alternate;
+  }
+
+  /* …and a little more while they walk. */
+  .figure[data-moving='true'] .body {
+    animation: step 0.62s var(--ease-in-out) infinite alternate;
+  }
+}
+
+@keyframes sway {
+  from {
+    rotate: -0.35deg;
+  }
+  to {
+    rotate: 0.35deg;
+  }
+}
+
+@keyframes step {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -1.2%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .body,
+  .pose {
+    transition-duration: 1ms;
+  }
+}

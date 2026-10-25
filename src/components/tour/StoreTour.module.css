@@ -1,0 +1,115 @@
+/* ==========================================================================
+   Track & stage
+   The track supplies scroll distance (the tour's length plus one screen);
+   the stage stays pinned while it plays.
+   ========================================================================== */
+
+.track {
+  position: relative;
+  height: calc((var(--tour-length) + 100) * 1svh);
+  background: var(--color-bg);
+}
+
+.anchor,
+.stopAnchor,
+.end {
+  position: absolute;
+  top: calc(var(--at) * 1svh);
+  left: 0;
+  width: 1px;
+  height: 1px;
+}
+
+/* Each stop is a gentle resting point: scrolling settles there. */
+.stopAnchor {
+  scroll-snap-align: start;
+}
+
+.end {
+  top: 100%;
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--color-cream);
+  /* The entrance and the gallery lay themselves out in this box's units (cqw/cqh). */
+  container-type: size;
+}
+
+/* A soft pool of shade behind the welcome, so it reads over the shopfront. */
+.welcomeScrim {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 50% 40% at 50% 50%, rgb(18 8 0 / 0.55), transparent 75%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.welcome {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 1.4rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  text-shadow: 0 0.2rem 2rem rgb(0 0 0 / 0.5);
+}
+
+.welcomeName {
+  font-family: var(--font-serif);
+  font-size: 9rem;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  text-transform: none;
+}
+
+/* ==========================================================================
+   Reduced motion: no pinned walk. The doorway stands at the top and the floor
+   below it as one still wall of cabinets.
+   ========================================================================== */
+
+.entranceStill {
+  position: relative;
+  height: min(100svh, 72rem);
+  min-height: 52rem;
+  container-type: size;
+}
+
+.track[data-reduced] {
+  height: auto;
+}
+
+.track[data-reduced] .stage {
+  position: relative;
+  height: 100svh;
+  min-height: 56rem;
+}
+
+.track[data-reduced] .welcome,
+.track[data-reduced] .welcomeScrim {
+  display: none;
+}
+
+/* ==========================================================================
+   Mobile
+   ========================================================================== */
+
+@media (width < 960px) {
+  .welcomeName {
+    font-size: clamp(4.4rem, 14vw, 7rem);
+  }
+
+  .welcome {
+    font-size: 1.3rem;
+  }
+}

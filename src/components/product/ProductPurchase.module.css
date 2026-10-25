@@ -1,0 +1,127 @@
+.purchase {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.sizes {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.legend {
+  margin-bottom: 0.8rem;
+  color: var(--color-subtle);
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.segments {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--count), minmax(0, 1fr));
+  padding: 0.4rem;
+  border-radius: 99rem;
+  background: var(--color-cream);
+}
+
+.indicator {
+  position: absolute;
+  top: 0.4rem;
+  bottom: 0.4rem;
+  left: 0.4rem;
+  width: calc((100% - 0.8rem) / var(--count));
+  border-radius: 99rem;
+  background: #fff;
+  box-shadow: 0 0.4rem 1.2rem -0.6rem rgb(46 15 5 / 0.35);
+  transform: translateX(calc(var(--index) * 100%));
+  transition: transform 300ms var(--ease-out);
+}
+
+.segment {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 3.6rem;
+  font-size: 1.15rem;
+  font-weight: 560;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.radio {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.segment:has(.radio:focus-visible) {
+  outline: 1px solid var(--color-ink);
+  outline-offset: -0.2rem;
+  border-radius: 99rem;
+}
+
+.price {
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 2.8rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+/* Label morph: two states stacked; blur bridges the crossfade. */
+.label {
+  display: grid;
+}
+
+.labelIdle,
+.labelAdded {
+  grid-area: 1 / 1;
+  transition:
+    opacity 200ms ease,
+    filter 200ms ease,
+    transform 200ms var(--ease-out);
+}
+
+.labelAdded {
+  opacity: 0;
+  filter: blur(2px);
+  transform: translateY(0.4rem);
+}
+
+.label[data-added='true'] .labelIdle {
+  opacity: 0;
+  filter: blur(2px);
+  transform: translateY(-0.4rem);
+}
+
+.label[data-added='true'] .labelAdded {
+  opacity: 1;
+  filter: none;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicator,
+  .labelIdle,
+  .labelAdded {
+    transition-property: opacity;
+  }
+}
+
+@media (width < 960px) {
+  .legend {
+    font-size: 1.15rem;
+  }
+
+  .segment {
+    height: 4.4rem;
+    font-size: 1.4rem;
+  }
+
+  .price {
+    font-size: 3.2rem;
+  }
+}

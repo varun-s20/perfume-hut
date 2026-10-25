@@ -1,0 +1,5 @@
+@media (width < 960px) {
+  .desktopBreak {
+    display: none;
+  }
+}
