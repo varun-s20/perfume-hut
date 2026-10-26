@@ -37,6 +37,10 @@ cp .env.example .env.local   # optional: NEXT_PUBLIC_SITE_URL (defaults to https
 npm run dev                  # http://localhost:3000
 ```
 
+To try it on a phone, open the address `npm run dev` prints under Network (`http://192.168.x.x:3000`)
+on the same Wi-Fi. `allowedDevOrigins` in `next.config.ts` lets those local addresses through;
+without it Next blocks the dev connection and the page never comes to life.
+
 | Script              | Purpose                                         |
 | ------------------- | ----------------------------------------------- |
 | `npm run dev`       | Development server                              |
@@ -117,14 +121,18 @@ How the pieces fit:
   brass and the house name in gold leaf; its bottles are built from `data/bottles.ts`. The
   lights come up case by case as you arrive, one warm light follows you to the case you're at,
   and on a mouse the camera glances a little towards the pointer. "Skip the tour" jumps past;
-  with reduced motion the floor stands still and lists its houses to step into.
+  with reduced motion the floor stands still and lists its houses to step into. Until the
+  store's first frame is drawn (and if WebGL fails or the context is lost), a still of the
+  opening view stands in its place (`assets/images/store/floor-*.jpg`, narrow and wide).
 - **The walk** (`tour-plan.ts`, plain and tested): keyframes for where the camera stands (a
   three-quarter view of each case; on phones, the case high on the screen above the words),
   joined by a centripetal Catmull-Rom path. Between keys the walk eases a little but never
   stops, and there are no scroll-snap points, so it flows like an ordinary page; the camera
   then follows the scroll with a little damping. `poseAt` gives the camera for any scroll
   position, `stopAt` the house you're nearest. The store only renders while something moves
-  and stops drawing off screen; a slow phone drops resolution before it drops frames.
+  and stops drawing off screen. Its resolution is set once (1.5x on touch screens, 1.75x with a
+  mouse) and the canvas is resized only when its box changes, at the start of a frame: Safari
+  stops showing a WebGL canvas whose size changes mid-walk, which left phones on a blank backdrop.
 - **Captions** (`FloorCaption`): no floating cards. The house is set like the welcome over
   the shopfront, large cream Marcellus at the foot of the screen over a soft slate fade, with
   the cabinet number, how many bottles and the price from, "Step inside" and the way to its
@@ -171,15 +179,15 @@ How the pieces fit:
   close, Esc to close. Their words run beneath as subtitles, with the bottle ready to add to
   the bag in one tap.
 - **Shop filters** (`components/shop`, `lib/shop.ts`): built round how people choose fragrance.
-  Scent comes first: the six families as swatches of colour in arched doorways, each with a
-  few notes. Then who it's for (a gliding switch), house, price band and strength. Houses,
-  families, prices and strengths take several picks each (`?family=floral,fresh&brand=dior`).
-  Every option shows how many bottles it would leave you with, and options that would leave
-  none are dimmed. On wide screens the toolbar sticks above the grid with dropdowns that stay
-  open while you tick, and each pick is a link, so the grid updates in place. On phones the
-  families stay in a row you swipe, and a Filter · Sort pill floats over the grid. The sheet
-  stages your picks and its button says exactly how many fragrances you'll see. What's on
-  shows as removable chips.
+  Who it's for (a gliding switch), then scent: the six families by name in Marcellus, each with
+  a few of its notes beneath (`scentNotes` in `content/shop.ts`). Then house, price band and
+  strength. Houses, families, prices and strengths take several picks each
+  (`?family=floral,fresh&brand=dior`). Every option shows how many bottles it would leave you
+  with, and options that would leave none are dimmed. On wide screens the toolbar sticks above
+  the grid with dropdowns that stay open while you tick, and each pick is a link, so the grid
+  updates in place. On phones a Filter · Sort pill floats over the grid. The sheet stages your
+  picks and its button says exactly how many fragrances you'll see. What's on shows as
+  removable chips.
 - **Header search** (`HeaderSearch`): the icon grows into a field in place (a clip-path
   transition from the icon's own circle), and results drop down as you type, searched in the
   browser with the same matching as the results page (`lib/search.ts`). Enter opens the full

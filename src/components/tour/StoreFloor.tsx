@@ -1,7 +1,10 @@
 'use client';
 
 import { motion, type MotionStyle, type MotionValue, useMotionValueEvent } from 'motion/react';
+import Image from 'next/image';
 import { type MouseEvent, type PointerEvent, useEffect, useRef, useState } from 'react';
+import floorNarrow from '@/assets/images/store/floor-narrow.jpg';
+import floorWide from '@/assets/images/store/floor-wide.jpg';
 import marbleFloor from '@/assets/images/store/marble-floor.jpg';
 import { storeFloor } from '@/content/home';
 import { brandHref } from '@/content/routes';
@@ -85,6 +88,13 @@ export function StoreFloor({
           fonts: pageFonts(),
           marble: marbleFloor.src,
           reduced: still,
+          // If the browser takes the 3D away, the photograph of the floor stays.
+          onLost: () => {
+            if (cancelled) return;
+            if (process.env.NODE_ENV !== 'production')
+              console.warn('The 3D store lost its WebGL context.');
+            setStatus('failed');
+          },
         }),
       )
       .then((created) => {
@@ -94,7 +104,9 @@ export function StoreFloor({
         created.setPosition(positionOf(progress.get()));
         setStatus('ready');
       })
-      .catch(() => {
+      .catch((error: unknown) => {
+        if (process.env.NODE_ENV !== 'production')
+          console.error('The 3D store could not start:', error);
         if (!cancelled) setStatus('failed');
       });
     return () => {
@@ -200,6 +212,27 @@ export function StoreFloor({
         onClick={onClick}
       >
         {/* The store's canvas goes here (see the effect above). */}
+        {/*
+         * A photograph of the floor, rendered from the 3D store: it holds the
+         * screen while the store builds (a few seconds on a slow phone) and
+         * stays if 3D isn't available, so the floor is never a blank screen.
+         */}
+        <Image
+          src={floorNarrow}
+          alt=""
+          fill
+          sizes="100vw"
+          placeholder="blur"
+          className={`${styles.poster} ${styles.posterNarrow}`}
+        />
+        <Image
+          src={floorWide}
+          alt=""
+          fill
+          sizes="100vw"
+          placeholder="blur"
+          className={`${styles.poster} ${styles.posterWide}`}
+        />
         <span className={styles.vignette} aria-hidden="true" />
       </motion.div>
 

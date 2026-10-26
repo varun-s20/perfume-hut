@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { type CSSProperties, useEffect, useRef, useState } from 'react';
 import { CheckIcon, CloseIcon } from '@/components/icons';
-import { shop } from '@/content/shop';
+import { scentNotes, shop } from '@/content/shop';
 import {
   type Audience,
   audienceLabels,
@@ -26,7 +26,6 @@ import {
 } from '@/lib/shop';
 import styles from './FilterSheet.module.css';
 import { type ShopHouse, shopUrl } from './links';
-import { Swatch } from './Swatch';
 
 type FilterSheetProps = {
   filters: ShopFilters;
@@ -147,8 +146,13 @@ export function FilterSheet({
                       disabled={count === 0 && !on}
                       onClick={() => set({ families: toggled(draft.families, family, families) })}
                     >
-                      <Swatch family={family} active={on} className={styles.swatch} />
-                      <span className={styles.familyName}>{familyLabels[family]}</span>
+                      <span className={styles.box} aria-hidden="true">
+                        <CheckIcon />
+                      </span>
+                      <span className={styles.familyText}>
+                        <span className={styles.familyName}>{familyLabels[family]}</span>
+                        <span className={styles.familyNotes}>{scentNotes[family]}</span>
+                      </span>
                       <span className={styles.familyCount}>{count}</span>
                     </button>
                   </li>

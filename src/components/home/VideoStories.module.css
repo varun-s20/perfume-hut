@@ -1,5 +1,7 @@
 /* Customer films on the espresso panel, like a small screening room. */
 .section {
+  /* Clear of the section before, so its last button never runs into the panel. */
+  margin-top: 10rem;
   padding: 10rem var(--gutter) 9rem;
   background: var(--color-panel);
   color: #fff;
@@ -55,6 +57,7 @@
 
 @media (width < 960px) {
   .section {
+    margin-top: 6.4rem;
     padding: 6.4rem 0 5.6rem;
   }
 

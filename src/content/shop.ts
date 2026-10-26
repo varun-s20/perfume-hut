@@ -35,15 +35,12 @@ export const shop = {
   },
 };
 
-/**
- * Each family as a swatch of colour, the way it smells, and a few of its
- * notes, so you can choose by feel rather than by name.
- */
-export const familySwatches: Record<Family, { colours: [string, string]; notes: string }> = {
-  fresh: { colours: ['#e4f2ec', '#8fc9bd'], notes: 'Citrus, water, green' },
-  floral: { colours: ['#f8e1e4', '#e29fae'], notes: 'Rose, jasmine, iris' },
-  woody: { colours: ['#efe2d2', '#a27b58'], notes: 'Cedar, sandalwood' },
-  amber: { colours: ['#f7e0b4', '#c97b34'], notes: 'Vanilla, resin, spice' },
-  aromatic: { colours: ['#e7e4f1', '#9a8fbf'], notes: 'Lavender, herbs' },
-  gourmand: { colours: ['#f4e2cf', '#a8673f'], notes: 'Praline, caramel' },
+/** A few notes under each family's name, so you can choose by smell rather than by word. */
+export const scentNotes: Record<Family, string> = {
+  fresh: 'Citrus, water, green leaves',
+  floral: 'Rose, jasmine, iris',
+  woody: 'Cedar, sandalwood, vetiver',
+  amber: 'Vanilla, resin, spice',
+  aromatic: 'Lavender, herbs, woods',
+  gourmand: 'Praline, caramel, vanilla',
 };

@@ -16,8 +16,8 @@ const TOP = 96;
  * The header's own element. On phones (see SiteHeader.module.css) it sticks
  * to the top, slips away as you scroll down to read, and comes back the
  * moment you scroll up. It stays out of the way while something immersive
- * fills the screen (any element marked `data-immersive`, like the store
- * tour), and never hides while you're using something inside it.
+ * (any element marked `data-immersive`, like the store tour) is behind it,
+ * and never hides while you're using something inside it.
  */
 export function HeaderShell({ className, children }: HeaderShellProps) {
   const ref = useRef<HTMLElement>(null);
@@ -34,9 +34,12 @@ export function HeaderShell({ className, children }: HeaderShellProps) {
       const busy = Boolean(
         header?.contains(document.activeElement) && document.activeElement !== document.body,
       );
+      // Once the tour reaches the header's line it would sit on the arch, so
+      // it stays away until there's room for it above the tour again.
+      const line = header?.offsetHeight ?? 0;
       const immersive = [...document.querySelectorAll('[data-immersive]')].some((element) => {
         const rect = element.getBoundingClientRect();
-        return rect.top <= 0 && rect.bottom >= window.innerHeight;
+        return rect.top < line && rect.bottom > line;
       });
 
       setState((current) => {

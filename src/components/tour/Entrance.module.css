@@ -61,12 +61,21 @@
   object-position: var(--scene-origin);
 }
 
-/* A little shade at the foot of the arch so the scroll cue reads over the photo. */
+/*
+ * A little shade at the foot of the arch so the scroll cue reads over the
+ * photo. It starts where the arch ends, which on phones is well above the
+ * foot of the screen.
+ */
 .portal::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(0deg, rgb(18 8 0 / 0.6), transparent 34%);
+  background: linear-gradient(
+    0deg,
+    rgb(18 8 0 / 0.66) var(--arch-bottom),
+    rgb(18 8 0 / 0.3) calc(var(--arch-bottom) + 14cqh),
+    transparent calc(var(--arch-bottom) + 30cqh)
+  );
   opacity: var(--shut);
   pointer-events: none;
 }
@@ -318,68 +327,43 @@
 @media (width < 960px) {
   .entrance {
     --arch-x: 50cqw;
-    --arch-w: 68cqw;
-    --arch-top: 3cqh;
-    --arch-bottom: 43cqh;
+    --arch-w: 76cqw;
+    --arch-top: 5cqh;
+    --arch-bottom: 35cqh;
   }
 
   .label {
-    position: absolute;
-    top: 1cqh;
-    left: 8cqw;
-    right: 8cqw;
-    width: auto;
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  .labelEyebrow {
-    font-size: 0.85rem;
-    letter-spacing: 0.16em;
-  }
-
-  .labelText {
-    font-size: 1.15rem;
-    text-align: right;
-    line-height: 1.2;
+    display: none;
   }
 
   .frame {
-    width: 40cqw;
+    width: 38cqw;
   }
 
   .first {
-    top: 58cqh;
-    left: 6cqw;
+    top: 69cqh;
+    left: 8cqw;
   }
 
   .second {
-    top: 60cqh;
-    right: 6cqw;
+    top: 71cqh;
+    right: 8cqw;
     left: auto;
   }
 
   .moulding {
-    padding: 0.6rem;
-    border-width: 0.35rem;
+    padding: 0.8rem;
+    border-width: 0.4rem;
   }
 
   .caption {
-    display: grid;
-    gap: 0.15rem;
-    margin-top: 0.6rem;
+    gap: 0.2rem;
+    margin-top: 1rem;
   }
 
-  .index {
-    display: block;
-    color: var(--color-subtle);
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
+  .index,
+  .shop {
+    display: none;
   }
 
   .brand {
@@ -387,44 +371,21 @@
   }
 
   .name {
-    font-size: 1.35rem;
-    line-height: 1.15;
+    font-size: 1.6rem;
   }
 
   .concentration {
-    display: inline;
-    margin-left: 0.4rem;
-    font-size: 1rem;
-  }
-
-  .shop {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin-top: 0.3rem;
-    color: #000;
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .shopArrow {
-    width: 0.85rem;
-    height: 0.75rem;
+    display: block;
+    margin: 0.2rem 0 0;
+    font-size: 1.1rem;
   }
 
   .cue {
-    bottom: calc(var(--arch-bottom) + 1.8cqh);
-    font-size: 1rem;
-    gap: 0.6rem;
-  }
-
-  .cueLine {
-    height: 2.8rem;
+    bottom: calc(var(--arch-bottom) + 2.4cqh);
+    font-size: 1.05rem;
   }
 
   .skip {
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
 }

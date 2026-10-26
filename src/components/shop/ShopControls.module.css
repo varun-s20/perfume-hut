@@ -71,21 +71,24 @@
   gap: 0.8rem;
 }
 
-/* ---------- Scent family options in dropdown ---------- */
+/* ---------- Scent: each family by name, with a few of its notes beneath ---------- */
 
 .familyOptionList {
   display: grid;
-  gap: 0.2rem;
-  min-width: 32rem;
+  min-width: 30rem;
+}
+
+.familyOptionList li + li {
+  border-top: 1px solid rgb(46 15 5 / 0.07);
 }
 
 .familyOption {
   display: grid;
-  grid-template-columns: 2rem auto minmax(0, 1fr) auto;
+  grid-template-columns: 2rem minmax(0, 1fr) auto;
   align-items: center;
-  gap: 1.1rem;
-  min-height: 4.8rem;
-  padding: 0.6rem 1.1rem;
+  gap: 1.2rem;
+  min-height: 5.4rem;
+  padding: 0.8rem 1rem;
   border-radius: 0.9rem;
   color: var(--color-ink);
   text-decoration: none;
@@ -108,51 +111,30 @@
   color: #fff;
 }
 
-.familySwatchPip {
-  position: relative;
-  width: 1.9rem;
-  height: 2.5rem;
-  border-radius: 0.95rem 0.95rem 0.3rem 0.3rem;
-  background: linear-gradient(180deg, var(--from), var(--to));
-  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.1);
-  flex-shrink: 0;
-  transition: transform 0.2s var(--ease-out);
-}
-
 .familyText {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  overflow: hidden;
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
 }
 
 .familyTitle {
-  font-size: 1.05rem;
-  font-weight: 560;
   color: var(--color-ink);
-  line-height: 1.2;
-}
-
-.familyOption[aria-current] .familyTitle {
-  font-weight: 650;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  line-height: 1.1;
 }
 
 .familyNotes {
-  font-size: 0.88rem;
-  color: var(--color-subtle);
-  line-height: 1.2;
   overflow: hidden;
+  color: var(--color-subtle);
+  font-size: 0.9rem;
+  line-height: 1.2;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.chipPip {
-  width: 1.2rem;
-  height: 1.5rem;
-  border-radius: 0.6rem 0.6rem 0.2rem 0.2rem;
-  background: linear-gradient(180deg, var(--from), var(--to));
-  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.12);
-  flex-shrink: 0;
+.familyOption[aria-current] .familyNotes {
+  color: var(--color-muted);
 }
 
 .count {
@@ -306,10 +288,6 @@
 @media (hover: hover) and (pointer: fine) {
   .familyOption:not([aria-disabled]):hover {
     background: var(--color-cream);
-  }
-
-  .familyOption:not([aria-disabled]):hover .familySwatchPip {
-    transform: scale(1.08);
   }
 
   .option:not([aria-disabled]):hover {

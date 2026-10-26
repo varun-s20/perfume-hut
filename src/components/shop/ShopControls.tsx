@@ -4,7 +4,7 @@ import type { Route } from 'next';
 import Link from 'next/link';
 import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from 'react';
 import { CheckIcon, CloseIcon, FilterIcon, SortIcon } from '@/components/icons';
-import { familySwatches, shop } from '@/content/shop';
+import { scentNotes, shop } from '@/content/shop';
 import {
   type Audience,
   audienceLabels,
@@ -83,11 +83,10 @@ export function ShopControls({
   }, []);
 
   const houseName = new Map(houses.map((house) => [house.slug, house.name]));
-  const chips: { label: string; href: Route; family?: Family }[] = [
+  const chips: { label: string; href: Route }[] = [
     ...filters.families.map((value) => ({
       label: familyLabels[value],
       href: shopUrl({ ...filters, families: filters.families.filter((v) => v !== value) }),
-      family: value,
     })),
     ...(filters.audience
       ? [
@@ -247,18 +246,6 @@ export function ShopControls({
                 className={styles.chip}
                 aria-label={shop.remove(chip.label)}
               >
-                {chip.family && (
-                  <span
-                    className={styles.chipPip}
-                    style={
-                      {
-                        '--from': familySwatches[chip.family].colours[0],
-                        '--to': familySwatches[chip.family].colours[1],
-                      } as CSSProperties
-                    }
-                    aria-hidden="true"
-                  />
-                )}
                 {chip.label}
                 <CloseIcon className={styles.chipIcon} />
               </Link>
@@ -380,7 +367,7 @@ function OptionLink({
   );
 }
 
-/** A scent family option in the Scent dropdown, with an arched swatch pip and fragrance notes. */
+/** A scent family in the Scent dropdown: its name, a few of its notes, and the count. */
 function FamilyOptionLink({
   href,
   active,
@@ -392,20 +379,14 @@ function FamilyOptionLink({
   family: Family;
   count: number;
 }) {
-  const [from, to] = familySwatches[family].colours;
   const content = (
     <>
       <span className={styles.box} aria-hidden="true">
         <CheckIcon />
       </span>
-      <span
-        className={styles.familySwatchPip}
-        style={{ '--from': from, '--to': to } as CSSProperties}
-        aria-hidden="true"
-      />
       <span className={styles.familyText}>
         <span className={styles.familyTitle}>{familyLabels[family]}</span>
-        <span className={styles.familyNotes}>{familySwatches[family].notes}</span>
+        <span className={styles.familyNotes}>{scentNotes[family]}</span>
       </span>
       <span className={styles.optionCount}>{count}</span>
     </>

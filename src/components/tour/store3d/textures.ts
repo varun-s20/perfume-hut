@@ -169,9 +169,10 @@ export const sheenTexture = () =>
 
 /**
  * Two 0.8 m tiles a side of polished stone, cream and slate in a checker,
- * cut from the marble photograph so the veining is real.
+ * cut from the marble photograph so the veining is real (plain stone if the
+ * photograph didn't arrive).
  */
-export function floorTexture(marble: HTMLImageElement) {
+export function floorTexture(marble: HTMLImageElement | null) {
   return repeating(
     canvasTexture(1024, 1024, (ctx, w, h) => {
       const tile = w / 2;
@@ -183,9 +184,14 @@ export function floorTexture(marble: HTMLImageElement) {
           ctx.beginPath();
           ctx.rect(x, y, tile, tile);
           ctx.clip();
-          // A different part of the slab for each tile, so the pattern doesn't repeat by eye.
-          const sx = ((row * 2 + col) * marble.width) / 5;
-          ctx.drawImage(marble, sx, 0, marble.width / 2, marble.height / 2, x, y, tile, tile);
+          if (marble) {
+            // A different part of the slab for each tile, so the pattern doesn't repeat by eye.
+            const sx = ((row * 2 + col) * marble.width) / 5;
+            ctx.drawImage(marble, sx, 0, marble.width / 2, marble.height / 2, x, y, tile, tile);
+          } else {
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(x, y, tile, tile);
+          }
           const dark = (row + col) % 2 === 1;
           ctx.globalCompositeOperation = 'multiply';
           ctx.fillStyle = dark ? '#a0abb5' : '#f2ece2';

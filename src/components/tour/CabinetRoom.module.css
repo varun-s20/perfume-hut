@@ -379,10 +379,7 @@
   }
 
   .hint {
-    display: block;
-    margin-top: 0.3rem;
-    color: var(--color-subtle);
-    font-size: 1.15rem;
+    display: none;
   }
 
   .primary {

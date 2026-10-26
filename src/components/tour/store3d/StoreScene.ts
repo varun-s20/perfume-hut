@@ -41,6 +41,8 @@ export type StoreSceneOptions = {
   /** The marble photograph the floor tiles are cut from. */
   marble: string;
   reduced: boolean;
+  /** The browser dropped the 3D context (a phone short of memory, say). */
+  onLost?: () => void;
 };
 
 /** What's under the pointer: a case on the floor, or a bottle in the open case. */
@@ -96,22 +98,30 @@ export class StoreScene {
   private frame = 0;
   private visible = true;
   private size = { width: 1, height: 1 };
-  private pixelRatio: number;
-  private slowFrames = 0;
+  private readonly pixelRatio: number;
+  private sizeChanged = false;
+  private disposed = false;
 
+  /**
+   * Builds the store and draws its first frame. Fonts and the marble photo are
+   * nice to have, never a reason to wait long or to fail; shaders compile off
+   * the main thread where the browser allows it, so scrolling stays smooth.
+   */
   static async create(canvas: HTMLCanvasElement, options: StoreSceneOptions) {
     const [marble] = await Promise.all([
-      loadImage(options.marble),
-      document.fonts.load(`48px ${options.fonts.serif}`),
-      document.fonts.load(`600 48px ${options.fonts.sans}`),
+      atMost(loadImage(options.marble)),
+      atMost(document.fonts.load(`48px ${options.fonts.serif}`)),
+      atMost(document.fonts.load(`600 48px ${options.fonts.sans}`)),
     ]);
-    return new StoreScene(canvas, options, marble);
+    const scene = new StoreScene(canvas, options, marble ?? null);
+    await scene.warmUp();
+    return scene;
   }
 
   private constructor(
     canvas: HTMLCanvasElement,
     options: StoreSceneOptions,
-    marble: HTMLImageElement,
+    marble: HTMLImageElement | null,
   ) {
     this.plan = options.plan;
     this.layout = options.layout;
@@ -119,10 +129,20 @@ export class StoreScene {
 
     this.renderer = new THREE.WebGLRenderer({
       canvas,
-      antialias: true,
+      // Dense phone screens don't need multisampling, and it costs them memory.
+      antialias: (window.devicePixelRatio || 1) < 2,
       powerPreference: 'high-performance',
     });
-    this.pixelRatio = Math.min(window.devicePixelRatio || 1, 1.75);
+    canvas.addEventListener('webglcontextlost', (event) => {
+      event.preventDefault();
+      this.setVisible(false);
+      // Giving the context back ourselves (dispose) isn't a loss.
+      if (!this.disposed) options.onLost?.();
+    });
+    // Chosen once: Safari stops showing the canvas if it changes resolution
+    // mid-walk, so phones start at a resolution they can hold.
+    const touch = window.matchMedia('(pointer: coarse)').matches;
+    this.pixelRatio = Math.min(window.devicePixelRatio || 1, touch ? 1.5 : 1.75);
     this.renderer.setPixelRatio(this.pixelRatio);
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.02;
@@ -174,6 +194,18 @@ export class StoreScene {
     });
 
     this.resize(canvas.clientWidth || window.innerWidth, canvas.clientHeight || window.innerHeight);
+  }
+
+  /** Compile every shader, then draw the first frame, so the store arrives whole. */
+  private async warmUp() {
+    this.applySize();
+    this.placeCamera();
+    try {
+      await this.renderer.compileAsync(this.scene, this.camera);
+    } catch {
+      // Older browsers compile on the first draw instead.
+    }
+    this.renderer.render(this.scene, this.camera);
     this.wake();
   }
 
@@ -243,8 +275,21 @@ export class StoreScene {
 
   resize(width: number, height: number) {
     this.size = { width: Math.max(1, width), height: Math.max(1, height) };
-    this.renderer.setSize(this.size.width, this.size.height, false);
+    this.sizeChanged = true;
     this.wake();
+  }
+
+  /**
+   * The canvas changes size only when its box does (turning the phone, say),
+   * and then at the start of a frame, just before it's drawn. Safari can stop
+   * showing a WebGL canvas resized mid-walk: it keeps rendering, but the
+   * screen stays on the empty backdrop.
+   */
+  private applySize() {
+    if (!this.sizeChanged) return;
+    this.sizeChanged = false;
+    this.renderer.setPixelRatio(this.pixelRatio);
+    this.renderer.setSize(this.size.width, this.size.height, false);
   }
 
   /** What's under a point on the canvas (CSS pixels from its top left). */
@@ -301,6 +346,7 @@ export class StoreScene {
   }
 
   dispose() {
+    this.disposed = true;
     if (this.frame) cancelAnimationFrame(this.frame);
     this.frame = 0;
     this.scene.traverse((object) => {
@@ -388,9 +434,9 @@ export class StoreScene {
     if (Math.abs(this.look.x - this.look.tx) + Math.abs(this.look.y - this.look.ty) > 0.001)
       busy = true;
 
+    this.applySize();
     this.placeCamera();
     this.renderer.render(this.scene, this.camera);
-    this.adapt(elapsed, busy);
 
     if (busy && this.visible) this.frame = requestAnimationFrame(this.tick);
   };
@@ -472,18 +518,14 @@ export class StoreScene {
     );
     this.camera.updateProjectionMatrix();
   }
+}
 
-  /** Slow phones get fewer pixels rather than dropped frames (judged on frame time while moving). */
-  private adapt(elapsed: number, busy: boolean) {
-    if (!busy) return;
-    this.slowFrames = elapsed > 0.024 ? this.slowFrames + 1 : Math.max(0, this.slowFrames - 1);
-    if (this.slowFrames > 30 && this.pixelRatio > 1) {
-      this.pixelRatio = Math.max(1, this.pixelRatio - 0.25);
-      this.renderer.setPixelRatio(this.pixelRatio);
-      this.renderer.setSize(this.size.width, this.size.height, false);
-      this.slowFrames = 0;
-    }
-  }
+/** A promise's value, or nothing if it fails or takes longer than `ms`. */
+function atMost<T>(promise: Promise<T>, ms = 3000): Promise<T | undefined> {
+  return Promise.race([
+    promise.catch(() => undefined),
+    new Promise<undefined>((resolve) => window.setTimeout(() => resolve(undefined), ms)),
+  ]);
 }
 
 function loadImage(src: string) {

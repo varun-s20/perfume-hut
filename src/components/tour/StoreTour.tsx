@@ -35,7 +35,7 @@ const ENDING = 30;
  * below are scroll positions in svh from the top of the tour.
  *
  *     0–100   the arch on the gallery wall opens onto the shopfront;
- *             the framed photographs slide away
+ *             the framed photographs slide away (on phones, drop away)
  *   100–162   "Welcome to Perfume Hut", over the facade
  *   158–209   you walk through the window: the facade rushes past, and the
  *             glare off the glass covers the step from outside to in
@@ -87,7 +87,7 @@ export function StoreTour({
     window.scrollTo({ top: top + target.at * svh, behavior: 'smooth' });
   };
 
-  const motionStyles = useEntranceMotion(progress, plan);
+  const motionStyles = useEntranceMotion(progress, plan, layout);
   const trackStyle = { '--tour-length': plan.length } as CSSProperties;
 
   return (
@@ -154,7 +154,7 @@ export function StoreTour({
   );
 }
 
-function useEntranceMotion(progress: MotionValue<number>, plan: TourPlan) {
+function useEntranceMotion(progress: MotionValue<number>, plan: TourPlan, layout: Layout) {
   // Keyframes are written in svh of scroll; progress runs 0–1 over the tour.
   const f = (positions: number[]) => positions.map((position) => position / plan.length);
 
@@ -170,9 +170,17 @@ function useEntranceMotion(progress: MotionValue<number>, plan: TourPlan) {
   // The wall is covered by the shopfront by now; dropping it lets what's behind show.
   const wallOpacity = useTransform(progress, f([97, 101]), [1, 0]);
 
-  // You walk past the photographs: they slide off the wall rather than fade.
-  const galleryX = useTransform(progress, f([7, 86]), [0, -44], { ease: easeInOut });
-  const galleryOpacity = useTransform(progress, f([58, 86]), [1, 0]);
+  // You walk past the photographs: beside the arch they slide off the wall.
+  // On phones they hang under it, so they drop away and fade before the
+  // opening doorway reaches them instead of crossing the shopfront.
+  const narrow = layout === 'narrow';
+  const galleryX = useTransform(progress, f([7, 86]), narrow ? [0, 0] : [0, -44], {
+    ease: easeInOut,
+  });
+  const galleryY = useTransform(progress, f([7, 40]), narrow ? [0, 10] : [0, 0], {
+    ease: easeInOut,
+  });
+  const galleryOpacity = useTransform(progress, narrow ? f([7, 36]) : f([58, 86]), [1, 0]);
   const casingOpacity = useTransform(progress, f([11, 36]), [1, 0]);
   const cueOpacity = useTransform(progress, f([0, 14]), [1, 0]);
 
@@ -184,7 +192,7 @@ function useEntranceMotion(progress: MotionValue<number>, plan: TourPlan) {
 
   // Full transform strings keep the work on the compositor.
   const scene = useMotionTemplate`scale(${sceneScale})`;
-  const gallery = useMotionTemplate`translateX(${galleryX}cqw)`;
+  const gallery = useMotionTemplate`translate(${galleryX}cqw, ${galleryY}cqh)`;
   const welcome = useMotionTemplate`translateY(${welcomeRise}rem)`;
 
   const entrance: EntranceMotion = {

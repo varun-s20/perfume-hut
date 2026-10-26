@@ -116,3 +116,15 @@
     font-size: 14.6vw;
   }
 }
+
+/* The narrowest phones can't fit the pill beside the way in: the way in stays. */
+@media (width < 352px) {
+  .pill {
+    display: none;
+  }
+
+  .cta {
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
+}
